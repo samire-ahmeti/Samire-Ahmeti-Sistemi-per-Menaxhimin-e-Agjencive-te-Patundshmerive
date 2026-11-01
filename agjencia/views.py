@@ -1,3 +1,4 @@
+
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -14,6 +15,17 @@ class PronaViewSet(viewsets.ModelViewSet):
     queryset = Prona.objects.all()
     serializer_class = PronaSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        perdoruesi = self.request.user
+
+        if perdoruesi.is_superuser or perdoruesi.roli == 'administrator':
+            return Prona.objects.all()
+
+        return Prona.objects.filter(agjent=perdoruesi)
+
+    def perform_create(self, serializer):
+        serializer.save(agjent=self.request.user)
 
 
 class KlientiViewSet(viewsets.ModelViewSet):
