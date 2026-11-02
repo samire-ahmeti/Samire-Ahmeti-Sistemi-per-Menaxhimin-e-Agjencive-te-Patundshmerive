@@ -1,6 +1,7 @@
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import SAFE_METHODS
 
 from .models import Prona, Klienti, Kerkesa, Vizita
 from .serializers import (
@@ -10,6 +11,13 @@ from .serializers import (
     VizitaSerializer,
 )
 
+class LejetEModeleve(DjangoModelPermissions):
+    perms_map = {
+        **DjangoModelPermissions.perms_map,
+        'GET': ['%(app_label)s.view_%(model_name)s'],
+        'HEAD': ['%(app_label)s.view_%(model_name)s'],
+        'OPTIONS': ['%(app_label)s.view_%(model_name)s'],
+    }
 
 class PronaViewSet(viewsets.ModelViewSet):
     queryset = Prona.objects.all()
@@ -32,16 +40,16 @@ class PronaViewSet(viewsets.ModelViewSet):
 class KlientiViewSet(viewsets.ModelViewSet):
     queryset = Klienti.objects.all()
     serializer_class = KlientiSerializer
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [LejetEModeleve]
 
 
 class KerkesaViewSet(viewsets.ModelViewSet):
     queryset = Kerkesa.objects.all()
     serializer_class = KerkesaSerializer
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [LejetEModeleve]
 
 
 class VizitaViewSet(viewsets.ModelViewSet):
     queryset = Vizita.objects.all()
     serializer_class = VizitaSerializer
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [LejetEModeleve]
