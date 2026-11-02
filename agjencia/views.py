@@ -1,6 +1,6 @@
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 from .models import Prona, Klienti, Kerkesa, Vizita
 from .serializers import (
@@ -28,19 +28,20 @@ class PronaViewSet(viewsets.ModelViewSet):
         serializer.save(agjent=self.request.user)
 
 
+
 class KlientiViewSet(viewsets.ModelViewSet):
     queryset = Klienti.objects.all()
     serializer_class = KlientiSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [DjangoModelPermissions]
 
 
 class KerkesaViewSet(viewsets.ModelViewSet):
     queryset = Kerkesa.objects.all()
     serializer_class = KerkesaSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [DjangoModelPermissions]
 
 
 class VizitaViewSet(viewsets.ModelViewSet):
     queryset = Vizita.objects.all()
     serializer_class = VizitaSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [DjangoModelPermissions]
