@@ -135,3 +135,7 @@ MAILERS = {
 }
 
 AUTH_USER_MODEL = 'agjencia.Perdorues'
+
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

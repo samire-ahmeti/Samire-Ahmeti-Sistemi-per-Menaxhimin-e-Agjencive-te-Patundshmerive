@@ -36,6 +36,8 @@ class Prona(models.Model):
     qyteti = models.CharField(max_length=100)
     cmimi = models.DecimalField(max_digits=12, decimal_places=2)
     siperfaqja = models.DecimalField(max_digits=10, decimal_places=2)
+    foto = models.ImageField(upload_to="pronat/", blank=True, null=True)
+
 
     def __str__(self):
         return f'{self.get_lloji_display()} - {self.qyteti}'

@@ -2,6 +2,8 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.permissions import SAFE_METHODS
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 from .models import Prona, Klienti, Kerkesa, Vizita
 from .serializers import (
@@ -53,3 +55,47 @@ class VizitaViewSet(viewsets.ModelViewSet):
     queryset = Vizita.objects.all()
     serializer_class = VizitaSerializer
     permission_classes = [LejetEModeleve]
+
+@login_required(login_url="/admin/login/")
+def pronat_page(request):
+
+    qyteti = request.GET.get("qyteti", "").strip()
+    lloji = request.GET.get("lloji", "").strip()
+
+    perdoruesi = request.user
+
+    if perdoruesi.is_superuser or perdoruesi.roli == "administrator":
+        pronat = Prona.objects.all()
+
+    else:
+
+        pronat = Prona.objects.filter(
+            agjent=perdoruesi
+        )
+
+
+    if qyteti:
+        pronat = pronat.filter(
+            qyteti__icontains=qyteti
+        )
+
+
+    if lloji:
+        pronat = pronat.filter(
+            lloji__iexact=lloji
+        )
+
+
+    pronat = pronat.order_by("-id")
+
+    context = {
+        "pronat": pronat,
+        "qyteti": qyteti,
+        "lloji": lloji,
+    }
+
+    return render(
+        request,
+        "agjencia/pronat.html",
+        context
+    )
