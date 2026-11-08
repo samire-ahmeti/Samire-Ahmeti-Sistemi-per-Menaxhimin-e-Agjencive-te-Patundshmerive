@@ -1,0 +1,115 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Smart Estate{% endblock %}</title>
+
+    <meta name="description" content="Smart Estate - Platformë për menaxhimin dhe prezantimin e pronave.">
+
+    <link rel="stylesheet" href="{% static 'agjencia/css/style.css' %}">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="navbar-container">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 22L24 6L43 22" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M11 20V42H37V20" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M20 42V29H28V42" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+
+                <span class="brand-name">
+                    Smart <span>Estate</span>
+                </span>
+            </a>
+
+            <nav class="main-navigation" id="main-navigation">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/pronat/" class="nav-link">Pronat</a>
+                <a href="/rreth-nesh/" class="nav-link">Rreth Nesh</a>
+                <a href="/sherbimet/" class="nav-link">Shërbimet</a>
+                <a href="/kontakt/" class="nav-link">Kontakt</a>
+            </nav>
+
+            <div class="navbar-actions">
+                {% if request.user.is_authenticated %}
+                    <a href="/admin/" class="login-button">
+                        Paneli im
+                    </a>
+                {% else %}
+                    <a href="/hyrja/" class="login-button">
+                        Hyr në sistem
+                    </a>
+                {% endif %}
+            </div>
+
+            <button class="mobile-menu-button"
+                    type="button"
+                    aria-label="Hap menynë"
+                    aria-controls="main-navigation"
+                    aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+
+            <div class="footer-about">
+                <h2>Smart <span>Estate</span></h2>
+                <p>
+                    Platformë moderne për prezantimin
+                    dhe menaxhimin e pronave.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Lidhje të shpejta</h3>
+                <a href="/">Home</a>
+                <a href="/pronat/">Pronat</a>
+                <a href="/rreth-nesh/">Rreth Nesh</a>
+                <a href="/kontakt/">Kontakt</a>
+            </div>
+
+            <div class="footer-links">
+                <h3>Shërbimet</h3>
+                <a href="/sherbimet/">Shërbimet tona</a>
+                <a href="/pronat/">Shiko pronat</a>
+            </div>
+
+            <div class="footer-contact">
+                <h3>Smart Estate</h3>
+                <p>
+                    Sistemi për Menaxhimin e
+                    Agjencive të Patundshmërive
+                </p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Smart Estate. Të gjitha të drejtat e rezervuara.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'agjencia/js/main.js' %}"></script>
+
+</body>
+</html>
