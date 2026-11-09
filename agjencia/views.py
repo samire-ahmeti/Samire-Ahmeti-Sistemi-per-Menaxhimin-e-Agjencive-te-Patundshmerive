@@ -2,7 +2,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.permissions import SAFE_METHODS
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from .models import Prona, Klienti, Kerkesa, Vizita
@@ -98,4 +98,22 @@ def pronat_page(request):
         request,
         "agjencia/pronat.html",
         context
+    )
+
+
+@login_required(login_url="/admin/login/")
+def detajet_prones(request, prona_id):
+    perdoruesi = request.user
+
+    if perdoruesi.is_superuser or perdoruesi.roli == "administrator":
+        pronat = Prona.objects.all()
+    else:
+        pronat = Prona.objects.filter(agjent=perdoruesi)
+
+    prona = get_object_or_404(pronat, id=prona_id)
+
+    return render(
+        request,
+        "agjencia/detajet_prones.html",
+        {"prona": prona}
     )

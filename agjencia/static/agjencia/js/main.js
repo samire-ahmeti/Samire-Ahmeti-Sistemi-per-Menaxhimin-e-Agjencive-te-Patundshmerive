@@ -61,3 +61,35 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const mainImage = document.getElementById("main-property-image");
+    const thumbnails = document.querySelectorAll(".gallery-thumbnail");
+
+    if (!mainImage || thumbnails.length === 0) {
+        return;
+    }
+
+    thumbnails.forEach(function (thumbnail) {
+        thumbnail.addEventListener("click", function () {
+            const imageUrl = thumbnail.dataset.galleryImage;
+            const imageAlt = thumbnail.dataset.galleryAlt;
+
+            if (!imageUrl) {
+                return;
+            }
+
+            mainImage.src = imageUrl;
+            mainImage.alt = imageAlt || "Fotografia e pronës";
+
+            thumbnails.forEach(function (item) {
+                item.classList.remove("active");
+                item.setAttribute("aria-pressed", "false");
+            });
+
+            thumbnail.classList.add("active");
+            thumbnail.setAttribute("aria-pressed", "true");
+        });
+    });
+});

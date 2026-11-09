@@ -86,3 +86,19 @@ class Vizita(models.Model):
 
     def __str__(self):
         return f'Vizita e {self.klienti.emri} - {self.prona}'
+
+
+class FotoProne(models.Model):
+    prona = models.ForeignKey(
+        Prona,
+        on_delete=models.CASCADE,
+        related_name="fotot"
+    )
+    foto = models.ImageField(upload_to="pronat/galeria/")
+    renditja = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["renditja", "id"]
+
+    def __str__(self):
+        return f"Foto e prones #{self.prona.id}"
