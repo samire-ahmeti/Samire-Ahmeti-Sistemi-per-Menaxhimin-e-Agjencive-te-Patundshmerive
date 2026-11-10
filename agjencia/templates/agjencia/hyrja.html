@@ -1,0 +1,154 @@
+
+{% extends 'agjencia/base.html' %}
+
+{% block title %}Hyr në sistem | Smart Estate{% endblock %}
+
+{% block content %}
+
+<section class="auth-page">
+    <div class="auth-container">
+
+        <div class="auth-form-side">
+
+            <div class="auth-form-header">
+                <span class="auth-label">
+                    SMART ESTATE
+                </span>
+
+                <h1>Mirë se u riktheve!</h1>
+
+                <p>
+                    Hyr në llogarinë tënde për të
+                    menaxhuar pronat dhe aktivitetet
+                    e agjencisë.
+                </p>
+            </div>
+
+            {% if gabimi %}
+                <div class="auth-error" role="alert">
+                    {{ gabimi }}
+                </div>
+            {% endif %}
+
+            <form action="/hyrja/" method="POST" class="auth-form">
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="next"
+                    value="{{ next|default:'' }}"
+                >
+
+                <div class="auth-field">
+                    <label for="username">
+                        Emri i përdoruesit
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Shkruaj emrin e përdoruesit"
+                        value="{{ emri_perdoruesit|default:'' }}"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="auth-field">
+                    <label for="password">
+                        Fjalëkalimi
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Shkruaj fjalëkalimin"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="auth-submit">
+                    Hyr në sistem
+                    <span>→</span>
+                </button>
+
+            </form>
+
+            <div class="auth-bottom">
+                <p>
+                    Qasja në panel është e rezervuar
+                    për administratorët dhe agjentët
+                    e autorizuar të Smart Estate.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="auth-info-side">
+
+            <div class="auth-info-content">
+
+                <span class="auth-info-tag">
+                    MENAXHIM I THJESHTË
+                </span>
+
+                <h2>
+                    Gjithçka që të duhet,
+                    në një vend.
+                </h2>
+
+                <p>
+                    Smart Estate të ndihmon të
+                    organizosh dhe menaxhosh
+                    aktivitetet e agjencisë
+                    së patundshmërive.
+                </p>
+
+                <div class="auth-benefits">
+
+                    <div class="auth-benefit">
+                        <span>01</span>
+                        <div>
+                            <h3>Menaxhimi i pronave</h3>
+                            <p>
+                                Organizo pronat dhe
+                                informacionet e tyre.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="auth-benefit">
+                        <span>02</span>
+                        <div>
+                            <h3>Menaxhimi i klientëve</h3>
+                            <p>
+                                Mbaji të dhënat e
+                                klientëve të organizuara.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="auth-benefit">
+                        <span>03</span>
+                        <div>
+                            <h3>Organizimi i vizitave</h3>
+                            <p>
+                                Menaxho vizitat dhe
+                                aktivitetet e agjencisë.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

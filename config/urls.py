@@ -6,6 +6,8 @@ from agjencia.views import pronat_page, detajet_prones
 from django.conf import settings
 from django.conf.urls.static import static
 from agjencia.views import paneli_page
+from agjencia.views import hyrja_page
+from agjencia.views import dalja_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,6 +16,9 @@ urlpatterns = [
     path("pronat/", pronat_page, name="pronat"),
     path("pronat/<int:prona_id>/", detajet_prones, name="detajet_prones"),
     path("paneli/", paneli_page, name="paneli"),
+    path("hyrja/", hyrja_page, name="hyrja"),
+    path("dalja/", dalja_page, name="dalja"),
+
 
 ]
 
