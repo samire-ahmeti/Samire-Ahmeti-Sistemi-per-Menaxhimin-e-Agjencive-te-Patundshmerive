@@ -117,3 +117,35 @@ def detajet_prones(request, prona_id):
         "agjencia/detajet_prones.html",
         {"prona": prona}
     )
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Prona, Klienti, Vizita
+
+
+@login_required(login_url="/admin/login/")
+def paneli_page(request):
+    perdoruesi = request.user
+
+    if perdoruesi.is_superuser or perdoruesi.roli == "administrator":
+        pronat = Prona.objects.all()
+        numri_klienteve = Klienti.objects.count()
+        numri_vizitave = Vizita.objects.count()
+    else:
+        pronat = Prona.objects.filter(agjent=perdoruesi)
+        vizitat = Vizita.objects.filter(prona__agjent=perdoruesi)
+
+        numri_vizitave = vizitat.count()
+        numri_klienteve = Klienti.objects.filter(
+            id__in=vizitat.values_list("klienti_id", flat=True)
+        ).count()
+
+    context = {
+        "numri_pronave": pronat.count(),
+        "numri_klienteve": numri_klienteve,
+        "numri_vizitave": numri_vizitave,
+        "pronat_e_fundit": pronat.order_by("-id")[:4],
+    }
+
+    return render(request, "agjencia/paneli.html", context)

@@ -1,0 +1,194 @@
+
+{% extends 'agjencia/base.html' %}
+
+{% block title %}Paneli im | Smart Estate{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+    <div class="dashboard-container">
+
+        <div class="dashboard-heading">
+            <div>
+                <span class="dashboard-label">
+                    SMART ESTATE
+                </span>
+
+                <h1>
+                    Mirë se erdhe,
+                    {{ user.first_name|default:user.username }}!
+                </h1>
+
+                <p>
+                    Menaxho pronat dhe aktivitetet e tua
+                    nga një vend i vetëm.
+                </p>
+            </div>
+
+            <div class="dashboard-user">
+                <div class="dashboard-avatar">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+
+                <div>
+                    <strong>{{ user.username }}</strong>
+
+                    <span>
+                        {% if user.is_superuser or user.roli == 'administrator' %}
+                            Administrator
+                        {% else %}
+                            Agjent
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-stats">
+
+            <div class="dashboard-stat-card">
+                <div class="dashboard-stat-top">
+                    <span>01</span>
+                    <span>Pronat</span>
+                </div>
+
+                <h2>{{ numri_pronave|default:0 }}</h2>
+
+                <p>Prona të regjistruara</p>
+            </div>
+
+            <div class="dashboard-stat-card">
+                <div class="dashboard-stat-top">
+                    <span>02</span>
+                    <span>Klientët</span>
+                </div>
+
+                <h2>{{ numri_klienteve|default:0 }}</h2>
+
+                <p>Klientë të regjistruar</p>
+            </div>
+
+            <div class="dashboard-stat-card">
+                <div class="dashboard-stat-top">
+                    <span>03</span>
+                    <span>Vizitat</span>
+                </div>
+
+                <h2>{{ numri_vizitave|default:0 }}</h2>
+
+                <p>Vizita të regjistruara</p>
+            </div>
+
+        </div>
+
+        <div class="dashboard-main">
+
+            <div class="dashboard-properties">
+
+                <div class="dashboard-section-heading">
+                    <div>
+                        <span class="dashboard-label">
+                            MENAXHIMI
+                        </span>
+
+                        <h2>Pronat e fundit</h2>
+                    </div>
+
+                    <a href="/pronat/" class="dashboard-view-all">
+                        Shiko pronat →
+                    </a>
+                </div>
+
+                <div class="dashboard-property-list">
+
+                    {% for prona in pronat_e_fundit %}
+
+                    <a
+                        href="{% url 'detajet_prones' prona.id %}"
+                        class="dashboard-property-item"
+                    >
+                        <div class="dashboard-property-image">
+
+                            {% if prona.foto %}
+                                <img
+                                    src="{{ prona.foto.url }}"
+                                    alt="Prona në {{ prona.qyteti }}"
+                                >
+                            {% else %}
+                                <div class="dashboard-no-image">
+                                    ⌂
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="dashboard-property-details">
+                            <h3>
+                                {{ prona.lloji|title }}
+                                në {{ prona.qyteti }}
+                            </h3>
+
+                            <p>
+                                {{ prona.siperfaqja }} m²
+                            </p>
+                        </div>
+
+                        <strong class="dashboard-property-price">
+                            € {{ prona.cmimi }}
+                        </strong>
+
+                    </a>
+
+                    {% empty %}
+
+                    <div class="dashboard-empty">
+                        <h3>Nuk ka prona për t'u shfaqur</h3>
+
+                        <p>
+                            Pronat e regjistruara do të
+                            shfaqen këtu.
+                        </p>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            <div class="dashboard-side">
+
+                <span class="dashboard-label">
+                    VEPRIME TË SHPEJTA
+                </span>
+
+                <h2>Menaxho më lehtë</h2>
+
+                <p>
+                    Qasju pronave dhe informacioneve
+                    të sistemit Smart Estate.
+                </p>
+
+                <a href="/pronat/" class="dashboard-action">
+                    <span>Shiko të gjitha pronat</span>
+                    <span>→</span>
+                </a>
+
+                <div class="dashboard-future">
+                    <strong>Së shpejti</strong>
+
+                    <p>
+                        Shtimi i pronave, menaxhimi i
+                        klientëve dhe vizitave direkt
+                        nga ky panel.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

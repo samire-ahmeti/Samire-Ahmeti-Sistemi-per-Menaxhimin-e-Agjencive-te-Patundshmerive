@@ -38,18 +38,17 @@
                 <a href="/sherbimet/" class="nav-link">Shërbimet</a>
                 <a href="/kontakt/" class="nav-link">Kontakt</a>
             </nav>
-
-            <div class="navbar-actions">
-                {% if request.user.is_authenticated %}
-                    <a href="/admin/" class="login-button">
-                        Paneli im
-                    </a>
-                {% else %}
-                    <a href="/hyrja/" class="login-button">
-                        Hyr në sistem
-                    </a>
-                {% endif %}
-            </div>
+        <div class="navbar-actions">
+               {% if request.user.is_authenticated %}
+            <a href="{% url 'paneli' %}" class="login-button">
+                 Paneli im
+            </a>
+                 {% else %}
+            <a href="/hyrja/" class="login-button">
+                 Hyr në sistem
+            </a>
+                 {% endif %}
+        </div>
 
             <button class="mobile-menu-button"
                     type="button"

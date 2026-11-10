@@ -5,12 +5,16 @@ from django.views.generic import TemplateView
 from agjencia.views import pronat_page, detajet_prones
 from django.conf import settings
 from django.conf.urls.static import static
+from agjencia.views import paneli_page
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('agjencia.urls')),
     path('', TemplateView.as_view(template_name='agjencia/home.html'), name='home'),
     path("pronat/", pronat_page, name="pronat"),
     path("pronat/<int:prona_id>/", detajet_prones, name="detajet_prones"),
+    path("paneli/", paneli_page, name="paneli"),
+
 ]
 
 if settings.DEBUG:
