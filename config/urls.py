@@ -8,6 +8,8 @@ from django.conf.urls.static import static
 from agjencia.views import paneli_page
 from agjencia.views import hyrja_page
 from agjencia.views import dalja_page
+from agjencia.views import shto_prone_page
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,6 +20,8 @@ urlpatterns = [
     path("paneli/", paneli_page, name="paneli"),
     path("hyrja/", hyrja_page, name="hyrja"),
     path("dalja/", dalja_page, name="dalja"),
+    path("shto-prone/", shto_prone_page, name="shto_prone"),
+
 
 
 ]

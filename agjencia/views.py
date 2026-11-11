@@ -5,10 +5,12 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
+
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 from .models import Prona, Klienti, Kerkesa, Vizita
+from .forms import PronaForm
 from .serializers import (
     PronaSerializer,
     KlientiSerializer,
@@ -74,12 +76,11 @@ class VizitaViewSet(viewsets.ModelViewSet):
     permission_classes = [LejetEModeleve]
 
 
-@login_required(login_url="/hyrja/")
 def pronat_page(request):
     qyteti = request.GET.get("qyteti", "").strip()
     lloji = request.GET.get("lloji", "").strip()
 
-    pronat = pronat_e_perdoruesit(request.user)
+    pronat = Prona.objects.all()
 
     if qyteti:
         pronat = pronat.filter(qyteti__icontains=qyteti)
@@ -102,12 +103,9 @@ def pronat_page(request):
     )
 
 
-@login_required(login_url="/hyrja/")
 def detajet_prones(request, prona_id):
-    pronat = pronat_e_perdoruesit(request.user)
-
     prona = get_object_or_404(
-        pronat,
+        Prona,
         id=prona_id
     )
 
@@ -223,8 +221,45 @@ def hyrja_page(request):
         "agjencia/hyrja.html",
         context
     )
+
+
 @login_required(login_url="/hyrja/")
 @require_POST
 def dalja_page(request):
     logout(request)
     return redirect("hyrja")
+
+
+@login_required(login_url="/hyrja/")
+def shto_prone_page(request):
+    perdoruesi = request.user
+
+    if not (
+        perdoruesi.is_superuser
+        or perdoruesi.roli in ["administrator", "agjent"]
+    ):
+        raise PermissionDenied
+
+    if request.method == "POST":
+        form = PronaForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+            prona = form.save(commit=False)
+            prona.agjent = perdoruesi
+            prona.save()
+
+            return redirect(
+                "detajet_prones",
+                prona_id=prona.id
+            )
+    else:
+        form = PronaForm()
+
+    return render(
+        request,
+        "agjencia/shto_prone.html",
+        {"form": form}
+    )

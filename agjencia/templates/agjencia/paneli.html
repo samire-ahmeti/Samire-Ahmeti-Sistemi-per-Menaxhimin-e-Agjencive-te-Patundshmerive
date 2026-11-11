@@ -53,7 +53,6 @@
                 </div>
 
                 <h2>{{ numri_pronave|default:0 }}</h2>
-
                 <p>Prona të regjistruara</p>
             </div>
 
@@ -64,7 +63,6 @@
                 </div>
 
                 <h2>{{ numri_klienteve|default:0 }}</h2>
-
                 <p>Klientë të regjistruar</p>
             </div>
 
@@ -75,7 +73,6 @@
                 </div>
 
                 <h2>{{ numri_vizitave|default:0 }}</h2>
-
                 <p>Vizita të regjistruara</p>
             </div>
 
@@ -165,12 +162,15 @@
                 <h2>Menaxho më lehtë</h2>
 
                 <p>
-                    Qasju pronave dhe informacioneve
-                    të sistemit Smart Estate.
+                    Regjistro dhe organizo pronat e
+                    agjencisë nga paneli yt personal.
                 </p>
 
-                <a href="/pronat/" class="dashboard-action">
-                    <span>Shiko të gjitha pronat</span>
+                <a
+                    href="{% url 'shto_prone' %}"
+                    class="dashboard-action"
+                >
+                    <span>+ Shto pronë të re</span>
                     <span>→</span>
                 </a>
 
@@ -178,9 +178,8 @@
                     <strong>Së shpejti</strong>
 
                     <p>
-                        Shtimi i pronave, menaxhimi i
-                        klientëve dhe vizitave direkt
-                        nga ky panel.
+                        Menaxhimi i klientëve dhe vizitave
+                        direkt nga ky panel.
                     </p>
                 </div>
 
