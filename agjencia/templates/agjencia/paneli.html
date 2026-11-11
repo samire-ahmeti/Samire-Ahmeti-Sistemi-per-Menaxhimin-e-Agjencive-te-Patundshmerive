@@ -1,193 +1,309 @@
 
 {% extends 'agjencia/base.html' %}
+{% load static %}
 
 {% block title %}Paneli im | Smart Estate{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'agjencia/css/dashboard.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<section class="dashboard-page">
-    <div class="dashboard-container">
+<section class="se-db-page">
 
-        <div class="dashboard-heading">
-            <div>
-                <span class="dashboard-label">
-                    SMART ESTATE
-                </span>
+    <div class="se-db-layout">
 
-                <h1>
-                    Mirë se erdhe,
-                    {{ user.first_name|default:user.username }}!
-                </h1>
+        <aside class="se-db-sidebar">
 
-                <p>
-                    Menaxho pronat dhe aktivitetet e tua
-                    nga një vend i vetëm.
-                </p>
+            <div class="se-db-sidebar-heading">
+                <span>SMART ESTATE</span>
+                <h2>Menaxhimi</h2>
             </div>
 
-            <div class="dashboard-user">
-                <div class="dashboard-avatar">
-                    {{ user.username|slice:":1"|upper }}
-                </div>
+            <nav class="se-db-menu" aria-label="Menyja e panelit">
 
-                <div>
-                    <strong>{{ user.username }}</strong>
-
-                    <span>
-                        {% if user.is_superuser or user.roli == 'administrator' %}
-                            Administrator
-                        {% else %}
-                            Agjent
-                        {% endif %}
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="dashboard-stats">
-
-            <div class="dashboard-stat-card">
-                <div class="dashboard-stat-top">
-                    <span>01</span>
-                    <span>Pronat</span>
-                </div>
-
-                <h2>{{ numri_pronave|default:0 }}</h2>
-                <p>Prona të regjistruara</p>
-            </div>
-
-            <div class="dashboard-stat-card">
-                <div class="dashboard-stat-top">
-                    <span>02</span>
-                    <span>Klientët</span>
-                </div>
-
-                <h2>{{ numri_klienteve|default:0 }}</h2>
-                <p>Klientë të regjistruar</p>
-            </div>
-
-            <div class="dashboard-stat-card">
-                <div class="dashboard-stat-top">
-                    <span>03</span>
-                    <span>Vizitat</span>
-                </div>
-
-                <h2>{{ numri_vizitave|default:0 }}</h2>
-                <p>Vizita të regjistruara</p>
-            </div>
-
-        </div>
-
-        <div class="dashboard-main">
-
-            <div class="dashboard-properties">
-
-                <div class="dashboard-section-heading">
-                    <div>
-                        <span class="dashboard-label">
-                            MENAXHIMI
-                        </span>
-
-                        <h2>Pronat e fundit</h2>
-                    </div>
-
-                    <a href="/pronat/" class="dashboard-view-all">
-                        Shiko pronat →
-                    </a>
-                </div>
-
-                <div class="dashboard-property-list">
-
-                    {% for prona in pronat_e_fundit %}
-
-                    <a
-                        href="{% url 'detajet_prones' prona.id %}"
-                        class="dashboard-property-item"
-                    >
-                        <div class="dashboard-property-image">
-
-                            {% if prona.foto %}
-                                <img
-                                    src="{{ prona.foto.url }}"
-                                    alt="Prona në {{ prona.qyteti }}"
-                                >
-                            {% else %}
-                                <div class="dashboard-no-image">
-                                    ⌂
-                                </div>
-                            {% endif %}
-
-                        </div>
-
-                        <div class="dashboard-property-details">
-                            <h3>
-                                {{ prona.lloji|title }}
-                                në {{ prona.qyteti }}
-                            </h3>
-
-                            <p>
-                                {{ prona.siperfaqja }} m²
-                            </p>
-                        </div>
-
-                        <strong class="dashboard-property-price">
-                            € {{ prona.cmimi }}
-                        </strong>
-
-                    </a>
-
-                    {% empty %}
-
-                    <div class="dashboard-empty">
-                        <h3>Nuk ka prona për t'u shfaqur</h3>
-
-                        <p>
-                            Pronat e regjistruara do të
-                            shfaqen këtu.
-                        </p>
-                    </div>
-
-                    {% endfor %}
-
-                </div>
-
-            </div>
-
-            <div class="dashboard-side">
-
-                <span class="dashboard-label">
-                    VEPRIME TË SHPEJTA
-                </span>
-
-                <h2>Menaxho më lehtë</h2>
-
-                <p>
-                    Regjistro dhe organizo pronat e
-                    agjencisë nga paneli yt personal.
-                </p>
-
-                <a
-                    href="{% url 'shto_prone' %}"
-                    class="dashboard-action"
-                >
-                    <span>+ Shto pronë të re</span>
-                    <span>→</span>
+                <a href="{% url 'paneli' %}" class="se-db-menu-active">
+                    <span class="se-db-menu-icon">⌂</span>
+                    Paneli im
                 </a>
 
-                <div class="dashboard-future">
-                    <strong>Së shpejti</strong>
+                <a href="#pronat-e-fundit">
+                    <span class="se-db-menu-icon">▤</span>
+                    Pronat e fundit
+                </a>
+
+                <a href="{% url 'shto_prone' %}">
+                    <span class="se-db-menu-icon">+</span>
+                    Shto pronë
+                </a>
+
+                <div class="se-db-menu-disabled">
+                    <span class="se-db-menu-icon">♙</span>
+                    Klientët
+                    <small>Së shpejti</small>
+                </div>
+
+                <div class="se-db-menu-disabled">
+                    <span class="se-db-menu-icon">▦</span>
+                    Vizitat
+                    <small>Së shpejti</small>
+                </div>
+
+                <a href="{% url 'pronat' %}">
+                    <span class="se-db-menu-icon">⌕</span>
+                    Shiko të gjitha pronat
+                </a>
+
+            </nav>
+
+            <div class="se-db-sidebar-bottom">
+                <div class="se-db-user">
+                    <div class="se-db-user-avatar">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+
+                    <div>
+                        <strong>{{ user.username }}</strong>
+
+                        <span>
+                            {% if user.is_superuser or user.roli == "administrator" %}
+                                Administrator
+                            {% else %}
+                                Agjent
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <form action="{% url 'dalja' %}" method="POST">
+                    {% csrf_token %}
+
+                    <button type="submit" class="se-db-logout">
+                        Dil nga sistemi →
+                    </button>
+                </form>
+            </div>
+
+        </aside>
+
+        <div class="se-db-content">
+
+            <div class="se-db-hero">
+
+                <div class="se-db-hero-content">
+                    <span>PANELI I MENAXHIMIT</span>
+
+                    <h1>Mirë se erdhe, {{ user.first_name|default:user.username }}!</h1>
 
                     <p>
-                        Menaxhimi i klientëve dhe vizitave
-                        direkt nga ky panel.
+                        Menaxho pronat, klientët dhe aktivitetet
+                        e agjencisë nga një vend i vetëm.
                     </p>
                 </div>
 
             </div>
 
+            <div class="se-db-overview">
+
+                <div class="se-db-overview-item">
+                    <span>PRONAT</span>
+                    <strong>{{ numri_pronave|default:0 }}</strong>
+                    <p>Prona të regjistruara</p>
+                </div>
+
+                <div class="se-db-overview-item">
+                    <span>KLIENTËT</span>
+                    <strong>{{ numri_klienteve|default:0 }}</strong>
+                    <p>Klientë të regjistruar</p>
+                </div>
+
+                <div class="se-db-overview-item">
+                    <span>VIZITAT</span>
+                    <strong>{{ numri_vizitave|default:0 }}</strong>
+                    <p>Vizita të regjistruara</p>
+                </div>
+
+            </div>
+
+            <div class="se-db-section" id="pronat-e-fundit">
+
+                <div class="se-db-section-header">
+
+                    <div>
+                        <span class="se-db-eyebrow">
+                            SMART ESTATE
+                        </span>
+
+                        <h2>Pronat e fundit</h2>
+
+                        <p>
+                            {% if user.is_superuser or user.roli == "administrator" %}
+                                Pronat e regjistruara së fundmi në agjenci.
+                            {% else %}
+                                Pronat e tua të regjistruara së fundmi.
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <a href="{% url 'shto_prone' %}" class="se-db-add-button">
+                        <span>+</span>
+                        Shto pronë të re
+                    </a>
+
+                </div>
+
+                <div class="se-db-table-container">
+
+                    <div class="se-db-table-scroll">
+
+                        <table class="se-db-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Fotografia</th>
+                                    <th>Prona</th>
+                                    <th>Lloji</th>
+                                    <th>Qyteti</th>
+                                    <th>Çmimi</th>
+                                    <th>Veprimet</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for prona in pronat_e_fundit %}
+
+                                <tr>
+
+                                    <td>
+                                        <div class="se-db-property-photo">
+
+                                            {% if prona.foto %}
+                                                <img
+                                                    src="{{ prona.foto.url }}"
+                                                    alt="Prona në {{ prona.qyteti }}"
+                                                >
+                                            {% else %}
+                                                <div class="se-db-no-photo">
+                                                    ⌂
+                                                </div>
+                                            {% endif %}
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="se-db-property-name">
+
+                                            <strong>
+                                                {{ prona.get_lloji_display }}
+                                                në {{ prona.qyteti }}
+                                            </strong>
+
+                                            <span>
+                                                {{ prona.siperfaqja }} m²
+                                            </span>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="se-db-property-type">
+                                            {{ prona.get_lloji_display }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {{ prona.qyteti }}
+                                    </td>
+
+                                    <td>
+                                        <strong class="se-db-price">
+                                            € {{ prona.cmimi }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        <a
+                                            href="{% url 'detajet_prones' prona.id %}"
+                                            class="se-db-details-button"
+                                        >
+                                            Shiko detajet
+                                        </a>
+                                    </td>
+
+                                </tr>
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="se-db-empty">
+                                            <h3>Ende nuk ka prona</h3>
+
+                                            <p>
+                                                Prona e parë që regjistron
+                                                do të shfaqet këtu.
+                                            </p>
+
+                                            <a
+                                                href="{% url 'shto_prone' %}"
+                                                class="se-db-add-button"
+                                            >
+                                                + Shto pronë
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    {% if pronat_e_fundit %}
+                        <div class="se-db-table-footer">
+                            <span>
+                                Shfaqen pronat më të fundit.
+                            </span>
+
+                            <a href="{% url 'pronat' %}">
+                                Shiko të gjitha pronat →
+                            </a>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="se-db-bottom-info">
+                <div>
+                    <span class="se-db-eyebrow">
+                        MENAXHIM PROFESIONAL
+                    </span>
+
+                    <h3>Pronat e tua, të organizuara në një vend.</h3>
+
+                    <p>
+                        Shto prona të reja, ngarko fotografi
+                        dhe menaxho informacionet e agjencisë.
+                    </p>
+                </div>
+
+                <a href="{% url 'shto_prone' %}" class="se-db-add-button">
+                    + Regjistro pronë
+                </a>
+            </div>
+
         </div>
 
     </div>
+
 </section>
 
 {% endblock %}

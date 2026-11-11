@@ -5,76 +5,88 @@
 
 {% block content %}
 
-<!-- Seksioni kryesor i faqes -->
 <section class="properties-hero">
     <div class="container">
+
         <h1>
-            Zbulo pronat që
-            <span>të përshtaten</span>
+            Zbulo pronën
+            <span>që të përshtatet.</span>
         </h1>
 
         <p>
-            Eksploro pronat dhe gjej hapësirën
-            ideale për nevojat e tua.
+            Nga banesat moderne te shtëpitë familjare,
+            lokalet dhe tokat, Smart Estate të ndihmon
+            të gjesh hapësirën e duhur.
         </p>
+
     </div>
 </section>
 
-<!-- Filtrimi i pronave -->
 <section class="properties-search-section">
     <div class="container">
 
-        <form method="GET" action="/pronat/" class="properties-search-form">
+        <form
+            method="GET"
+            action="{% url 'pronat' %}"
+            class="properties-search-form"
+        >
 
             <div class="search-field">
                 <label for="qyteti">Qyteti</label>
+
                 <input
                     type="text"
                     id="qyteti"
                     name="qyteti"
-                    placeholder="Shkruaj qytetin"
                     value="{{ qyteti }}"
+                    placeholder="P.sh. Prizren"
                 >
             </div>
 
             <div class="search-field">
                 <label for="lloji">Lloji i pronës</label>
+
                 <select id="lloji" name="lloji">
-                    <option value="">Të gjitha</option>
+                    <option value="">Të gjitha pronat</option>
+
                     <option value="banese" {% if lloji == 'banese' %}selected{% endif %}>
                         Banesë
                     </option>
+
                     <option value="shtepi" {% if lloji == 'shtepi' %}selected{% endif %}>
                         Shtëpi
                     </option>
+
                     <option value="lokal" {% if lloji == 'lokal' %}selected{% endif %}>
                         Lokal
                     </option>
+
                     <option value="toke" {% if lloji == 'toke' %}selected{% endif %}>
                         Tokë
                     </option>
                 </select>
             </div>
 
-            <button type="submit" class="btn-primary">
-                Kërko Pronë
-            </button>
+            <div class="search-actions">
+                <button type="submit" class="btn-primary">
+                    Kërko pronën →
+                </button>
+            </div>
 
         </form>
 
     </div>
 </section>
 
-<!-- Lista e pronave -->
 <section class="section properties-list-section">
     <div class="container">
 
         <div class="properties-heading">
             <div>
-                <h2>Pronat tona</h2>
+                <h2>Pronat e disponueshme</h2>
+
                 <p>
-                    Zgjidh pronën që i përshtatet
-                    kërkesave të tua.
+                    Eksploro pronat e regjistruara në Smart Estate.
                 </p>
             </div>
         </div>
@@ -83,62 +95,77 @@
 
             {% for prona in pronat %}
 
-            <article class="property-card">
+                <article class="property-card">
 
+                    <div class="property-photo">
 
-<div class="property-photo">
-    <span class="property-tag">
-        {{ prona.lloji|title }}
-    </span>
+                        <span class="property-tag">
+                            {{ prona.get_lloji_display }}
+                        </span>
 
-    {% if prona.foto %}
-        <img src="{{ prona.foto.url }}" alt="Pronë në {{ prona.qyteti }}">
-    {% else %}
-        <div class="property-photo-placeholder">
-            <span aria-hidden="true">⌂</span>
-        </div>
-    {% endif %}
-</div>
+                        {% if prona.foto %}
+                            <img
+                                src="{{ prona.foto.url }}"
+                                alt="{{ prona.get_lloji_display }} në {{ prona.qyteti }}"
+                                loading="lazy"
+                            >
+                        {% else %}
 
+                            <div class="property-photo-placeholder">
+                                <span aria-hidden="true">⌂</span>
+                            </div>
 
-                <div class="property-card-content">
+                        {% endif %}
 
-                    <h3>
-                        {{ prona.lloji|title }}
-                        në {{ prona.qyteti }}
-                    </h3>
+                    </div>
 
-                    <p class="property-location">
-                        📍 {{ prona.qyteti }}
-                    </p>
+                    <div class="property-card-content">
 
-                    <p class="property-area">
-                        Sipërfaqja:
-                        {{ prona.siperfaqja }} m²
-                    </p>
+                        <h3>
+                            {{ prona.get_lloji_display }}
+                            në {{ prona.qyteti }}
+                        </h3>
 
-                    <p class="property-price">
-                        € {{ prona.cmimi }}
-                    </p>
-<a href="{% url 'detajet_prones' prona.id %}" class="property-details-button">
-    Shiko detajet
-    <span aria-hidden="true">→</span>
-</a>
+                        <p class="property-location">
+                            📍 {{ prona.qyteti }}, Kosovë
+                        </p>
 
+                        <p class="property-area">
+                            Sipërfaqja: {{ prona.siperfaqja }} m²
+                        </p>
 
-                </div>
+                        <p class="property-price">
+                            € {{ prona.cmimi }}
+                        </p>
 
-            </article>
+                        <a
+                            href="{% url 'detajet_prones' prona.id %}"
+                            class="property-details-button"
+                        >
+                            <span>Shiko detajet</span>
+                            <span aria-hidden="true">→</span>
+                        </a>
+
+                    </div>
+
+                </article>
 
             {% empty %}
 
-            <div class="properties-empty">
-                <h3>Nuk u gjet asnjë pronë</h3>
-                <p>
-                    Aktualisht nuk ka prona që
-                    përputhen me kërkimin tuaj.
-                </p>
-            </div>
+                <div class="properties-empty">
+
+                    <h3>Nuk u gjet asnjë pronë</h3>
+
+                    <p>
+                        Nuk ka prona që përputhen
+                        me kriteret e kërkimit.
+                    </p>
+
+                    <a href="{% url 'pronat' %}" class="btn-primary">
+                        Shiko të gjitha pronat
+                    </a>
+
+                </div>
 
             {% endfor %}
 

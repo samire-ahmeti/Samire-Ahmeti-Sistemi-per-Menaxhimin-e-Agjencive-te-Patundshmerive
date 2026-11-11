@@ -5,118 +5,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>{% block title %}Smart Estate{% endblock %}</title>
 
-    <meta name="description" content="Smart Estate - Platformë për menaxhimin dhe prezantimin e pronave.">
-
     <link rel="stylesheet" href="{% static 'agjencia/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'agjencia/css/theme.css' %}">
+
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <header class="site-header">
-        <div class="navbar-container">
+<header class="se-header">
+    <div class="se-header-inner">
 
-            <a href="/" class="brand">
-                <span class="brand-icon">
-                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 22L24 6L43 22" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M11 20V42H37V20" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M20 42V29H28V42" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
-                    </svg>
-                </span>
+        <a href="/" class="se-brand">
+            <svg class="se-brand-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M6 30L32 8L58 30" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 28V56H50V28" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M27 56V39H38V56" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+                <path d="M45 11V20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            </svg>
 
-                <span class="brand-name">
-                    Smart <span>Estate</span>
+            <span class="se-brand-text">
+                <span class="se-brand-name">Smart <strong>Estate</strong></span>
+                <span class="se-brand-subtitle">
+                    Agjensi për Menaxhimin e Patundshmërive
                 </span>
+            </span>
+        </a>
+
+        <button
+            type="button"
+            class="se-menu-toggle"
+            id="seMenuToggle"
+            aria-label="Hap menynë"
+            aria-expanded="false"
+            aria-controls="seNavigation"
+        >
+            ☰
+        </button>
+
+        <nav class="se-navigation" id="seNavigation">
+            <a href="/" class="{% if request.path == '/' %}se-active{% endif %}">
+                Kryefaqja
             </a>
+            <a href="/pronat/" class="{% if '/pronat/' in request.path %}se-active{% endif %}">
+                Pronat
+            </a>
+            <a href="/rreth-nesh/">Rreth nesh</a>
+            <a href="/sherbimet/">Shërbimet</a>
+            <a href="/kontakt/">Kontakt</a>
+        </nav>
 
-            <nav class="main-navigation" id="main-navigation">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/pronat/" class="nav-link">Pronat</a>
-                <a href="/rreth-nesh/" class="nav-link">Rreth Nesh</a>
-                <a href="/sherbimet/" class="nav-link">Shërbimet</a>
-                <a href="/kontakt/" class="nav-link">Kontakt</a>
-            </nav>
-<div class="navbar-actions">
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'paneli' %}" class="login-button">
-            Paneli im
-        </a>
+        <div class="se-header-actions">
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'paneli' %}" class="se-button se-button-outline">
+                    Paneli im
+                </a>
 
-        <form action="{% url 'dalja' %}" method="POST" class="logout-form">
-            {% csrf_token %}
-            <button type="submit" class="logout-button">
-                Dil nga sistemi
-            </button>
-        </form>
-    {% else %}
-        <a href="{% url 'hyrja' %}" class="login-button">
-            Hyr në sistem
-        </a>
-    {% endif %}
-</div>
-
-
-            <button class="mobile-menu-button"
-                    type="button"
-                    aria-label="Hap menynë"
-                    aria-controls="main-navigation"
-                    aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
+                <form action="{% url 'dalja' %}" method="POST" class="se-logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="se-button se-button-gold">
+                        Dil nga sistemi
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'hyrja' %}" class="se-button se-button-outline">
+                    Hyr në sistem
+                </a>
+            {% endif %}
         </div>
-    </header>
 
-    <main class="main-content">
-        {% block content %}
-        {% endblock %}
-    </main>
+    </div>
+</header>
 
-    <footer class="site-footer">
-        <div class="footer-container">
+<main>
+    {% block content %}{% endblock %}
+</main>
 
-            <div class="footer-about">
-                <h2>Smart <span>Estate</span></h2>
-                <p>
-                    Platformë moderne për prezantimin
-                    dhe menaxhimin e pronave.
+<footer class="se-footer">
+    <div class="se-footer-inner">
+
+        <div class="se-footer-top">
+
+            <div class="se-footer-about">
+                <a href="/" class="se-footer-logo">
+                    Smart <strong>Estate</strong>
+                </a>
+
+                <p>Agjensi për Menaxhimin e Patundshmërive</p>
+
+                <p class="se-footer-description">
+                    Një platformë moderne për prezantimin dhe
+                    menaxhimin e pronave, klientëve dhe vizitave.
                 </p>
             </div>
 
-            <div class="footer-links">
+            <div class="se-footer-column">
                 <h3>Lidhje të shpejta</h3>
-                <a href="/">Home</a>
+
+                <a href="/">Kryefaqja</a>
                 <a href="/pronat/">Pronat</a>
-                <a href="/rreth-nesh/">Rreth Nesh</a>
+                <a href="/rreth-nesh/">Rreth nesh</a>
+                <a href="/sherbimet/">Shërbimet</a>
                 <a href="/kontakt/">Kontakt</a>
             </div>
 
-            <div class="footer-links">
-                <h3>Shërbimet</h3>
-                <a href="/sherbimet/">Shërbimet tona</a>
-                <a href="/pronat/">Shiko pronat</a>
-            </div>
-
-            <div class="footer-contact">
+            <div class="se-footer-column">
                 <h3>Smart Estate</h3>
-                <p>
-                    Sistemi për Menaxhimin e
-                    Agjencive të Patundshmërive
-                </p>
+
+                <p>Menaxhimi i pronave</p>
+                <p>Organizimi i klientëve</p>
+                <p>Planifikimi i vizitave</p>
+            </div>
+
+            <div class="se-footer-column">
+                <h3>Llogaria</h3>
+
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'paneli' %}">Paneli im</a>
+                    <a href="{% url 'shto_prone' %}">Shto pronë</a>
+                {% else %}
+                    <a href="{% url 'hyrja' %}">Hyr në sistem</a>
+                {% endif %}
+
+                <a href="/pronat/">Shfleto pronat</a>
             </div>
 
         </div>
 
-        <div class="footer-bottom">
+        <div class="se-footer-bottom">
             <p>© 2026 Smart Estate. Të gjitha të drejtat e rezervuara.</p>
+            <p>Sistemi për Menaxhimin e Agjencive të Patundshmërive</p>
         </div>
-    </footer>
 
-    <script src="{% static 'agjencia/js/main.js' %}"></script>
+    </div>
+</footer>
+
+<script src="{% static 'agjencia/js/main.js' %}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("seMenuToggle");
+    const navigation = document.getElementById("seNavigation");
+
+    if (toggle && navigation) {
+        toggle.addEventListener("click", function () {
+            const opened = navigation.classList.toggle("se-menu-open");
+            toggle.setAttribute("aria-expanded", String(opened));
+        });
+    }
+});
+</script>
+
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>

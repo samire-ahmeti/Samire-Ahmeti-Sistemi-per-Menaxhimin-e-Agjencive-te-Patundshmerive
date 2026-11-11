@@ -1,159 +1,226 @@
 
 {% extends 'agjencia/base.html' %}
+{% load static %}
 
 {% block title %}Detajet e Pronës | Smart Estate{% endblock %}
 
+
 {% block content %}
 
-<section class="property-detail-header">
-    <div class="container">
-        <p class="detail-breadcrumb">
-            <a href="/">Home</a>
-            <span>/</span>
-            <a href="/pronat/">Pronat</a>
-            <span>/</span>
-            Detajet e pronës
-        </p>
+<section class="se-detail-page">
 
-        <h1>
-            {{ prona.lloji|title }}
-            <span>në {{ prona.qyteti }}</span>
-        </h1>
+    <div class="se-detail-banner">
+        <div class="se-detail-container">
 
-        <p>
-            Zbuloni më shumë informacione rreth kësaj prone.
-        </p>
+            <nav class="se-detail-breadcrumb" aria-label="Navigimi">
+                <a href="/">Kryefaqja</a>
+                <span>›</span>
+                <a href="{% url 'pronat' %}">Pronat</a>
+                <span>›</span>
+                <span>Detajet e pronës</span>
+            </nav>
+
+            <span class="se-detail-eyebrow">SMART ESTATE</span>
+
+            <h1>
+                {{ prona.get_lloji_display }}
+                <span>në {{ prona.qyteti }}</span>
+            </h1>
+
+            <p>
+                Zbulo fotografitë dhe informacionet e
+                kësaj prone.
+            </p>
+
+        </div>
     </div>
-</section>
 
-<section class="section property-detail-section">
-    <div class="container">
+    <div class="se-detail-container se-detail-content">
 
-        <div class="property-detail-layout">
+        <div class="se-detail-layout">
 
-            <div class="property-gallery">
+            <section class="se-detail-gallery-card">
 
-                <div class="property-detail-gallery">
+                <div class="se-detail-gallery-heading">
+                    <div>
+                        <span class="se-detail-eyebrow">GALERIA</span>
+                        <h2>Fotografitë e pronës</h2>
+                    </div>
+
+                    <span class="se-detail-id">
+                        Prona #{{ prona.id }}
+                    </span>
+                </div>
+
+                <div class="se-detail-main-photo">
 
                     {% if prona.foto %}
+
                         <img
                             id="main-property-image"
                             src="{{ prona.foto.url }}"
-                            alt="{{ prona.lloji|title }} në {{ prona.qyteti }}"
-                            class="property-detail-image"
+                            alt="{{ prona.get_lloji_display }} në {{ prona.qyteti }}"
+                            class="se-detail-main-image"
                         >
+
                     {% elif prona.fotot.first %}
+
                         {% with foto_pare=prona.fotot.first %}
+
                             <img
                                 id="main-property-image"
                                 src="{{ foto_pare.foto.url }}"
-                                alt="{{ prona.lloji|title }} në {{ prona.qyteti }}"
-                                class="property-detail-image"
+                                alt="{{ prona.get_lloji_display }} në {{ prona.qyteti }}"
+                                class="se-detail-main-image"
                             >
+
                         {% endwith %}
+
                     {% else %}
-                        <div class="property-detail-placeholder">
+
+                        <div class="se-detail-no-image">
                             <span>⌂</span>
-                            <p>Fotografia nuk është e disponueshme</p>
+                            <p>Fotografia nuk është e disponueshme.</p>
                         </div>
+
                     {% endif %}
 
                 </div>
 
-                <div class="property-gallery-thumbnails">
+                {% if prona.foto or prona.fotot.exists %}
 
-                    {% if prona.foto %}
-                        <button
-                            type="button"
-                            class="gallery-thumbnail active"
-                            data-gallery-image="{{ prona.foto.url }}"
-                            data-gallery-alt="Fotografia kryesore e pronës"
-                            aria-label="Shfaq fotografinë kryesore"
-                            aria-pressed="true"
-                        >
-                            <img
-                                src="{{ prona.foto.url }}"
-                                alt="Fotografia kryesore"
-                            >
-                        </button>
-                    {% endif %}
-
-                    {% for foto in prona.fotot.all %}
-                        <button
-                            type="button"
-                            class="gallery-thumbnail {% if not prona.foto and forloop.first %}active{% endif %}"
-                            data-gallery-image="{{ foto.foto.url }}"
-                            data-gallery-alt="Fotografia {{ forloop.counter }} e pronës në {{ prona.qyteti }}"
-                            aria-label="Shfaq fotografinë {{ forloop.counter }} të galerisë"
-                            aria-pressed="{% if not prona.foto and forloop.first %}true{% else %}false{% endif %}"
-                        >
-                            <img
-                                src="{{ foto.foto.url }}"
-                                alt="Fotografia {{ forloop.counter }}"
-                                loading="lazy"
-                            >
-                        </button>
-                    {% endfor %}
-
-                </div>
-
-            </div>
-
-            <div class="property-detail-info">
-
-                <span class="detail-category">
-                    {{ prona.lloji|title }}
-                </span>
-
-                <h2>
-                    {{ prona.lloji|title }}
-                    në {{ prona.qyteti }}
-                </h2>
-
-                <p class="detail-location">
-                    📍 {{ prona.qyteti }}, Kosovë
-                </p>
-
-                <div class="detail-price">
-                    <span>Çmimi i pronës</span>
-                    <h3>€ {{ prona.cmimi }}</h3>
-                </div>
-
-                <div class="detail-features">
-
-                    <div class="detail-feature">
-                        <span>Lloji i pronës</span>
-                        <strong>{{ prona.lloji|title }}</strong>
+                    <div class="se-detail-gallery-label">
+                        Zgjidh një fotografi për ta parë më të madhe
                     </div>
 
-                    <div class="detail-feature">
+                    <div class="se-detail-thumbnails">
+
+                        {% if prona.foto %}
+
+                            <button
+                                type="button"
+                                class="gallery-thumbnail active"
+                                data-gallery-image="{{ prona.foto.url }}"
+                                data-gallery-alt="Fotografia kryesore e pronës në {{ prona.qyteti }}"
+                                aria-label="Shfaq fotografinë kryesore"
+                                aria-pressed="true"
+                            >
+                                <img
+                                    src="{{ prona.foto.url }}"
+                                    alt="Fotografia kryesore"
+                                    loading="lazy"
+                                >
+                            </button>
+
+                        {% endif %}
+
+                        {% for foto in prona.fotot.all %}
+
+                            <button
+                                type="button"
+                                class="gallery-thumbnail {% if not prona.foto and forloop.first %}active{% endif %}"
+                                data-gallery-image="{{ foto.foto.url }}"
+                                data-gallery-alt="Fotografia {{ forloop.counter }} e pronës në {{ prona.qyteti }}"
+                                aria-label="Shfaq fotografinë {{ forloop.counter }} të galerisë"
+                                aria-pressed="{% if not prona.foto and forloop.first %}true{% else %}false{% endif %}"
+                            >
+                                <img
+                                    src="{{ foto.foto.url }}"
+                                    alt="Fotografia {{ forloop.counter }}"
+                                    loading="lazy"
+                                >
+                            </button>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+            <aside class="se-detail-information">
+
+                <div class="se-detail-property-header">
+
+                    <span class="se-detail-type">
+                        {{ prona.get_lloji_display }}
+                    </span>
+
+                    <h2>
+                        {{ prona.get_lloji_display }}
+                        në {{ prona.qyteti }}
+                    </h2>
+
+                    <p class="se-detail-location">
+                        📍 {{ prona.qyteti }}, Kosovë
+                    </p>
+
+                </div>
+
+                <div class="se-detail-price-panel">
+                    <span>Çmimi i pronës</span>
+
+                    <strong>
+                        € {{ prona.cmimi }}
+                    </strong>
+                </div>
+
+                <div class="se-detail-features">
+
+                    <h3>Informacionet e pronës</h3>
+
+                    <div class="se-detail-feature">
+                        <span>Lloji i pronës</span>
+                        <strong>{{ prona.get_lloji_display }}</strong>
+                    </div>
+
+                    <div class="se-detail-feature">
                         <span>Qyteti</span>
                         <strong>{{ prona.qyteti }}</strong>
                     </div>
 
-                    <div class="detail-feature">
+                    <div class="se-detail-feature">
                         <span>Sipërfaqja</span>
                         <strong>{{ prona.siperfaqja }} m²</strong>
                     </div>
 
-                    <div class="detail-feature">
-                        <span>Numri identifikues</span>
+                    <div class="se-detail-feature">
+                        <span>Numri i pronës</span>
                         <strong>#{{ prona.id }}</strong>
                     </div>
 
                 </div>
 
-                <div class="detail-actions">
-                    <a href="/pronat/" class="btn-primary">
+                <div class="se-detail-actions">
+
+                    <a href="{% url 'pronat' %}" class="se-detail-back">
                         ← Kthehu te pronat
                     </a>
+
                 </div>
 
-            </div>
+            </aside>
 
         </div>
 
+        <div class="se-detail-bottom">
+            <div>
+                <span>SMART ESTATE</span>
+                <h3>Eksploro edhe prona të tjera</h3>
+                <p>
+                    Shiko pronat e regjistruara dhe gjej
+                    atë që i përshtatet nevojave të tua.
+                </p>
+            </div>
+
+            <a href="{% url 'pronat' %}" class="se-detail-gold-button">
+                Shiko të gjitha pronat →
+            </a>
+        </div>
+
     </div>
+
 </section>
 
 {% endblock %}

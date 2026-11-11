@@ -5,150 +5,183 @@
 
 {% block content %}
 
-<section class="auth-page">
-    <div class="auth-container">
+<section class="se-login-page">
 
-        <div class="auth-form-side">
+    <div class="se-login-container">
 
-            <div class="auth-form-header">
-                <span class="auth-label">
-                    SMART ESTATE
+        <div class="se-login-form-side">
+
+            <a href="/" class="se-login-back">
+                ← Kthehu në kryefaqe
+            </a>
+
+            <div class="se-login-form-content">
+
+                <div class="se-login-mini-brand">
+                    <span class="se-login-mini-logo">SE</span>
+
+                    <div>
+                        <strong>Smart Estate</strong>
+                        <p>Menaxhimi i patundshmërive</p>
+                    </div>
+                </div>
+
+                <span class="se-login-eyebrow">
+                    MIRË SE ERDHE NË SMART ESTATE
                 </span>
 
-                <h1>Mirë se u riktheve!</h1>
+                <h1>
+                    Hyr në <span>llogarinë tënde.</span>
+                </h1>
 
-                <p>
-                    Hyr në llogarinë tënde për të
-                    menaxhuar pronat dhe aktivitetet
-                    e agjencisë.
+                <p class="se-login-description">
+                    Shkruaj të dhënat e tua për të hyrë
+                    në panelin e menaxhimit të Smart Estate.
                 </p>
-            </div>
 
-            {% if gabimi %}
-                <div class="auth-error" role="alert">
-                    {{ gabimi }}
-                </div>
-            {% endif %}
+                {% if gabimi %}
 
-            <form action="/hyrja/" method="POST" class="auth-form">
-                {% csrf_token %}
+                    <div class="se-login-error" role="alert">
+                        <span>!</span>
+                        <p>{{ gabimi }}</p>
+                    </div>
 
-                <input
-                    type="hidden"
-                    name="next"
-                    value="{{ next|default:'' }}"
-                >
+                {% endif %}
 
-                <div class="auth-field">
-                    <label for="username">
-                        Emri i përdoruesit
-                    </label>
+                <form method="POST" action="{% url 'hyrja' %}" class="se-login-form">
+
+                    {% csrf_token %}
 
                     <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Shkruaj emrin e përdoruesit"
-                        value="{{ emri_perdoruesit|default:'' }}"
-                        autocomplete="username"
-                        required
+                        type="hidden"
+                        name="next"
+                        value="{{ next|default:'' }}"
                     >
+
+                    <div class="se-login-field">
+
+                        <label for="username">
+                            Emri i përdoruesit
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            value="{{ emri_perdoruesit|default:'' }}"
+                            placeholder="Shkruaj emrin e përdoruesit"
+                            autocomplete="username"
+                            required
+                            autofocus
+                        >
+
+                    </div>
+
+                    <div class="se-login-field">
+
+                        <label for="password">
+                            Fjalëkalimi
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Shkruaj fjalëkalimin"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+                    <button type="submit" class="se-login-submit">
+                        <span>Hyr në sistem</span>
+                        <span aria-hidden="true">→</span>
+                    </button>
+
+                </form>
+
+                <div class="se-login-notice">
+                    <span class="se-login-notice-icon">✓</span>
+
+                    <p>
+                        Qasja në panel është vetëm për
+                        administratorët dhe agjentët e autorizuar.
+                    </p>
                 </div>
 
-                <div class="auth-field">
-                    <label for="password">
-                        Fjalëkalimi
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Shkruaj fjalëkalimin"
-                        autocomplete="current-password"
-                        required
-                    >
-                </div>
-
-                <button type="submit" class="auth-submit">
-                    Hyr në sistem
-                    <span>→</span>
-                </button>
-
-            </form>
-
-            <div class="auth-bottom">
-                <p>
-                    Qasja në panel është e rezervuar
-                    për administratorët dhe agjentët
-                    e autorizuar të Smart Estate.
-                </p>
             </div>
+
+            <p class="se-login-copyright">
+                © 2026 Smart Estate
+            </p>
 
         </div>
 
-        <div class="auth-info-side">
+        <div class="se-login-visual-side">
 
-            <div class="auth-info-content">
+            <div class="se-login-visual-overlay"></div>
 
-                <span class="auth-info-tag">
-                    MENAXHIM I THJESHTË
+            <div class="se-login-visual-content">
+
+                <span class="se-login-visual-label">
+                    SMART ESTATE
                 </span>
 
                 <h2>
-                    Gjithçka që të duhet,
-                    në një vend.
+                    Menaxho pronat
+                    <span>me elegancë.</span>
                 </h2>
 
-                <p>
-                    Smart Estate të ndihmon të
-                    organizosh dhe menaxhosh
-                    aktivitetet e agjencisë
-                    së patundshmërive.
+                <div class="se-login-gold-line"></div>
+
+                <p class="se-login-visual-description">
+                    Një platformë moderne që ndihmon
+                    në organizimin e pronave dhe
+                    aktiviteteve të agjencisë.
                 </p>
 
-                <div class="auth-benefits">
+                <div class="se-login-benefits">
 
-                    <div class="auth-benefit">
+                    <div class="se-login-benefit">
                         <span>01</span>
+
                         <div>
-                            <h3>Menaxhimi i pronave</h3>
-                            <p>
-                                Organizo pronat dhe
-                                informacionet e tyre.
-                            </p>
+                            <strong>Menaxhimi i pronave</strong>
+                            <p>Regjistro dhe prezanto pronat.</p>
                         </div>
                     </div>
 
-                    <div class="auth-benefit">
+                    <div class="se-login-benefit">
                         <span>02</span>
+
                         <div>
-                            <h3>Menaxhimi i klientëve</h3>
-                            <p>
-                                Mbaji të dhënat e
-                                klientëve të organizuara.
-                            </p>
+                            <strong>Panel i organizuar</strong>
+                            <p>Shiko pronat dhe statistikat.</p>
                         </div>
                     </div>
 
-                    <div class="auth-benefit">
+                    <div class="se-login-benefit">
                         <span>03</span>
+
                         <div>
-                            <h3>Organizimi i vizitave</h3>
-                            <p>
-                                Menaxho vizitat dhe
-                                aktivitetet e agjencisë.
-                            </p>
+                            <strong>Qasje sipas rolit</strong>
+                            <p>Panel për administratorë dhe agjentë.</p>
                         </div>
                     </div>
 
                 </div>
 
+            </div>
+
+            <div class="se-login-visual-bottom">
+                SMART ESTATE · PROPERTY MANAGEMENT
             </div>
 
         </div>
 
     </div>
+
 </section>
 
 {% endblock %}
