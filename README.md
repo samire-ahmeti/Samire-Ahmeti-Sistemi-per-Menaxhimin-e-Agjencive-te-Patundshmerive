@@ -1,46 +1,111 @@
-
 # Smart Estate – Sistemi për Menaxhimin e Agjencive të Patundshmërive
 
 **Studentja:** Samire Ahmeti
+**Universiteti:** Universiteti “Ukshin Hoti” – Prizren
 **Lënda:** Projekt – Praktikë Profesionale
-**Universiteti:** Universiteti "Ukshin Hoti" – Prizren
 **Viti akademik:** 2026/2027
 
-## Përshkrimi i projektit
+## 1. Përshkrimi i projektit
 
-Smart Estate është një aplikacion për menaxhimin e agjencive të patundshmërive.
+Smart Estate është një aplikacion web për menaxhimin e agjencive të patundshmërive.
 
-Qëllimi i projektit është organizimi i të dhënave për pronat, klientët, kërkesat dhe vizitat në një sistem të vetëm.
+Qëllimi i këtij projekti është të lehtësojë regjistrimin, prezantimin dhe menaxhimin e pronave, klientëve, kërkesave dhe vizitave në një sistem të vetëm.
 
-Projekti zhvillohet me Python dhe Django, ndërsa të dhënat ruhen në PostgreSQL.
+Aplikacioni ofron një faqe publike ku vizitorët mund të shfletojnë prona, si dhe një panel menaxhimi për administratorët dhe agjentët.
 
-## Teknologjitë
+Projekti po zhvillohet gradualisht, sipas kërkesave të lëndës Projekt – Praktikë Profesionale.
 
-- Python
-- Django
-- Django REST Framework
-- PostgreSQL
-- Git dhe GitHub
-- Visual Studio Code
+## 2. Teknologjitë e përdorura
 
-## Funksionalitetet e implementuara
+- **Python dhe Django** – zhvillimi i backend-it dhe logjikës së aplikacionit.
+- **Django REST Framework** – krijimi i REST API-së.
+- **PostgreSQL** – ruajtja dhe organizimi i të dhënave.
+- **HTML, CSS dhe JavaScript** – ndërtimi i ndërfaqes së përdoruesit.
+- **Git dhe GitHub** – ruajtja dhe ndjekja e progresit.
+- **Visual Studio Code** – mjedisi i zhvillimit.
 
-- Menaxhimi i përdoruesve dhe roleve bazike.
-- Regjistrimi dhe menaxhimi i pronave.
-- Regjistrimi dhe menaxhimi i klientëve.
-- Menaxhimi i kërkesave për prona.
-- Regjistrimi i vizitave.
-- API CRUD për modulet kryesore.
-- Autentikimi dhe autorizimi bazik.
-- Validimi i çmimit dhe sipërfaqes së pronave.
+## 3. Funksionalitetet e realizuara
 
-## Instalimi dhe ekzekutimi
+### Faqet publike
 
-### 1. Shkarkimi i projektit
+- Kryefaqja e Smart Estate.
+- Lista e pronave me fotografi dhe informacione.
+- Kërkimi dhe filtrimi i pronave sipas qytetit dhe llojit.
+- Shfaqja e detajeve dhe fotografive të një prone.
+- Faqja Rreth nesh.
+- Faqja Shërbimet.
+- Faqja Kontakt me formular funksional.
 
-Shkarkoni repository-n nga GitHub dhe hapeni në Visual Studio Code.
+Mesazhet e dërguara nga formulari i kontaktit ruhen në PostgreSQL dhe mund të shihen nga administratori në Django Admin.
 
-### 2. Krijimi i mjedisit virtual
+### Paneli i menaxhimit
+
+- Hyrja dhe dalja nga sistemi.
+- Role të përdoruesve: administrator dhe agjent.
+- Panel me statistika për pronat, klientët dhe vizitat.
+- Regjistrimi i pronave të reja.
+- Ndryshimi dhe fshirja e pronave.
+- Menaxhimi i klientëve: shtim, listim, kërkim, ndryshim dhe fshirje.
+- Validimi i formularëve.
+- Kontrolli i qasjes sipas rolit të përdoruesit.
+
+### Backend dhe API
+
+- Modelet dhe relacionet në PostgreSQL.
+- REST API për pronat, klientët, kërkesat dhe vizitat.
+- Operacione CRUD për modulet kryesore përmes API-së.
+- Autentikim dhe kontroll bazik i lejeve.
+- Validime të të dhënave përpara ruajtjes.
+
+## 4. Struktura e projektit
+
+Projekti është organizuar në këtë mënyrë:
+
+- `config/` – konfigurimi kryesor i Django-s dhe URL-të.
+- `agjencia/models.py` – modelet e databazës.
+- `agjencia/views.py` – funksionet kryesore dhe API-ja.
+- `agjencia/forms.py` – formulari për pronat.
+- `agjencia/klienti_actions.py` – funksionet e menaxhimit të klientëve.
+- `agjencia/prona_actions.py` – ndryshimi dhe fshirja e pronave.
+- `agjencia/contact_views.py` – përpunimi i mesazheve të kontaktit.
+- `agjencia/templates/agjencia/` – faqet HTML.
+- `agjencia/static/agjencia/` – CSS, JavaScript dhe fotografitë e dizajnit.
+- `agjencia/migrations/` – migrimet e databazës.
+- `docs/` – dokumentacioni teknik.
+- `manage.py` – komandat e Django-s.
+- `requirements.txt` – bibliotekat e nevojshme.
+
+Frontend-i është ndërtuar me Django Templates dhe është i integruar drejtpërdrejt me backend-in.
+
+## 5. Databaza
+
+Projekti përdor PostgreSQL me databazën `smart_estate`.
+
+Modelet kryesore janë:
+
+1. Perdorues
+2. Prona
+3. FotoProne
+4. Klienti
+5. Kerkesa
+6. Vizita
+7. MesazhKontakti
+
+Relacionet realizohen përmes `ForeignKey`. Për shembull, një pronë lidhet me agjentin që e menaxhon, ndërsa kërkesat dhe vizitat lidhin klientët me pronat.
+
+## 6. Instalimi dhe ekzekutimi
+
+Për ta ekzekutuar projektin në kompjuter, nevojiten Python dhe PostgreSQL.
+
+### Hapi 1 – Shkarkimi i projektit
+
+```powershell
+git clone https://github.com/samire-ahmeti/Samire-Ahmeti-Sistemi-per-Menaxhimin-e-Agjencive-te-Patundshmerive.git
+```
+
+Hapni dosjen e projektit në Visual Studio Code.
+
+### Hapi 2 – Krijimi i mjedisit virtual
 
 ```powershell
 python -m venv .venv
@@ -52,94 +117,136 @@ Aktivizimi në PowerShell:
 .\.venv\Scripts\Activate.ps1
 ```
 
-### 3. Instalimi i bibliotekave
+### Hapi 3 – Instalimi i bibliotekave
 
 ```powershell
 python -m pip install -r requirements.txt
 ```
 
-### 4. Konfigurimi i PostgreSQL
+### Hapi 4 – Konfigurimi i PostgreSQL
 
-Instaloni PostgreSQL dhe krijoni një databazë me emrin:
+Krijoni një databazë me emrin `smart_estate`.
 
-`smart_estate`
-
-Në folderin kryesor të projektit krijoni skedarin `.env` dhe vendosni konfigurimet:
+Në dosjen kryesore të projektit krijoni skedarin `.env` me konfigurimin:
 
 ```env
 DB_NAME=smart_estate
 DB_USER=postgres
-DB_PASSWORD=vendos_fjalekalimin_lokal
+DB_PASSWORD=vendos_fjalekalimin_tend
 DB_HOST=localhost
 DB_PORT=5432
-SECRET_KEY=vendos_celesin_sekret_te_django
+SECRET_KEY=vendos_nje_celes_sekret_te_sigurt
 ```
 
-Vlerat e fjalëkalimit dhe çelësit sekret duhet të zëvendësohen me vlerat personale.
+Vlerat duhet të përshtaten me konfigurimin lokal. Skedari `.env` nuk duhet të ngarkohet në GitHub.
 
-Skedari `.env` nuk duhet të publikohet në GitHub.
-
-### 5. Krijimi i tabelave
+### Hapi 5 – Migrimet e databazës
 
 ```powershell
 python manage.py migrate
 ```
 
-### 6. Krijimi i administratorit
+### Hapi 6 – Krijimi i administratorit
 
 ```powershell
 python manage.py createsuperuser
 ```
 
-### 7. Nisja e serverit
+### Hapi 7 – Nisja e serverit
 
 ```powershell
 python manage.py runserver
 ```
 
-Pas nisjes, hapni:
+Aplikacioni hapet në:
 
-- Django Admin: http://127.0.0.1:8000/admin/
-- API: http://127.0.0.1:8000/api/
+`http://127.0.0.1:8000/`
 
-## Endpoint-et kryesore
+## 7. Faqet kryesore të aplikacionit
 
-| Metoda | Endpoint | Funksioni |
-|---|---|---|
-| GET, POST | /api/pronat/ | Leximi dhe krijimi i pronave |
-| GET, PUT, PATCH, DELETE | /api/pronat/{id}/ | Menaxhimi i një prone |
-| GET, POST | /api/klientet/ | Leximi dhe krijimi i klientëve |
-| GET, PUT, PATCH, DELETE | /api/klientet/{id}/ | Menaxhimi i një klienti |
-| GET, POST | /api/kerkesat/ | Leximi dhe krijimi i kërkesave |
-| GET, POST | /api/vizitat/ | Leximi dhe krijimi i vizitave |
+| Faqja | Adresa |
+|---|---|
+| Kryefaqja | `/` |
+| Pronat | `/pronat/` |
+| Rreth nesh | `/rreth-nesh/` |
+| Shërbimet | `/sherbimet/` |
+| Kontakt | `/kontakt/` |
+| Hyrja | `/hyrja/` |
+| Paneli | `/paneli/` |
+| Klientët | `/klientet/` |
+| Shto pronë | `/shto-prone/` |
+| Shto klient | `/shto-klient/` |
+| Django Admin | `/admin/` |
+| REST API | `/api/` |
 
-API përdor autentikim dhe kontroll të lejeve për veprimet kryesore.
+Faqet e menaxhimit kërkojnë autentikim dhe lejet përkatëse.
 
-## Databaza
+## 8. Endpoint-et kryesore të API-së
 
-Databaza përmban pesë modele kryesore:
+| Endpoint | Përshkrimi |
+|---|---|
+| `/api/pronat/` | Menaxhimi i pronave |
+| `/api/klientet/` | Menaxhimi i klientëve |
+| `/api/kerkesat/` | Menaxhimi i kërkesave |
+| `/api/vizitat/` | Menaxhimi i vizitave |
 
-1. Perdorues
-2. Prona
-3. Klienti
-4. Kerkesa
-5. Vizita
+API-ja është krijuar me Django REST Framework. Qasja në endpoint-e dhe veprimet e lejuara varen nga autentikimi dhe lejet e përdoruesit.
 
-Relacionet ndërmjet modeleve janë realizuar me ForeignKey.
+## 9. Shembull i integrimit frontend-backend
 
-## Dokumentimi
+Një nga funksionalitetet kryesore është regjistrimi i një prone.
 
-Në folderin `docs` gjenden:
+Rrjedha e funksionimit:
 
-- Raportet Teknike 1 dhe 2 në Word.
-- Dokumentimi i API-së.
-- Skema e databazës.
-- Problemet teknike dhe zgjidhjet.
+1. Përdoruesi hyn në panel.
+2. Klikon butonin Shto pronë.
+3. Plotëson formularin me të dhënat e pronës.
+4. Django kontrollon vlefshmërinë e të dhënave.
+5. Prona ruhet në PostgreSQL.
+6. Përdoruesi ridrejtohet te detajet e pronës.
+7. Prona e regjistruar shfaqet edhe në listën e pronave.
 
-## Gjendja e projektit
+Ky funksionalitet demonstron lidhjen e ndërfaqes me backend-in dhe databazën.
 
-Aktualisht është realizuar pjesa kryesore e databazës, backend-it dhe API-së.
+## 10. Testimi i funksionaliteteve
 
-Frontend-i i plotë dhe integrimi i tij janë planifikuar për fazat e ardhshme të projektit.
+Gjatë zhvillimit janë kryer kontrolle praktike për:
 
-Aplikacioni aktualisht ekzekutohet në ambient lokal.
+- Hyrjen dhe daljen nga sistemi.
+- Regjistrimin dhe ndryshimin e pronave.
+- Fshirjen e pronave testuese.
+- Regjistrimin, ndryshimin dhe fshirjen e klientëve.
+- Dërgimin dhe ruajtjen e mesazheve të kontaktit.
+- Validimin e të dhënave në formularë.
+- Shfaqjen e të dhënave të ruajtura në panel.
+
+Testimi më i plotë, kontrollet shtesë të sigurisë dhe përgatitja për deployment do të vazhdojnë në fazat e ardhshme.
+
+## 11. Gjendja aktuale e projektit
+
+**Raporti Teknik 1:** Analiza, kërkesat dhe dizajni fillestar.
+
+**Raporti Teknik 2:** Implementimi i databazës, backend-it dhe API-së.
+
+**Raporti Teknik 3:** Frontend-i dhe integrimi funksional. Janë realizuar faqet publike, paneli i menaxhimit, moduli i pronave, moduli i klientëve dhe kontakti funksional.
+
+Puna që vazhdon në këtë fazë:
+
+- Ndërfaqja për menaxhimin e kërkesave.
+- Ndërfaqja për menaxhimin e vizitave.
+- Kontrollet përfundimtare të integrimit.
+- Dokumentimi dhe demonstrimi i funksionaliteteve.
+
+**Raporti Teknik 4:** Testimi më i plotë, siguria dhe përgatitja e versionit beta.
+
+Projekti aktualisht ekzekutohet në mjedis lokal.
+
+## 12. Repository dhe dokumentimi
+
+Kodi burimor dhe historia e zhvillimit gjenden në GitHub:
+
+[Smart Estate – GitHub Repository](https://github.com/samire-ahmeti/Samire-Ahmeti-Sistemi-per-Menaxhimin-e-Agjencive-te-Patundshmerive)
+
+Dokumentacioni teknik i projektit ruhet në dosjen `docs/`.
+
+Projekti është duke u zhvilluar për lëndën **Projekt – Praktikë Profesionale**, viti akademik **2026/2027**.
