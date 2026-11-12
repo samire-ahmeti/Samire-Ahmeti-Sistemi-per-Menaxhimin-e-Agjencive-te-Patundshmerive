@@ -1,0 +1,133 @@
+
+{% extends 'agjencia/base.html' %}
+{% load static %}
+
+{% block title %}Rreth nesh | Smart Estate{% endblock %}
+
+{% block content %}
+
+<div class="estate-editorial">
+
+    <section class="estate-ed-wrap estate-ed-intro">
+
+        <div class="estate-ed-intro-text">
+            <p class="estate-ed-overline">RRETH NESH</p>
+
+            <h1>
+                Një shtëpi e mirë
+                është fillimi i
+                një historie të re.
+            </h1>
+
+            <p class="estate-ed-lead">
+                Në Smart Estate besojmë se zgjedhja e një
+                prone është shumë më tepër sesa një
+                vendim i zakonshëm.
+            </p>
+
+            <p>
+                Për disa është shtëpia e parë. Për të tjerë,
+                një hapësirë më e madhe për familjen ose
+                një vend ku do të zhvillojnë biznesin.
+                Ne duam ta bëjmë këtë kërkim më të thjeshtë,
+                më të qartë dhe më të këndshëm.
+            </p>
+
+            <a href="{% url 'pronat' %}" class="estate-ed-link">
+                Shfleto pronat <span>↗</span>
+            </a>
+        </div>
+
+        <div class="estate-ed-intro-photo">
+            <img
+                src="{% static 'agjencia/images/hero-smart-estate.png' %}"
+                alt="Shtëpi moderne e prezantuar në Smart Estate"
+            >
+        </div>
+
+    </section>
+
+    <section class="estate-ed-wrap estate-ed-story">
+
+        <div>
+            <p class="estate-ed-overline">HISTORIA JONË</p>
+            <h2>Si nisi Smart Estate</h2>
+        </div>
+
+        <div class="estate-ed-story-text">
+            <p>
+                Smart Estate nisi me një ide të thjeshtë:
+                informacioni për patundshmëritë duhet
+                të jetë i lehtë për t'u gjetur dhe
+                i kuptueshëm për secilin.
+            </p>
+
+            <p>
+                Fotografitë, lokacioni, sipërfaqja dhe
+                çmimi janë të rëndësishme, por po aq
+                e rëndësishme është që klienti të ketë
+                një pamje të qartë të pronës që po kërkon.
+            </p>
+
+            <p>
+                Kjo ide vazhdon të na udhëheqë në mënyrën
+                si i prezantojmë pronat dhe si e
+                ndërtojmë përvojën e vizitorëve tanë.
+            </p>
+        </div>
+
+    </section>
+
+    <section class="estate-ed-wrap estate-ed-team">
+
+        <p class="estate-ed-overline">NJERËZIT DHE PUNA</p>
+
+        <h2>
+            Pas çdo prone ka njerëz
+            dhe vendime të rëndësishme.
+        </h2>
+
+        <div class="estate-ed-team-list">
+
+            <div class="estate-ed-team-row">
+                <h3>Agjentët e pronave</h3>
+                <p>
+                    Kujdesen për prezantimin e pronave,
+                    informacionet kryesore dhe orientimin
+                    e klientëve gjatë kërkimit.
+                </p>
+            </div>
+
+            <div class="estate-ed-team-row">
+                <h3>Komunikimi me klientët</h3>
+                <p>
+                    Dëgjimi i nevojave dhe përgjigjet e
+                    qarta janë pjesë e rëndësishme e
+                    një shërbimi të mirë.
+                </p>
+            </div>
+
+            <div class="estate-ed-team-row">
+                <h3>Organizimi i vizitave</h3>
+                <p>
+                    Një vizitë e organizuar mirë e ndihmon
+                    klientin ta njohë pronën nga afër
+                    dhe të marrë një vendim më të informuar.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="estate-ed-wrap estate-ed-closing">
+        <p class="estate-ed-overline">SMART ESTATE</p>
+        <h2>Prona e duhur mund të jetë më afër sesa mendon.</h2>
+        <a href="{% url 'pronat' %}" class="estate-ed-link">
+            Shiko pronat <span>↗</span>
+        </a>
+    </section>
+
+</div>
+
+{% endblock %}

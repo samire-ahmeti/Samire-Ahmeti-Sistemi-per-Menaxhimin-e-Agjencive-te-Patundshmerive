@@ -17,7 +17,7 @@
 <header class="se-header">
     <div class="se-header-inner">
 
-        <a href="/" class="se-brand">
+        <a href="{% url 'home' %}" class="se-brand">
             <svg class="se-brand-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
                 <path d="M6 30L32 8L58 30" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M14 28V56H50V28" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -28,7 +28,7 @@
             <span class="se-brand-text">
                 <span class="se-brand-name">Smart <strong>Estate</strong></span>
                 <span class="se-brand-subtitle">
-                    Agjensi për Menaxhimin e Patundshmërive
+                    Agjenci për Menaxhimin e Patundshmërive
                 </span>
             </span>
         </a>
@@ -45,15 +45,11 @@
         </button>
 
         <nav class="se-navigation" id="seNavigation">
-            <a href="/" class="{% if request.path == '/' %}se-active{% endif %}">
-                Kryefaqja
-            </a>
-            <a href="/pronat/" class="{% if '/pronat/' in request.path %}se-active{% endif %}">
-                Pronat
-            </a>
-            <a href="/rreth-nesh/">Rreth nesh</a>
-            <a href="/sherbimet/">Shërbimet</a>
-            <a href="/kontakt/">Kontakt</a>
+            <a href="{% url 'home' %}" class="{% if request.path == '/' %}se-active{% endif %}">Kryefaqja</a>
+            <a href="{% url 'pronat' %}" class="{% if '/pronat/' in request.path %}se-active{% endif %}">Pronat</a>
+            <a href="{% url 'rreth_nesh' %}" class="{% if request.path == '/rreth-nesh/' %}se-active{% endif %}">Rreth nesh</a>
+            <a href="{% url 'sherbimet' %}" class="{% if request.path == '/sherbimet/' %}se-active{% endif %}">Shërbimet</a>
+            <a href="{% url 'kontakt' %}" class="{% if request.path == '/kontakt/' %}se-active{% endif %}">Kontakt</a>
         </nav>
 
         <div class="se-header-actions">
@@ -88,11 +84,11 @@
         <div class="se-footer-top">
 
             <div class="se-footer-about">
-                <a href="/" class="se-footer-logo">
+                <a href="{% url 'home' %}" class="se-footer-logo">
                     Smart <strong>Estate</strong>
                 </a>
 
-                <p>Agjensi për Menaxhimin e Patundshmërive</p>
+                <p>Agjenci për Menaxhimin e Patundshmërive</p>
 
                 <p class="se-footer-description">
                     Një platformë moderne për prezantimin dhe
@@ -103,11 +99,11 @@
             <div class="se-footer-column">
                 <h3>Lidhje të shpejta</h3>
 
-                <a href="/">Kryefaqja</a>
-                <a href="/pronat/">Pronat</a>
-                <a href="/rreth-nesh/">Rreth nesh</a>
-                <a href="/sherbimet/">Shërbimet</a>
-                <a href="/kontakt/">Kontakt</a>
+                <a href="{% url 'home' %}">Kryefaqja</a>
+                <a href="{% url 'pronat' %}">Pronat</a>
+                <a href="{% url 'rreth_nesh' %}">Rreth nesh</a>
+                <a href="{% url 'sherbimet' %}">Shërbimet</a>
+                <a href="{% url 'kontakt' %}">Kontakt</a>
             </div>
 
             <div class="se-footer-column">
@@ -128,7 +124,7 @@
                     <a href="{% url 'hyrja' %}">Hyr në sistem</a>
                 {% endif %}
 
-                <a href="/pronat/">Shfleto pronat</a>
+                <a href="{% url 'pronat' %}">Shfleto pronat</a>
             </div>
 
         </div>

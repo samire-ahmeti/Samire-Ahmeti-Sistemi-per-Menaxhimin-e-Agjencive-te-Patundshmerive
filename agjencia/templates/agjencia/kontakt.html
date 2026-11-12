@@ -1,0 +1,243 @@
+
+{% extends 'agjencia/base.html' %}
+
+{% block title %}Kontakt | Smart Estate{% endblock %}
+
+{% block content %}
+
+<div class="estate-contact-page">
+
+    <section class="estate-contact-hero">
+
+        <div class="estate-contact-wrap estate-contact-hero-content">
+
+            <p class="estate-contact-overline">
+                SMART ESTATE / KONTAKT
+            </p>
+
+            <h1>
+                Çdo bisedë fillon
+                me një përshëndetje.
+            </h1>
+
+            <p>
+                Keni një pyetje për një pronë?
+                Na shkruani dhe ndani me ne
+                atë që po kërkoni.
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="estate-contact-wrap estate-contact-main">
+
+        <div class="estate-contact-info">
+
+            <p class="estate-contact-overline">
+                NA KONTAKTONI
+            </p>
+
+            <h2>
+                Na tregoni
+                <em>çfarë keni në mendje.</em>
+            </h2>
+
+            <p class="estate-contact-intro">
+                Ndoshta jeni duke kërkuar një shtëpi
+                të re, një hapësirë për biznesin
+                ose thjesht dëshironi më shumë
+                informacion për një pronë.
+            </p>
+
+            <p>
+                Plotësoni formularin dhe na tregoni
+                se si mund t'ju ndihmojmë.
+            </p>
+
+            <div class="estate-contact-note">
+
+                <span>01 /</span>
+
+                <div>
+                    <h3>Pyetje për një pronë</h3>
+                    <p>
+                        Mund të përmendni qytetin,
+                        llojin e pronës ose ofertën
+                        që ju intereson.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="estate-contact-note">
+
+                <span>02 /</span>
+
+                <div>
+                    <h3>Informacione të tjera</h3>
+                    <p>
+                        Nëse keni një pyetje tjetër,
+                        mund të na e shkruani po
+                        përmes këtij formulari.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="estate-contact-form-side">
+
+            <p class="estate-contact-overline">
+                FORMULARI I KONTAKTIT
+            </p>
+
+            <h2>Na shkruani.</h2>
+
+            <p class="estate-contact-form-intro">
+                Plotësoni fushat më poshtë.
+                Fushat janë të detyrueshme.
+            </p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div
+                        class="estate-contact-success"
+                        role="status"
+                    >
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.non_field_errors %}
+                <div
+                    class="estate-contact-error"
+                    role="alert"
+                >
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form
+                method="POST"
+                action="{% url 'kontakt' %}"
+                class="estate-contact-form"
+            >
+
+                {% csrf_token %}
+
+                <div class="estate-contact-field">
+
+                    <label for="{{ form.emri.id_for_label }}">
+                        Emri dhe mbiemri
+                    </label>
+
+                    {{ form.emri }}
+
+                    {% for error in form.emri.errors %}
+                        <p class="estate-contact-field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+                <div class="estate-contact-field">
+
+                    <label for="{{ form.email.id_for_label }}">
+                        Email
+                    </label>
+
+                    {{ form.email }}
+
+                    {% for error in form.email.errors %}
+                        <p class="estate-contact-field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+                <div class="estate-contact-field">
+
+                    <label for="{{ form.subjekti.id_for_label }}">
+                        Subjekti
+                    </label>
+
+                    {{ form.subjekti }}
+
+                    {% for error in form.subjekti.errors %}
+                        <p class="estate-contact-field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+                <div class="estate-contact-field">
+
+                    <label for="{{ form.mesazhi.id_for_label }}">
+                        Mesazhi juaj
+                    </label>
+
+                    {{ form.mesazhi }}
+
+                    {% for error in form.mesazhi.errors %}
+                        <p class="estate-contact-field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="estate-contact-submit"
+                >
+                    Dërgo mesazhin
+                    <span aria-hidden="true">↗</span>
+                </button>
+
+                <p class="estate-contact-privacy">
+                    Duke dërguar formularin, na jepni
+                    informacionet e nevojshme për të
+                    shqyrtuar mesazhin tuaj.
+                </p>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <section class="estate-contact-end">
+
+        <div class="estate-contact-wrap">
+
+            <div class="estate-contact-end-inner">
+                <div>
+                    <p class="estate-contact-overline">
+                        SMART ESTATE
+                    </p>
+
+                    <h2>
+                        Ende duke kërkuar
+                        pronën e duhur?
+                    </h2>
+                </div>
+
+                <a href="{% url 'pronat' %}">
+                    Eksploro pronat
+                    <span>↗</span>
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

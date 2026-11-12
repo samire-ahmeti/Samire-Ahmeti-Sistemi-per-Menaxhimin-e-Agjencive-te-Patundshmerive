@@ -1,18 +1,19 @@
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
 class Perdorues(AbstractUser):
     ROLET = [
-        ('administrator', 'Administrator'),
-        ('agjent', 'Agjent'),
+        ("administrator", "Administrator"),
+        ("agjent", "Agjent"),
     ]
 
     emri = models.CharField(max_length=100)
     roli = models.CharField(
         max_length=20,
         choices=ROLET,
-        default='agjent'
+        default="agjent"
     )
 
     def __str__(self):
@@ -21,27 +22,29 @@ class Perdorues(AbstractUser):
 
 class Prona(models.Model):
     LLOJET = [
-        ('banese', 'Banesë'),
-        ('shtepi', 'Shtëpi'),
-        ('lokal', 'Lokal'),
-        ('toke', 'Tokë'),
+        ("banese", "Banesë"),
+        ("shtepi", "Shtëpi"),
+        ("lokal", "Lokal"),
+        ("toke", "Tokë"),
     ]
 
     agjent = models.ForeignKey(
         Perdorues,
         on_delete=models.PROTECT,
-        related_name='pronat'
+        related_name="pronat"
     )
     lloji = models.CharField(max_length=20, choices=LLOJET)
     qyteti = models.CharField(max_length=100)
     cmimi = models.DecimalField(max_digits=12, decimal_places=2)
     siperfaqja = models.DecimalField(max_digits=10, decimal_places=2)
-    foto = models.ImageField(upload_to="pronat/", blank=True, null=True)
-
+    foto = models.ImageField(
+        upload_to="pronat/",
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
-        return f'{self.get_lloji_display()} - {self.qyteti}'
-
+        return f"{self.get_lloji_display()} - {self.qyteti}"
 
 
 class Klienti(models.Model):
@@ -52,40 +55,37 @@ class Klienti(models.Model):
         return self.emri
 
 
-
-
 class Kerkesa(models.Model):
     prona = models.ForeignKey(
         Prona,
         on_delete=models.PROTECT,
-        related_name='kerkesat'
+        related_name="kerkesat"
     )
     klienti = models.ForeignKey(
         Klienti,
         on_delete=models.PROTECT,
-        related_name='kerkesat'
+        related_name="kerkesat"
     )
 
     def __str__(self):
-        return f'Kerkesa e {self.klienti.emri} per {self.prona}'
-
+        return f"Kerkesa e {self.klienti.emri} per {self.prona}"
 
 
 class Vizita(models.Model):
     prona = models.ForeignKey(
         Prona,
         on_delete=models.PROTECT,
-        related_name='vizitat'
+        related_name="vizitat"
     )
     klienti = models.ForeignKey(
         Klienti,
         on_delete=models.PROTECT,
-        related_name='vizitat'
+        related_name="vizitat"
     )
     data_vizites = models.DateTimeField()
 
     def __str__(self):
-        return f'Vizita e {self.klienti.emri} - {self.prona}'
+        return f"Vizita e {self.klienti.emri} - {self.prona}"
 
 
 class FotoProne(models.Model):
@@ -102,3 +102,20 @@ class FotoProne(models.Model):
 
     def __str__(self):
         return f"Foto e prones #{self.prona.id}"
+
+
+class MesazhKontakti(models.Model):
+    emri = models.CharField(max_length=120)
+    email = models.EmailField()
+    subjekti = models.CharField(max_length=160)
+    mesazhi = models.TextField()
+    data_dergimit = models.DateTimeField(auto_now_add=True)
+    lexuar = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-data_dergimit"]
+        verbose_name = "Mesazh kontakti"
+        verbose_name_plural = "Mesazhet e kontaktit"
+
+    def __str__(self):
+        return f"{self.emri} - {self.subjekti}"

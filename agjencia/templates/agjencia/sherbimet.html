@@ -1,0 +1,113 @@
+{% extends 'agjencia/base.html' %}
+{% load static %}
+
+{% block title %}Shërbimet | Smart Estate{% endblock %}
+
+{% block content %}
+
+<div class="estate-editorial">
+
+    <section class="estate-services-hero">
+        <div class="estate-services-hero-bg">
+            <img
+                src="{% static 'agjencia/images/hero-smart-estate.png' %}"
+                alt="Patundshmëri moderne"
+            >
+        </div>
+
+        <div class="estate-services-hero-overlay"></div>
+
+        <div class="estate-ed-wrap estate-services-hero-content">
+            <p class="estate-ed-overline estate-overline-light">SHËRBIMET TONA</p>
+
+            <h1>
+                Shërbime të menduara për
+                klientët që kërkojnë
+                pronën e duhur.
+            </h1>
+
+            <p>
+                Në Smart Estate ju ndihmojmë të eksploroni prona,
+                të njihni ofertat më mirë dhe të orientoheni
+                më lehtë drejt zgjedhjes së duhur.
+            </p>
+        </div>
+    </section>
+
+    <section class="estate-ed-wrap estate-ed-services">
+
+        <div class="estate-ed-services-heading">
+            <p class="estate-ed-overline">SI MUND T'JU NDIHMOJMË</p>
+            <h2>Shërbimet që ofrojmë</h2>
+        </div>
+
+        <div class="estate-ed-service-row">
+            <h3>Gjetja e pronës</h3>
+
+            <div>
+                <p>
+                    Kërkimi i një shtëpie, banese ose lokali fillon
+                    me gjetjen e ofertave të përshtatshme. Në platformën
+                    tonë mund të shfletoni prona sipas qytetit,
+                    llojit dhe informacionit kryesor.
+                </p>
+
+                <a href="{% url 'pronat' %}" class="estate-ed-link">
+                    Kërko prona <span>↗</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="estate-ed-service-row">
+            <h3>Prezantimi i patundshmërive</h3>
+
+            <div>
+                <p>
+                    Çdo pronë paraqitet me fotografi, çmim,
+                    sipërfaqe dhe përshkrim të shkurtër,
+                    në mënyrë që vizitori të krijojë një ide
+                    më të qartë para se të vazhdojë më tej.
+                </p>
+            </div>
+        </div>
+
+        <div class="estate-ed-service-row">
+            <h3>Informimi dhe orientimi</h3>
+
+            <div>
+                <p>
+                    Qëllimi ynë është që klienti të mos humbasë
+                    në shumë informacione të panevojshme,
+                    por të fokusohet te pronat që i përshtaten
+                    më shumë nevojave të tij.
+                </p>
+            </div>
+        </div>
+
+        <div class="estate-ed-service-row">
+            <h3>Komunikimi dhe vizitat</h3>
+
+            <div>
+                <p>
+                    Pas interesimit për një pronë, hapi tjetër është
+                    komunikimi dhe organizimi i vizitave.
+                    Kjo e bën procesin më praktik dhe më të afërt
+                    me një përvojë reale të një agjencie.
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="estate-ed-wrap estate-ed-closing">
+        <p class="estate-ed-overline">HAPI I RADHËS</p>
+        <h2>Le ta fillojmë me pronën që po kërkon.</h2>
+
+        <a href="{% url 'pronat' %}" class="estate-ed-link">
+            Eksploro ofertat <span>↗</span>
+        </a>
+    </section>
+
+</div>
+
+{% endblock %}
