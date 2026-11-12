@@ -13,7 +13,13 @@ from agjencia.views import (
     dalja_page,
     shto_prone_page,
 )
+
 from agjencia.contact_views import kontakt_page
+
+from agjencia.prona_actions import (
+    ndrysho_prone_page,
+    fshi_prone_page,
+)
 
 
 urlpatterns = [
@@ -22,11 +28,14 @@ urlpatterns = [
 
     path(
         "",
-        TemplateView.as_view(template_name="agjencia/home.html"),
+        TemplateView.as_view(
+            template_name="agjencia/home.html"
+        ),
         name="home",
     ),
 
     path("pronat/", pronat_page, name="pronat"),
+
     path(
         "pronat/<int:prona_id>/",
         detajet_prones,
@@ -35,21 +44,45 @@ urlpatterns = [
 
     path(
         "rreth-nesh/",
-        TemplateView.as_view(template_name="agjencia/rreth_nesh.html"),
+        TemplateView.as_view(
+            template_name="agjencia/rreth_nesh.html"
+        ),
         name="rreth_nesh",
     ),
 
     path(
         "sherbimet/",
-        TemplateView.as_view(template_name="agjencia/sherbimet.html"),
+        TemplateView.as_view(
+            template_name="agjencia/sherbimet.html"
+        ),
         name="sherbimet",
     ),
 
     path("kontakt/", kontakt_page, name="kontakt"),
+
     path("paneli/", paneli_page, name="paneli"),
+
     path("hyrja/", hyrja_page, name="hyrja"),
+
     path("dalja/", dalja_page, name="dalja"),
-    path("shto-prone/", shto_prone_page, name="shto_prone"),
+
+    path(
+        "shto-prone/",
+        shto_prone_page,
+        name="shto_prone",
+    ),
+
+    path(
+        "ndrysho-prone/<int:prona_id>/",
+        ndrysho_prone_page,
+        name="ndrysho_prone",
+    ),
+
+    path(
+        "fshi-prone/<int:prona_id>/",
+        fshi_prone_page,
+        name="fshi_prone",
+    ),
 ]
 
 

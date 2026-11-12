@@ -1,0 +1,277 @@
+
+{% extends 'agjencia/base.html' %}
+
+{% block title %}Ndrysho pronën | Smart Estate{% endblock %}
+
+{% block content %}
+
+<section class="se-add-page se-edit-page">
+
+    <div class="se-add-container">
+
+        <div class="se-add-top">
+
+            <a href="{% url 'paneli' %}" class="se-add-back">
+                ← Kthehu te paneli
+            </a>
+
+            <span class="se-add-eyebrow">
+                SMART ESTATE / MENAXHIMI I PRONAVE
+            </span>
+
+            <h1>
+                Ndrysho <span>pronën</span>
+            </h1>
+
+            <p>
+                Përditëso informacionet e pronës dhe
+                ruaj ndryshimet në sistem.
+            </p>
+
+        </div>
+
+        <div class="se-add-layout">
+
+            <div class="se-add-form-card">
+
+                <div class="se-add-form-heading">
+
+                    <div class="se-add-heading-icon">
+                        ✎
+                    </div>
+
+                    <div>
+                        <h2>Informacionet e pronës</h2>
+                        <p>
+                            Ndrysho vetëm fushat që
+                            dëshiron të përditësosh.
+                        </p>
+                    </div>
+
+                </div>
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="se-add-form"
+                >
+
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="se-add-error-box">
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="se-add-section-title">
+                        <span>01</span>
+                        Të dhënat kryesore
+                    </div>
+
+                    <div class="se-add-fields">
+
+                        <div class="se-add-field">
+
+                            <label for="{{ form.lloji.id_for_label }}">
+                                Lloji i pronës
+                            </label>
+
+                            {{ form.lloji }}
+
+                            {% for error in form.lloji.errors %}
+                                <p class="se-add-field-error">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="se-add-field">
+
+                            <label for="{{ form.qyteti.id_for_label }}">
+                                Qyteti
+                            </label>
+
+                            {{ form.qyteti }}
+
+                            {% for error in form.qyteti.errors %}
+                                <p class="se-add-field-error">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="se-add-field">
+
+                            <label for="{{ form.cmimi.id_for_label }}">
+                                Çmimi (€)
+                            </label>
+
+                            {{ form.cmimi }}
+
+                            {% for error in form.cmimi.errors %}
+                                <p class="se-add-field-error">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="se-add-field">
+
+                            <label for="{{ form.siperfaqja.id_for_label }}">
+                                Sipërfaqja (m²)
+                            </label>
+
+                            {{ form.siperfaqja }}
+
+                            {% for error in form.siperfaqja.errors %}
+                                <p class="se-add-field-error">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="se-add-divider"></div>
+
+                    <div class="se-add-section-title">
+                        <span>02</span>
+                        Fotografia e pronës
+                    </div>
+
+                    <div class="se-add-upload">
+
+                        <div class="se-add-upload-icon">
+                            ↑
+                        </div>
+
+                        <h3>Ndrysho fotografinë</h3>
+
+                        <p>
+                            Nëse dëshiron një fotografi të re,
+                            zgjidhe nga kompjuteri.
+                            Përndryshe, lëre fotografinë aktuale.
+                        </p>
+
+                        <div class="se-add-file-input">
+                            {{ form.foto }}
+                        </div>
+
+                        {% for error in form.foto.errors %}
+                            <p class="se-add-field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                        <span class="se-add-file-help">
+                            Madhësia maksimale: 5 MB
+                        </span>
+
+                    </div>
+
+                    <div class="se-add-actions">
+
+                        <a
+                            href="{% url 'detajet_prones' prona.id %}"
+                            class="se-add-cancel"
+                        >
+                            Anulo
+                        </a>
+
+                        <button type="submit" class="se-add-submit">
+                            <span>✓</span>
+                            Ruaj ndryshimet
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <aside class="se-add-sidebar">
+
+                <div class="se-add-info-card">
+
+                    <span class="se-add-info-eyebrow">
+                        PRONA AKTUALE
+                    </span>
+
+                    {% if prona.foto %}
+                        <img
+                            src="{{ prona.foto.url }}"
+                            alt="Fotografia aktuale e pronës"
+                            class="se-edit-preview-image"
+                        >
+                    {% endif %}
+
+                    <h2>
+                        {{ prona.get_lloji_display }}
+                        në {{ prona.qyteti }}
+                    </h2>
+
+                    <p>
+                        Kjo është prona që po përditëson.
+                        Ndryshimet ruhen vetëm pasi të
+                        klikosh butonin "Ruaj ndryshimet".
+                    </p>
+
+                    <div class="se-add-info-line"></div>
+
+                    <div class="se-add-info-item">
+
+                        <div class="se-add-info-icon">✓</div>
+
+                        <div>
+                            <strong>Çmimi aktual</strong>
+                            <p>{{ prona.cmimi }} €</p>
+                        </div>
+
+                    </div>
+
+                    <div class="se-add-info-item">
+
+                        <div class="se-add-info-icon">✓</div>
+
+                        <div>
+                            <strong>Sipërfaqja aktuale</strong>
+                            <p>{{ prona.siperfaqja }} m²</p>
+                        </div>
+
+                    </div>
+
+                    <div class="se-add-info-item">
+
+                        <div class="se-add-info-icon">✓</div>
+
+                        <div>
+                            <strong>Shiko pronën</strong>
+
+                            <a
+                                href="{% url 'detajet_prones' prona.id %}"
+                                class="se-edit-view-link"
+                            >
+                                Hap detajet →
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

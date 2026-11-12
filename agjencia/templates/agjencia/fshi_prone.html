@@ -1,0 +1,137 @@
+
+{% extends 'agjencia/base.html' %}
+
+{% block title %}Fshi pronën | Smart Estate{% endblock %}
+
+{% block content %}
+
+<section class="se-delete-page">
+
+    <div class="se-delete-container">
+
+        <a href="{% url 'paneli' %}" class="se-delete-back">
+            ← Kthehu te paneli
+        </a>
+
+        <div class="se-delete-heading">
+            <span>SMART ESTATE / MENAXHIMI I PRONAVE</span>
+
+            <h1>Fshirja e pronës</h1>
+
+            <p>
+                Ju lutemi kontrolloni informacionet
+                përpara se të vazhdoni.
+            </p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="se-delete-message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="se-delete-layout">
+
+            <div class="se-delete-property">
+
+                {% if prona.foto %}
+                    <img
+                        src="{{ prona.foto.url }}"
+                        alt="{{ prona.get_lloji_display }} në {{ prona.qyteti }}"
+                    >
+                {% else %}
+                    <div class="se-delete-no-photo">
+                        Smart Estate
+                    </div>
+                {% endif %}
+
+                <div class="se-delete-property-info">
+
+                    <span>PRONA E ZGJEDHUR</span>
+
+                    <h2>
+                        {{ prona.get_lloji_display }}
+                        në {{ prona.qyteti }}
+                    </h2>
+
+                    <div class="se-delete-details">
+                        <p>
+                            <span>Çmimi</span>
+                            <strong>{{ prona.cmimi }} €</strong>
+                        </p>
+
+                        <p>
+                            <span>Sipërfaqja</span>
+                            <strong>{{ prona.siperfaqja }} m²</strong>
+                        </p>
+
+                        <p>
+                            <span>ID e pronës</span>
+                            <strong>#{{ prona.id }}</strong>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="se-delete-confirm">
+
+                <span class="se-delete-symbol">!</span>
+
+                <h2>
+                    A jeni të sigurt që
+                    dëshironi ta fshini?
+                </h2>
+
+                <p>
+                    Kjo pronë do të largohet nga sistemi
+                    dhe nuk do të shfaqet më në listën
+                    e pronave.
+                </p>
+
+                <p class="se-delete-warning">
+                    Ky veprim nuk mund të kthehet
+                    automatikisht.
+                </p>
+
+                <form
+                    method="POST"
+                    action="{% url 'fshi_prone' prona.id %}"
+                    class="se-delete-form"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="se-delete-submit"
+                    >
+                        Po, fshije pronën
+                    </button>
+
+                    <a
+                        href="{% url 'detajet_prones' prona.id %}"
+                        class="se-delete-cancel"
+                    >
+                        Jo, anulo
+                    </a>
+
+                </form>
+
+                <p class="se-delete-note">
+                    Nëse prona ka kërkesa ose vizita
+                    të lidhura me të, fshirja mund
+                    të mos lejohet.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
