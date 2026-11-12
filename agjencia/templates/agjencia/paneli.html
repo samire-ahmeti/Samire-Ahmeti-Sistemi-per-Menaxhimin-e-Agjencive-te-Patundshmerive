@@ -31,11 +31,10 @@
                 <span>Pronat</span>
             </a>
 
-            <div class="se-panel-nav-disabled">
+            <a href="{% url 'klientet' %}">
                 <span class="se-panel-nav-symbol">♙</span>
                 <span>Klientët</span>
-                <small>Së shpejti</small>
-            </div>
+            </a>
 
             <div class="se-panel-nav-disabled">
                 <span class="se-panel-nav-symbol">▦</span>
@@ -151,9 +150,7 @@
                     <span class="se-panel-stat-number">01</span>
                 </div>
 
-                <span class="se-panel-stat-label">
-                    PRONAT
-                </span>
+                <span class="se-panel-stat-label">PRONAT</span>
 
                 <strong>{{ numri_pronave|default:0 }}</strong>
 
@@ -168,9 +165,7 @@
                     <span class="se-panel-stat-number">02</span>
                 </div>
 
-                <span class="se-panel-stat-label">
-                    KLIENTËT
-                </span>
+                <span class="se-panel-stat-label">KLIENTËT</span>
 
                 <strong>{{ numri_klienteve|default:0 }}</strong>
 
@@ -185,9 +180,7 @@
                     <span class="se-panel-stat-number">03</span>
                 </div>
 
-                <span class="se-panel-stat-label">
-                    VIZITAT
-                </span>
+                <span class="se-panel-stat-label">VIZITAT</span>
 
                 <strong>{{ numri_vizitave|default:0 }}</strong>
 
@@ -206,9 +199,7 @@
 
                     <div>
                         <h2>Pronat e fundit</h2>
-                        <p>
-                            Pronat e regjistruara së fundmi në sistem.
-                        </p>
+                        <p>Pronat e regjistruara së fundmi në sistem.</p>
                     </div>
                 </div>
 
@@ -261,13 +252,9 @@
                                     </span>
                                 </td>
 
-                                <td>
-                                    {{ prona.qyteti }}
-                                </td>
+                                <td>{{ prona.qyteti }}</td>
 
-                                <td>
-                                    {{ prona.siperfaqja }} m²
-                                </td>
+                                <td>{{ prona.siperfaqja }} m²</td>
 
                                 <td>
                                     <strong class="se-panel-price">
@@ -276,12 +263,12 @@
                                 </td>
 
                                 <td>
+
                                     <div class="se-panel-actions">
 
                                         <a
                                             href="{% url 'detajet_prones' prona.id %}"
                                             class="se-panel-action-view"
-                                            aria-label="Shiko pronën {{ prona.id }}"
                                         >
                                             Shiko
                                         </a>
@@ -289,7 +276,6 @@
                                         <a
                                             href="{% url 'ndrysho_prone' prona.id %}"
                                             class="se-panel-action-edit"
-                                            aria-label="Ndrysho pronën {{ prona.id }}"
                                         >
                                             Ndrysho
                                         </a>
@@ -297,12 +283,12 @@
                                         <a
                                             href="{% url 'fshi_prone' prona.id %}"
                                             class="se-panel-action-delete"
-                                            aria-label="Fshi pronën {{ prona.id }}"
                                         >
                                             Fshi
                                         </a>
 
                                     </div>
+
                                 </td>
 
                             </tr>
@@ -313,6 +299,7 @@
                                 <td colspan="6">
 
                                     <div class="se-panel-empty">
+
                                         <h3>Nuk ka prona të regjistruara.</h3>
 
                                         <p>
@@ -323,6 +310,7 @@
                                         <a href="{% url 'shto_prone' %}">
                                             + Shto pronën e parë
                                         </a>
+
                                     </div>
 
                                 </td>
@@ -438,6 +426,12 @@
                         <strong>↗</strong>
                     </a>
 
+                    <a href="{% url 'klientet' %}">
+                        <span>♙</span>
+                        Menaxho klientët
+                        <strong>↗</strong>
+                    </a>
+
                     <a href="{% url 'pronat' %}">
                         <span>⌂</span>
                         Shfleto pronat
@@ -455,9 +449,8 @@
                 </div>
 
                 <p class="se-panel-shortcuts-note">
-                    Modulet e klientëve, kërkesave dhe
-                    vizitave do të shtohen në menynë e
-                    panelit gjatë zhvillimit të tyre.
+                    Modulet e kërkesave dhe vizitave do të
+                    shtohen në panel gjatë zhvillimit të tyre.
                 </p>
 
             </section>

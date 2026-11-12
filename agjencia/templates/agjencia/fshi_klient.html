@@ -1,0 +1,132 @@
+
+{% extends 'agjencia/base.html' %}
+
+{% block title %}Fshi klientin | Smart Estate{% endblock %}
+
+{% block content %}
+
+<section class="se-delete-page">
+
+    <div class="se-delete-container">
+
+        <a href="{% url 'klientet' %}" class="se-delete-back">
+            ← Kthehu te klientët
+        </a>
+
+        <div class="se-delete-heading">
+
+            <span>SMART ESTATE / MENAXHIMI I KLIENTËVE</span>
+
+            <h1>Fshirja e klientit</h1>
+
+            <p>
+                Kontrollo të dhënat e klientit
+                përpara se të vazhdosh me fshirjen.
+            </p>
+
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="se-delete-message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="se-delete-layout">
+
+            <div class="se-delete-property">
+
+                <div class="se-delete-no-photo">
+                    Smart Estate
+                </div>
+
+                <div class="se-delete-property-info">
+
+                    <span>KLIENTI I ZGJEDHUR</span>
+
+                    <h2>{{ klienti.emri }}</h2>
+
+                    <div class="se-delete-details">
+
+                        <p>
+                            <span>Emri dhe mbiemri</span>
+                            <strong>{{ klienti.emri }}</strong>
+                        </p>
+
+                        <p>
+                            <span>Kontakti</span>
+                            <strong>{{ klienti.kontakti }}</strong>
+                        </p>
+
+                        <p>
+                            <span>Referenca</span>
+                            <strong>#{{ klienti.id }}</strong>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="se-delete-confirm">
+
+                <span class="se-delete-symbol">!</span>
+
+                <h2>
+                    A jeni të sigurt që
+                    dëshironi ta fshini këtë klient?
+                </h2>
+
+                <p>
+                    Klienti do të largohet nga lista
+                    dhe informacionet e tij nuk do të
+                    jenë më të disponueshme në sistem.
+                </p>
+
+                <p class="se-delete-warning">
+                    Ky veprim nuk mund të kthehet
+                    automatikisht.
+                </p>
+
+                <form
+                    method="POST"
+                    action="{% url 'fshi_klient' klienti.id %}"
+                    class="se-delete-form"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="se-delete-submit"
+                    >
+                        Po, fshije klientin
+                    </button>
+
+                    <a
+                        href="{% url 'klientet' %}"
+                        class="se-delete-cancel"
+                    >
+                        Jo, anulo
+                    </a>
+
+                </form>
+
+                <p class="se-delete-note">
+                    Nëse klienti ka kërkesa ose vizita
+                    të lidhura me të, sistemi nuk do
+                    ta lejojë fshirjen.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

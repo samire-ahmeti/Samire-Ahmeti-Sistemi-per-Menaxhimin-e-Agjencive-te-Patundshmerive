@@ -1,0 +1,148 @@
+
+{% extends 'agjencia/base.html' %}
+{% load static %}
+
+{% block title %}Ndrysho klient | Smart Estate{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'agjencia/css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="se-client-form-page">
+
+    <div class="se-client-form-container">
+
+        <a href="{% url 'klientet' %}" class="se-client-form-back">
+            ← Kthehu te klientët
+        </a>
+
+        <div class="se-client-form-heading">
+
+            <span>SMART ESTATE / MENAXHIMI I KLIENTËVE</span>
+
+            <h1>Ndrysho klientin</h1>
+
+            <p>
+                Përditëso informacionet e klientit
+                dhe ruaji ndryshimet në sistem.
+            </p>
+
+        </div>
+
+        <div class="se-client-form-layout">
+
+            <div class="se-client-form-main">
+
+                <div class="se-client-form-title">
+
+                    <span>INFORMACIONET E KLIENTIT</span>
+
+                    <h2>Të dhënat personale</h2>
+
+                </div>
+
+                <form
+                    method="POST"
+                    action="{% url 'ndrysho_klient' klienti.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="se-client-form-error">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="se-client-form-field">
+
+                        <label for="{{ form.emri.id_for_label }}">
+                            Emri dhe mbiemri
+                        </label>
+
+                        {{ form.emri }}
+
+                        {% for error in form.emri.errors %}
+                            <p class="se-client-field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="se-client-form-field">
+
+                        <label for="{{ form.kontakti.id_for_label }}">
+                            Numri i telefonit ose email
+                        </label>
+
+                        {{ form.kontakti }}
+
+                        {% for error in form.kontakti.errors %}
+                            <p class="se-client-field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="se-client-form-actions">
+
+                        <a
+                            href="{% url 'klientet' %}"
+                            class="se-client-form-cancel"
+                        >
+                            Anulo
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="se-client-form-submit"
+                        >
+                            Ruaj ndryshimet
+                            <span>↗</span>
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <aside class="se-client-form-aside">
+
+                <span class="se-client-form-aside-label">
+                    KLIENTI AKTUAL
+                </span>
+
+                <h2>{{ klienti.emri }}</h2>
+
+                <p>
+                    Kontakti aktual:
+                    <strong>{{ klienti.kontakti }}</strong>
+                </p>
+
+                <div class="se-client-form-aside-line"></div>
+
+                <p class="se-client-form-aside-small">
+                    Referenca e klientit: #{{ klienti.id }}
+                </p>
+
+                <div class="se-client-form-aside-line"></div>
+
+                <p class="se-client-form-aside-small">
+                    Ndryshimet do të ruhen pasi të klikosh
+                    butonin "Ruaj ndryshimet".
+                </p>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

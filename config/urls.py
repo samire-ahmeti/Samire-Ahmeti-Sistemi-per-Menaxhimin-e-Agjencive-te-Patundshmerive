@@ -21,6 +21,13 @@ from agjencia.prona_actions import (
     fshi_prone_page,
 )
 
+from agjencia.klienti_actions import (
+    klientet_page,
+    shto_klient_page,
+    ndrysho_klient_page,
+    fshi_klient_page,
+)
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -61,9 +68,7 @@ urlpatterns = [
     path("kontakt/", kontakt_page, name="kontakt"),
 
     path("paneli/", paneli_page, name="paneli"),
-
     path("hyrja/", hyrja_page, name="hyrja"),
-
     path("dalja/", dalja_page, name="dalja"),
 
     path(
@@ -82,6 +87,30 @@ urlpatterns = [
         "fshi-prone/<int:prona_id>/",
         fshi_prone_page,
         name="fshi_prone",
+    ),
+
+    path(
+        "klientet/",
+        klientet_page,
+        name="klientet",
+    ),
+
+    path(
+        "shto-klient/",
+        shto_klient_page,
+        name="shto_klient",
+    ),
+
+    path(
+        "ndrysho-klient/<int:klienti_id>/",
+        ndrysho_klient_page,
+        name="ndrysho_klient",
+    ),
+
+    path(
+        "fshi-klient/<int:klienti_id>/",
+        fshi_klient_page,
+        name="fshi_klient",
     ),
 ]
 
