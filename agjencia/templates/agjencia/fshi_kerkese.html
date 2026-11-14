@@ -1,0 +1,153 @@
+
+{% extends 'agjencia/base.html' %}
+
+{% block title %}Fshi kërkesën | Smart Estate{% endblock %}
+
+{% block content %}
+
+<section class="se-delete-page">
+
+    <div class="se-delete-container">
+
+        <a href="{% url 'kerkesat' %}" class="se-delete-back">
+            ← Kthehu te kërkesat
+        </a>
+
+        <div class="se-delete-heading">
+
+            <span>SMART ESTATE / MENAXHIMI I KËRKESAVE</span>
+
+            <h1>Fshirja e kërkesës</h1>
+
+            <p>
+                Kontrollo informacionet e kërkesës
+                përpara se të konfirmosh fshirjen.
+            </p>
+
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="se-delete-message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="se-delete-layout">
+
+            <div class="se-delete-property">
+
+                <div class="se-delete-no-photo">
+                    Smart Estate
+                </div>
+
+                <div class="se-delete-property-info">
+
+                    <span>KËRKESA E ZGJEDHUR</span>
+
+                    <h2>
+                        {{ kerkesa.klienti.emri }}
+                    </h2>
+
+                    <div class="se-delete-details">
+
+                        <p>
+                            <span>Klienti</span>
+
+                            <strong>
+                                {{ kerkesa.klienti.emri }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>Kontakti</span>
+
+                            <strong>
+                                {{ kerkesa.klienti.kontakti }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>Prona</span>
+
+                            <strong>
+                                {{ kerkesa.prona.get_lloji_display }}
+                                në {{ kerkesa.prona.qyteti }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>Referenca</span>
+
+                            <strong>
+                                #{{ kerkesa.id }}
+                            </strong>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="se-delete-confirm">
+
+                <span class="se-delete-symbol">!</span>
+
+                <h2>
+                    A jeni të sigurt që dëshironi
+                    ta fshini këtë kërkesë?
+                </h2>
+
+                <p>
+                    Kërkesa e klientit për pronën
+                    e zgjedhur do të largohet
+                    nga sistemi.
+                </p>
+
+                <p class="se-delete-warning">
+                    Ky veprim nuk mund të
+                    kthehet automatikisht.
+                </p>
+
+                <form
+                    method="POST"
+                    action="{% url 'fshi_kerkese' kerkesa.id %}"
+                    class="se-delete-form"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="se-delete-submit"
+                    >
+                        Po, fshije kërkesën
+                    </button>
+
+                    <a
+                        href="{% url 'kerkesat' %}"
+                        class="se-delete-cancel"
+                    >
+                        Jo, anulo
+                    </a>
+
+                </form>
+
+                <p class="se-delete-note">
+                    Fshirja e kërkesës nuk e fshin
+                    klientin ose pronën nga databaza.
+                    Largohet vetëm lidhja e regjistruar
+                    ndërmjet tyre.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

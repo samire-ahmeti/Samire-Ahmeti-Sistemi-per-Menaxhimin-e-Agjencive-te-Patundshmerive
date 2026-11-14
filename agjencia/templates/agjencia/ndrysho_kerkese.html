@@ -1,0 +1,152 @@
+
+{% extends 'agjencia/base.html' %}
+{% load static %}
+
+{% block title %}Ndrysho kërkesë | Smart Estate{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'agjencia/css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="se-client-form-page">
+
+    <div class="se-client-form-container">
+
+        <a href="{% url 'kerkesat' %}" class="se-client-form-back">
+            ← Kthehu te kërkesat
+        </a>
+
+        <div class="se-client-form-heading">
+
+            <span>SMART ESTATE / MENAXHIMI I KËRKESAVE</span>
+
+            <h1>Ndrysho kërkesën</h1>
+
+            <p>
+                Përditëso klientin ose pronën e zgjedhur
+                dhe ruaji ndryshimet në sistem.
+            </p>
+
+        </div>
+
+        <div class="se-client-form-layout">
+
+            <div class="se-client-form-main">
+
+                <div class="se-client-form-title">
+
+                    <span>INFORMACIONET E KËRKESËS</span>
+
+                    <h2>Të dhënat e kërkesës</h2>
+
+                </div>
+
+                <form
+                    method="POST"
+                    action="{% url 'ndrysho_kerkese' kerkesa.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="se-client-form-error" role="alert">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="se-client-form-field">
+
+                        <label for="{{ form.klienti.id_for_label }}">
+                            Klienti
+                        </label>
+
+                        {{ form.klienti }}
+
+                        {% for error in form.klienti.errors %}
+                            <p class="se-client-field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="se-client-form-field">
+
+                        <label for="{{ form.prona.id_for_label }}">
+                            Prona
+                        </label>
+
+                        {{ form.prona }}
+
+                        {% for error in form.prona.errors %}
+                            <p class="se-client-field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="se-client-form-actions">
+
+                        <a
+                            href="{% url 'kerkesat' %}"
+                            class="se-client-form-cancel"
+                        >
+                            Anulo
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="se-client-form-submit"
+                        >
+                            Ruaj ndryshimet
+                            <span>↗</span>
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <aside class="se-client-form-aside">
+
+                <span class="se-client-form-aside-label">
+                    KËRKESA AKTUALE
+                </span>
+
+                <h2>{{ kerkesa.klienti.emri }}</h2>
+
+                <p>
+                    Prona aktuale:
+                    <strong>
+                        {{ kerkesa.prona.get_lloji_display }}
+                        në {{ kerkesa.prona.qyteti }}
+                    </strong>
+                </p>
+
+                <div class="se-client-form-aside-line"></div>
+
+                <p class="se-client-form-aside-small">
+                    Referenca e kërkesës: #{{ kerkesa.id }}
+                </p>
+
+                <div class="se-client-form-aside-line"></div>
+
+                <p class="se-client-form-aside-small">
+                    Ndryshimet do të ruhen në databazë
+                    pasi të klikosh butonin
+                    "Ruaj ndryshimet".
+                </p>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

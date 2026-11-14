@@ -42,11 +42,10 @@
                 <small>Së shpejti</small>
             </div>
 
-            <div class="se-panel-nav-disabled">
+            <a href="{% url 'kerkesat' %}">
                 <span class="se-panel-nav-symbol">✉</span>
                 <span>Kërkesat</span>
-                <small>Së shpejti</small>
-            </div>
+            </a>
 
             <div class="se-panel-nav-divider"></div>
 
@@ -432,6 +431,12 @@
                         <strong>↗</strong>
                     </a>
 
+                    <a href="{% url 'kerkesat' %}">
+                        <span>✉</span>
+                        Menaxho kërkesat
+                        <strong>↗</strong>
+                    </a>
+
                     <a href="{% url 'pronat' %}">
                         <span>⌂</span>
                         Shfleto pronat
@@ -449,8 +454,8 @@
                 </div>
 
                 <p class="se-panel-shortcuts-note">
-                    Modulet e kërkesave dhe vizitave do të
-                    shtohen në panel gjatë zhvillimit të tyre.
+                    Moduli i vizitave do të shtohet në panel
+                    gjatë zhvillimit të tij.
                 </p>
 
             </section>
