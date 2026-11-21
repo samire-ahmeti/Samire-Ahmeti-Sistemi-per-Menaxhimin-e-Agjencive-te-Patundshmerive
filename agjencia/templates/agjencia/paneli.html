@@ -36,11 +36,10 @@
                 <span>Klientët</span>
             </a>
 
-            <div class="se-panel-nav-disabled">
+            <a href="{% url 'vizitat' %}">
                 <span class="se-panel-nav-symbol">▦</span>
                 <span>Vizitat</span>
-                <small>Së shpejti</small>
-            </div>
+            </a>
 
             <a href="{% url 'kerkesat' %}">
                 <span class="se-panel-nav-symbol">✉</span>
@@ -68,6 +67,7 @@
             </div>
 
             <div class="se-panel-profile-info">
+
                 <strong>{{ user.username }}</strong>
 
                 {% if user.is_superuser or user.roli == "administrator" %}
@@ -75,6 +75,7 @@
                 {% else %}
                     <span>Agjent</span>
                 {% endif %}
+
             </div>
 
         </div>
@@ -108,6 +109,7 @@
         <div class="se-panel-welcome">
 
             <div>
+
                 <span class="se-panel-eyebrow">
                     MIRË SE VINI NË SMART ESTATE
                 </span>
@@ -121,6 +123,7 @@
                     Menaxhoni pronat dhe shikoni aktivitetet
                     kryesore nga një panel i vetëm.
                 </p>
+
             </div>
 
             <a href="{% url 'shto_prone' %}" class="se-panel-primary-button">
@@ -132,11 +135,13 @@
 
         {% if messages %}
             <div class="se-panel-messages">
+
                 {% for message in messages %}
                     <div class="se-panel-message" role="status">
                         {{ message }}
                     </div>
                 {% endfor %}
+
             </div>
         {% endif %}
 
@@ -194,12 +199,14 @@
             <div class="se-panel-section-heading">
 
                 <div>
+
                     <span class="se-panel-section-accent"></span>
 
                     <div>
                         <h2>Pronat e fundit</h2>
                         <p>Pronat e regjistruara së fundmi në sistem.</p>
                     </div>
+
                 </div>
 
                 <a href="{% url 'pronat' %}" class="se-panel-text-link">
@@ -231,6 +238,7 @@
                             <tr>
 
                                 <td>
+
                                     <div class="se-panel-property">
 
                                         <strong>
@@ -243,6 +251,7 @@
                                         </span>
 
                                     </div>
+
                                 </td>
 
                                 <td>
@@ -251,9 +260,13 @@
                                     </span>
                                 </td>
 
-                                <td>{{ prona.qyteti }}</td>
+                                <td>
+                                    {{ prona.qyteti }}
+                                </td>
 
-                                <td>{{ prona.siperfaqja }} m²</td>
+                                <td>
+                                    {{ prona.siperfaqja }} m²
+                                </td>
 
                                 <td>
                                     <strong class="se-panel-price">
@@ -295,11 +308,14 @@
                         {% empty %}
 
                             <tr>
+
                                 <td colspan="6">
 
                                     <div class="se-panel-empty">
 
-                                        <h3>Nuk ka prona të regjistruara.</h3>
+                                        <h3>
+                                            Nuk ka prona të regjistruara.
+                                        </h3>
 
                                         <p>
                                             Regjistroni një pronë për të
@@ -313,6 +329,7 @@
                                     </div>
 
                                 </td>
+
                             </tr>
 
                         {% endfor %}
@@ -346,13 +363,17 @@
             <section class="se-panel-bottom-section">
 
                 <div class="se-panel-bottom-heading">
+
                     <div>
+
                         <span class="se-panel-eyebrow">
                             PËRMBLEDHJE
                         </span>
 
                         <h2>Regjistrimet e fundit</h2>
+
                     </div>
+
                 </div>
 
                 <div class="se-panel-activity-list">
@@ -400,6 +421,7 @@
                 <div class="se-panel-bottom-heading">
 
                     <div>
+
                         <span class="se-panel-eyebrow">
                             MENAXHIMI
                         </span>
@@ -410,6 +432,7 @@
                             Zgjidhni veprimin që dëshironi
                             të kryeni.
                         </p>
+
                     </div>
 
                 </div>
@@ -437,6 +460,12 @@
                         <strong>↗</strong>
                     </a>
 
+                    <a href="{% url 'vizitat' %}">
+                        <span>▦</span>
+                        Menaxho vizitat
+                        <strong>↗</strong>
+                    </a>
+
                     <a href="{% url 'pronat' %}">
                         <span>⌂</span>
                         Shfleto pronat
@@ -454,8 +483,8 @@
                 </div>
 
                 <p class="se-panel-shortcuts-note">
-                    Moduli i vizitave do të shtohet në panel
-                    gjatë zhvillimit të tij.
+                    Menaxhoni pronat, klientët, kërkesat
+                    dhe vizitat nga paneli i Smart Estate.
                 </p>
 
             </section>

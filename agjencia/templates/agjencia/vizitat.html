@@ -1,0 +1,385 @@
+
+{% extends 'agjencia/base.html' %}
+{% load static %}
+
+{% block title %}Vizitat | Smart Estate{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'agjencia/css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="se-panel">
+
+    <aside class="se-panel-sidebar">
+
+        <div class="se-panel-sidebar-title">
+            <span>HAPËSIRA E PUNËS</span>
+            <h2>Paneli i menaxhimit</h2>
+        </div>
+
+        <nav class="se-panel-nav" aria-label="Navigimi i panelit">
+
+            <a href="{% url 'paneli' %}">
+                <span class="se-panel-nav-symbol">⌂</span>
+                <span>Paneli im</span>
+            </a>
+
+            <a href="{% url 'pronat' %}">
+                <span class="se-panel-nav-symbol">▤</span>
+                <span>Pronat</span>
+            </a>
+
+            <a href="{% url 'klientet' %}">
+                <span class="se-panel-nav-symbol">♙</span>
+                <span>Klientët</span>
+            </a>
+
+            <a href="{% url 'vizitat' %}" class="se-panel-nav-active">
+                <span class="se-panel-nav-symbol">▦</span>
+                <span>Vizitat</span>
+            </a>
+
+            <a href="{% url 'kerkesat' %}">
+                <span class="se-panel-nav-symbol">✉</span>
+                <span>Kërkesat</span>
+            </a>
+
+            <div class="se-panel-nav-divider"></div>
+
+            <a href="{% url 'shto_vizite' %}">
+                <span class="se-panel-nav-symbol">+</span>
+                <span>Shto vizitë</span>
+            </a>
+
+            <a href="{% url 'shto_prone' %}">
+                <span class="se-panel-nav-symbol">+</span>
+                <span>Shto pronë</span>
+            </a>
+
+            <a href="{% url 'pronat' %}">
+                <span class="se-panel-nav-symbol">↗</span>
+                <span>Shiko faqen publike</span>
+            </a>
+
+        </nav>
+
+        <div class="se-panel-sidebar-profile">
+
+            <div class="se-panel-profile-avatar">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+
+            <div class="se-panel-profile-info">
+
+                <strong>{{ user.username }}</strong>
+
+                {% if user.is_superuser or user.roli == "administrator" %}
+                    <span>Administrator</span>
+                {% else %}
+                    <span>Agjent</span>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <div class="se-panel-main se-clients-main">
+
+        <div class="se-panel-topbar">
+
+            <div class="se-panel-breadcrumb">
+                Smart Estate
+                <span>/</span>
+                Vizitat
+            </div>
+
+            <div class="se-panel-topbar-user">
+                <span class="se-panel-topbar-dot"></span>
+                Menaxhimi i vizitave
+            </div>
+
+        </div>
+
+        <div class="se-clients-heading">
+
+            <div>
+
+                <span class="se-panel-eyebrow">
+                    SMART ESTATE / VIZITAT
+                </span>
+
+                <h1>Vizitat</h1>
+
+                <p>
+                    Organizoni dhe menaxhoni takimet
+                    e klientëve për vizitimin e pronave.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'shto_vizite' %}"
+                class="se-panel-primary-button"
+            >
+                <span>+</span>
+                Shto vizitë
+            </a>
+
+        </div>
+
+        {% if messages %}
+            <div class="se-panel-messages">
+
+                {% for message in messages %}
+                    <div class="se-panel-message" role="status">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+            </div>
+        {% endif %}
+
+        <div class="se-clients-content">
+
+            <div class="se-clients-toolbar">
+
+                <div class="se-clients-toolbar-title">
+
+                    <h2>Lista e vizitave</h2>
+
+                    <p>
+                        {% if kerkimi %}
+                            Rezultatet e kërkimit
+                        {% else %}
+                            Vizitat e regjistruara në sistem
+                        {% endif %}
+                    </p>
+
+                </div>
+
+                <form
+                    method="GET"
+                    action="{% url 'vizitat' %}"
+                    class="se-clients-search"
+                    role="search"
+                >
+
+                    <label for="seVisitSearch">
+                        Kërko vizitë
+                    </label>
+
+                    <div class="se-clients-search-row">
+
+                        <input
+                            type="search"
+                            id="seVisitSearch"
+                            name="q"
+                            value="{{ kerkimi }}"
+                            placeholder="Klienti, kontakti ose qyteti..."
+                        >
+
+                        <button type="submit">
+                            Kërko
+                        </button>
+
+                    </div>
+
+                    {% if kerkimi %}
+                        <a
+                            href="{% url 'vizitat' %}"
+                            class="se-clients-clear"
+                        >
+                            Pastro kërkimin
+                        </a>
+                    {% endif %}
+
+                </form>
+
+            </div>
+
+            <div class="se-clients-table-scroll">
+
+                <table class="se-clients-table">
+
+                    <thead>
+                        <tr>
+                            <th>Klienti</th>
+                            <th>Prona</th>
+                            <th>Data e vizitës</th>
+                            <th>Ora</th>
+                            <th>Kontakti</th>
+                            <th>Veprimet</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for vizita in vizitat %}
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="se-clients-person">
+
+                                        <span class="se-clients-avatar">
+                                            {{ vizita.klienti.emri|slice:":1"|upper }}
+                                        </span>
+
+                                        <div>
+
+                                            <strong>
+                                                {{ vizita.klienti.emri }}
+                                            </strong>
+
+                                            <span>
+                                                Vizita #{{ vizita.id }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="se-clients-person">
+
+                                        <div>
+
+                                            <strong>
+                                                {{ vizita.prona.get_lloji_display }}
+                                            </strong>
+
+                                            <span>
+                                                {{ vizita.prona.qyteti }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        {{ vizita.data_vizites|date:"d.m.Y" }}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="se-clients-reference">
+                                        {{ vizita.data_vizites|date:"H:i" }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="se-clients-contact">
+                                        {{ vizita.klienti.kontakti }}
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <div class="se-clients-actions">
+
+                                        <a
+                                            href="{% url 'ndrysho_vizite' vizita.id %}"
+                                            class="se-clients-edit"
+                                        >
+                                            Ndrysho
+                                        </a>
+
+                                        <a
+                                            href="{% url 'fshi_vizite' vizita.id %}"
+                                            class="se-clients-delete"
+                                        >
+                                            Fshi
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td colspan="6">
+
+                                    <div class="se-clients-empty">
+
+                                        {% if kerkimi %}
+
+                                            <h3>
+                                                Nuk u gjet asnjë vizitë.
+                                            </h3>
+
+                                            <p>
+                                                Provo një emër, kontakt
+                                                ose qytet tjetër.
+                                            </p>
+
+                                            <a href="{% url 'vizitat' %}">
+                                                Shfaq të gjitha vizitat
+                                            </a>
+
+                                        {% else %}
+
+                                            <h3>
+                                                Ende nuk ka vizita
+                                                të regjistruara.
+                                            </h3>
+
+                                            <p>
+                                                Regjistro vizitën e parë
+                                                duke zgjedhur klientin,
+                                                pronën, datën dhe orën.
+                                            </p>
+
+                                            <a href="{% url 'shto_vizite' %}">
+                                                + Regjistro vizitë
+                                            </a>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="se-clients-footer">
+
+                <span>
+                    Vizita të shfaqura: {{ numri_vizitave }}
+                </span>
+
+                <span>
+                    Smart Estate
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -35,6 +35,13 @@ from agjencia.kerkesa_actions import (
     fshi_kerkese_page,
 )
 
+from agjencia.vizita_actions import (
+    vizitat_page,
+    shto_vizite_page,
+    ndrysho_vizite_page,
+    fshi_vizite_page,
+)
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -142,6 +149,30 @@ urlpatterns = [
         "fshi-kerkese/<int:kerkesa_id>/",
         fshi_kerkese_page,
         name="fshi_kerkese",
+    ),
+
+    path(
+        "vizitat/",
+        vizitat_page,
+        name="vizitat",
+    ),
+
+    path(
+        "shto-vizite/",
+        shto_vizite_page,
+        name="shto_vizite",
+    ),
+
+    path(
+        "ndrysho-vizite/<int:vizita_id>/",
+        ndrysho_vizite_page,
+        name="ndrysho_vizite",
+    ),
+
+    path(
+        "fshi-vizite/<int:vizita_id>/",
+        fshi_vizite_page,
+        name="fshi_vizite",
     ),
 ]
 

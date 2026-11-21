@@ -1,0 +1,168 @@
+
+{% extends 'agjencia/base.html' %}
+
+{% block title %}Fshi vizitën | Smart Estate{% endblock %}
+
+{% block content %}
+
+<section class="se-delete-page">
+
+    <div class="se-delete-container">
+
+        <a href="{% url 'vizitat' %}" class="se-delete-back">
+            ← Kthehu te vizitat
+        </a>
+
+        <div class="se-delete-heading">
+
+            <span>SMART ESTATE / MENAXHIMI I VIZITAVE</span>
+
+            <h1>Fshirja e vizitës</h1>
+
+            <p>
+                Kontrollo informacionet e takimit
+                përpara se të konfirmosh fshirjen.
+            </p>
+
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="se-delete-message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="se-delete-layout">
+
+            <div class="se-delete-property">
+
+                <div class="se-delete-no-photo">
+                    Smart Estate
+                </div>
+
+                <div class="se-delete-property-info">
+
+                    <span>VIZITA E ZGJEDHUR</span>
+
+                    <h2>
+                        {{ vizita.klienti.emri }}
+                    </h2>
+
+                    <div class="se-delete-details">
+
+                        <p>
+                            <span>Klienti</span>
+
+                            <strong>
+                                {{ vizita.klienti.emri }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>Kontakti</span>
+
+                            <strong>
+                                {{ vizita.klienti.kontakti }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>Prona</span>
+
+                            <strong>
+                                {{ vizita.prona.get_lloji_display }}
+                                në {{ vizita.prona.qyteti }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>Data e vizitës</span>
+
+                            <strong>
+                                {{ vizita.data_vizites|date:"d.m.Y" }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>Ora e vizitës</span>
+
+                            <strong>
+                                {{ vizita.data_vizites|date:"H:i" }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <span>Referenca</span>
+
+                            <strong>
+                                #{{ vizita.id }}
+                            </strong>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="se-delete-confirm">
+
+                <span class="se-delete-symbol">!</span>
+
+                <h2>
+                    A jeni të sigurt që dëshironi
+                    ta fshini këtë vizitë?
+                </h2>
+
+                <p>
+                    Takimi i regjistruar ndërmjet
+                    klientit dhe pronës së zgjedhur
+                    do të largohet nga sistemi.
+                </p>
+
+                <p class="se-delete-warning">
+                    Ky veprim nuk mund të
+                    kthehet automatikisht.
+                </p>
+
+                <form
+                    method="POST"
+                    action="{% url 'fshi_vizite' vizita.id %}"
+                    class="se-delete-form"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="se-delete-submit"
+                    >
+                        Po, fshije vizitën
+                    </button>
+
+                    <a
+                        href="{% url 'vizitat' %}"
+                        class="se-delete-cancel"
+                    >
+                        Jo, anulo
+                    </a>
+
+                </form>
+
+                <p class="se-delete-note">
+                    Fshirja e vizitës nuk e fshin
+                    klientin ose pronën nga databaza.
+                    Largohet vetëm takimi i regjistruar.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
