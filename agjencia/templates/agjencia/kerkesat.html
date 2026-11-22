@@ -1,367 +1,411 @@
 
-{% extends 'agjencia/base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="sq">
 
-{% block title %}Kërkesat | Smart Estate{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'agjencia/css/dashboard.css' %}">
-{% endblock %}
+    <title>Kërkesat | Smart Estate</title>
 
-{% block content %}
+    <link
+        rel="stylesheet"
+        href="{% static 'agjencia/css/dashboard.css' %}"
+    >
+</head>
 
-<section class="se-panel">
+<body class="sd-body">
 
-    <aside class="se-panel-sidebar">
+<header class="sd-header">
 
-        <div class="se-panel-sidebar-title">
-            <span>HAPËSIRA E PUNËS</span>
-            <h2>Paneli i menaxhimit</h2>
-        </div>
+    <div class="sd-container">
 
-        <nav class="se-panel-nav" aria-label="Navigimi i panelit">
+        <div class="sd-topbar">
 
-            <a href="{% url 'paneli' %}">
-                <span class="se-panel-nav-symbol">⌂</span>
-                <span>Paneli im</span>
-            </a>
+            <a href="{% url 'paneli' %}" class="sd-brand">
 
-            <a href="{% url 'pronat' %}">
-                <span class="se-panel-nav-symbol">▤</span>
-                <span>Pronat</span>
-            </a>
+                <svg
+                    class="sd-brand-icon"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 30L32 8L58 30"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
 
-            <a href="{% url 'klientet' %}">
-                <span class="se-panel-nav-symbol">♙</span>
-                <span>Klientët</span>
-            </a>
+                    <path
+                        d="M14 28V56H50V28"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
 
-            <a href="{% url 'vizitat' %}">
-                <span class="se-panel-nav-symbol">▦</span>
-                <span>Vizitat</span>
-            </a>
+                    <path
+                        d="M27 56V39H38V56"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linejoin="round"
+                    />
 
-            <a href="{% url 'kerkesat' %}" class="se-panel-nav-active">
-                <span class="se-panel-nav-symbol">✉</span>
-                <span>Kërkesat</span>
-            </a>
+                    <path
+                        d="M45 11V20"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                    />
+                </svg>
 
-            <div class="se-panel-nav-divider"></div>
+                <span>
 
-            <a href="{% url 'shto_kerkese' %}">
-                <span class="se-panel-nav-symbol">+</span>
-                <span>Shto kërkesë</span>
-            </a>
+                    <span class="sd-brand-name">
+                        Smart <strong>Estate</strong>
+                    </span>
 
-            <a href="{% url 'shto_prone' %}">
-                <span class="se-panel-nav-symbol">+</span>
-                <span>Shto pronë</span>
-            </a>
+                    <span class="sd-brand-subtitle">
+                        Agjenci për Menaxhimin e Patundshmërive
+                    </span>
 
-        </nav>
-
-        <div class="se-panel-sidebar-profile">
-
-            <div class="se-panel-profile-avatar">
-                {{ user.username|slice:":1"|upper }}
-            </div>
-
-            <div class="se-panel-profile-info">
-                <strong>{{ user.username }}</strong>
-
-                {% if user.is_superuser or user.roli == "administrator" %}
-                    <span>Administrator</span>
-                {% else %}
-                    <span>Agjent</span>
-                {% endif %}
-            </div>
-
-        </div>
-
-    </aside>
-
-    <div class="se-panel-main se-clients-main">
-
-        <div class="se-panel-topbar">
-
-            <div class="se-panel-breadcrumb">
-                Smart Estate
-                <span>/</span>
-                Kërkesat
-            </div>
-
-            <div class="se-panel-topbar-user">
-                <span class="se-panel-topbar-dot"></span>
-                Menaxhimi i kërkesave
-            </div>
-
-        </div>
-
-        <div class="se-clients-heading">
-
-            <div>
-
-                <span class="se-panel-eyebrow">
-                    SMART ESTATE / KËRKESAT
                 </span>
 
-                <h1>Kërkesat</h1>
-
-                <p>
-                    Menaxhoni interesimin e klientëve
-                    për pronat e regjistruara në sistem.
-                </p>
-
-            </div>
-
-            <a
-                href="{% url 'shto_kerkese' %}"
-                class="se-panel-primary-button"
-            >
-                <span>+</span>
-                Shto kërkesë
             </a>
 
-        </div>
+            <div class="sd-user">
 
-        {% if messages %}
-            <div class="se-panel-messages">
+                <div class="sd-user-info">
 
-                {% for message in messages %}
-                    <div class="se-panel-message" role="status">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+                    <strong>
+                        {{ user.first_name|default:user.username }}
+                    </strong>
 
-            </div>
-        {% endif %}
-
-        <div class="se-clients-content">
-
-            <div class="se-clients-toolbar">
-
-                <div class="se-clients-toolbar-title">
-
-                    <h2>Lista e kërkesave</h2>
-
-                    <p>
-                        {% if kerkimi %}
-                            Rezultatet e kërkimit
+                    <span>
+                        {% if user.is_superuser or user.roli == "administrator" %}
+                            Administrator
                         {% else %}
-                            Kërkesat e regjistruara në sistem
+                            Agjent
                         {% endif %}
-                    </p>
+                    </span>
 
                 </div>
 
-                <form
-                    method="GET"
-                    action="{% url 'kerkesat' %}"
-                    class="se-clients-search"
-                    role="search"
-                >
+                <form method="POST" action="{% url 'dalja' %}">
+                    {% csrf_token %}
 
-                    <label for="seRequestSearch">
-                        Kërko kërkesë
-                    </label>
-
-                    <div class="se-clients-search-row">
-
-                        <input
-                            type="search"
-                            id="seRequestSearch"
-                            name="q"
-                            value="{{ kerkimi }}"
-                            placeholder="Klienti, kontakti ose qyteti..."
-                        >
-
-                        <button type="submit">
-                            Kërko
-                        </button>
-
-                    </div>
-
-                    {% if kerkimi %}
-                        <a
-                            href="{% url 'kerkesat' %}"
-                            class="se-clients-clear"
-                        >
-                            Pastro kërkimin
-                        </a>
-                    {% endif %}
-
+                    <button type="submit" class="sd-logout">
+                        Shkyçu
+                    </button>
                 </form>
 
             </div>
 
-            <div class="se-clients-table-scroll">
+        </div>
 
-                <table class="se-clients-table">
+        <div class="sd-hero">
 
-                    <thead>
+            <div>
+
+                <span class="sd-eyebrow">
+                    SMART ESTATE / MENAXHIMI I KËRKESAVE
+                </span>
+
+                <h1 class="sd-title">
+                    Kërkesat
+                </h1>
+
+                <p class="sd-description">
+                    Menaxho kërkesat e klientëve për prona,
+                    në mënyrë të thjeshtë dhe të organizuar.
+                </p>
+
+            </div>
+
+            <nav
+                class="sd-nav"
+                aria-label="Navigimi i panelit"
+            >
+
+                <a href="{% url 'paneli' %}">
+                    Paneli
+                </a>
+
+                <a href="{% url 'pronat' %}">
+                    Pronat
+                </a>
+
+                <a href="{% url 'klientet' %}">
+                    Klientët
+                </a>
+
+                <a
+                    href="{% url 'kerkesat' %}"
+                    class="current"
+                    aria-current="page"
+                >
+                    Kërkesat
+                </a>
+
+                <a href="{% url 'vizitat' %}">
+                    Vizitat
+                </a>
+
+            </nav>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main class="sd-container sd-main">
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="sd-alert" role="status">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <section class="sd-list-panel">
+
+        <div class="sd-list-toolbar">
+
+            <div>
+
+                <h2>Lista e kërkesave</h2>
+
+                <p>
+                    {% if kerkimi %}
+                        Rezultatet e kërkimit
+                    {% else %}
+                        Kërkesat e regjistruara në sistem
+                    {% endif %}
+                </p>
+
+                {% if user.is_superuser or user.roli == "administrator" or user.roli == "agjent" %}
+
+                    <p>
+                        <a
+                            href="{% url 'shto_kerkese' %}"
+                            class="sd-text-link"
+                        >
+                            + Shto kërkesë të re
+                        </a>
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+            <form
+                method="GET"
+                action="{% url 'kerkesat' %}"
+                class="sd-search"
+                role="search"
+            >
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ kerkimi }}"
+                    placeholder="Klienti, kontakti ose qyteti..."
+                    aria-label="Kërko kërkesë"
+                >
+
+                <button type="submit">
+                    Kërko
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="sd-table-scroll">
+
+            <table class="sd-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Klienti</th>
+                        <th>Prona e kërkuar</th>
+                        <th>Kontakti</th>
+                        <th>Referenca</th>
+                        <th>Veprimet</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for kerkesa in kerkesat %}
+
                         <tr>
-                            <th>Klienti</th>
-                            <th>Prona e kërkuar</th>
-                            <th>Kontakti</th>
-                            <th>Referenca</th>
-                            <th>Veprimet</th>
-                        </tr>
-                    </thead>
 
-                    <tbody>
+                            <td>
 
-                        {% for kerkesa in kerkesat %}
+                                <strong class="sd-cell-title">
+                                    {{ kerkesa.klienti.emri }}
+                                </strong>
 
-                            <tr>
+                                <span class="sd-cell-subtitle">
+                                    Klient i interesuar
+                                </span>
 
-                                <td>
+                            </td>
 
-                                    <div class="se-clients-person">
+                            <td>
 
-                                        <span class="se-clients-avatar">
-                                            {{ kerkesa.klienti.emri|slice:":1"|upper }}
-                                        </span>
+                                <strong class="sd-cell-title">
+                                    {{ kerkesa.prona.get_lloji_display }}
+                                </strong>
 
-                                        <div>
-                                            <strong>
-                                                {{ kerkesa.klienti.emri }}
-                                            </strong>
+                                <span class="sd-cell-subtitle">
+                                    {{ kerkesa.prona.qyteti }}
+                                </span>
 
-                                            <span>
-                                                Klient i regjistruar
-                                            </span>
-                                        </div>
+                            </td>
 
-                                    </div>
+                            <td>
+                                {{ kerkesa.klienti.kontakti }}
+                            </td>
 
-                                </td>
+                            <td>
+                                #{{ kerkesa.id }}
+                            </td>
 
-                                <td>
+                            <td>
 
-                                    <div class="se-clients-person">
+                                <div class="sd-actions">
 
-                                        <div>
-                                            <strong>
-                                                {{ kerkesa.prona.get_lloji_display }}
-                                            </strong>
-
-                                            <span>
-                                                {{ kerkesa.prona.qyteti }}
-                                            </span>
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-                                <td>
-                                    <span class="se-clients-contact">
-                                        {{ kerkesa.klienti.kontakti }}
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <span class="se-clients-reference">
-                                        #{{ kerkesa.id }}
-                                    </span>
-                                </td>
-
-                                <td>
-
-                                    <div class="se-clients-actions">
+                                    {% if user.is_superuser or user.roli == "administrator" or user.roli == "agjent" %}
 
                                         <a
                                             href="{% url 'ndrysho_kerkese' kerkesa.id %}"
-                                            class="se-clients-edit"
                                         >
                                             Ndrysho
                                         </a>
 
                                         <a
                                             href="{% url 'fshi_kerkese' kerkesa.id %}"
-                                            class="se-clients-delete"
+                                            class="sd-delete"
                                         >
                                             Fshi
                                         </a>
 
-                                    </div>
+                                    {% else %}
 
-                                </td>
+                                        <span class="sd-cell-subtitle">
+                                            Vetëm për lexim
+                                        </span>
 
-                            </tr>
+                                    {% endif %}
 
-                        {% empty %}
+                                </div>
 
-                            <tr>
+                            </td>
 
-                                <td colspan="5">
+                        </tr>
 
-                                    <div class="se-clients-empty">
+                    {% empty %}
 
-                                        {% if kerkimi %}
+                        <tr>
 
-                                            <h3>
-                                                Nuk u gjet asnjë kërkesë.
-                                            </h3>
+                            <td colspan="5" class="sd-empty">
 
-                                            <p>
-                                                Provo një emër, kontakt
-                                                ose qytet tjetër.
-                                            </p>
+                                {% if kerkimi %}
 
-                                            <a href="{% url 'kerkesat' %}">
-                                                Shfaq të gjitha kërkesat
-                                            </a>
+                                    <h3>
+                                        Nuk u gjet asnjë kërkesë.
+                                    </h3>
 
-                                        {% else %}
+                                    <p>
+                                        Provo të kërkosh sipas emrit
+                                        të klientit, kontaktit ose qytetit.
+                                    </p>
 
-                                            <h3>
-                                                Ende nuk ka kërkesa
-                                                për t'u shfaqur.
-                                            </h3>
+                                    <a href="{% url 'kerkesat' %}">
+                                        Shfaq të gjitha kërkesat
+                                    </a>
 
-                                            <p>
-                                                Regjistro kërkesën e parë
-                                                për të lidhur një klient
-                                                me një pronë.
-                                            </p>
+                                {% else %}
 
-                                            <a href="{% url 'shto_kerkese' %}">
-                                                + Regjistro kërkesë
-                                            </a>
+                                    <h3>
+                                        Ende nuk ka kërkesa të regjistruara.
+                                    </h3>
 
-                                        {% endif %}
+                                    <p>
+                                        Kërkesat e klientëve për prona
+                                        do të shfaqen këtu.
+                                    </p>
 
-                                    </div>
+                                    {% if user.is_superuser or user.roli == "administrator" or user.roli == "agjent" %}
 
-                                </td>
+                                        <a href="{% url 'shto_kerkese' %}">
+                                            + Regjistro kërkesë
+                                        </a>
 
-                            </tr>
+                                    {% endif %}
 
-                        {% endfor %}
+                                {% endif %}
 
-                    </tbody>
+                            </td>
 
-                </table>
+                        </tr>
 
-            </div>
+                    {% endfor %}
 
-            <div class="se-clients-footer">
+                </tbody>
 
-                <span>
-                    Kërkesa të shfaqura: {{ numri_kerkesave }}
-                </span>
-
-                <span>
-                    Smart Estate
-                </span>
-
-            </div>
+            </table>
 
         </div>
 
-    </div>
+        <div class="sd-table-footer">
 
-</section>
+            <span>
+                Kërkesa të shfaqura:
+                {{ numri_kerkesave|default:0 }}
+            </span>
 
-{% endblock %}
+            {% if kerkimi %}
+
+                <a
+                    href="{% url 'kerkesat' %}"
+                    class="sd-text-link"
+                >
+                    Pastro kërkimin
+                </a>
+
+            {% else %}
+
+                <span>Smart Estate</span>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+<div class="sd-page-end">
+    <h3>Smart Estate Dashboard</h3>
+    <p>
+        Kjo hapësirë përdoret për menaxhimin e
+        <strong>pronave</strong>, <strong>klientëve</strong>,
+        <strong>kërkesave</strong> dhe <strong>vizitave</strong>
+        në mënyrë të organizuar dhe profesionale.
+    </p>
+</div>
+</main>
+
+</body>
+</html>

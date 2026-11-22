@@ -1,277 +1,356 @@
 
-{% extends 'agjencia/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="sq">
 
-{% block title %}Ndrysho pronën | Smart Estate{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
+    <title>Ndrysho Pronë | Smart Estate</title>
 
-<section class="se-add-page se-edit-page">
+    <link
+        rel="stylesheet"
+        href="{% static 'agjencia/css/dashboard.css' %}"
+    >
 
-    <div class="se-add-container">
+    {{ form.media }}
+</head>
 
-        <div class="se-add-top">
+<body class="sd-body">
 
-            <a href="{% url 'paneli' %}" class="se-add-back">
-                ← Kthehu te paneli
+<header class="sd-header">
+
+    <div class="sd-container">
+
+        <div class="sd-topbar">
+
+            <a href="{% url 'paneli' %}" class="sd-brand">
+
+                <svg
+                    class="sd-brand-icon"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 30L32 8L58 30"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M14 28V56H50V28"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M27 56V39H38V56"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M45 11V20"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                    />
+                </svg>
+
+                <span>
+
+                    <span class="sd-brand-name">
+                        Smart <strong>Estate</strong>
+                    </span>
+
+                    <span class="sd-brand-subtitle">
+                        Agjenci për Menaxhimin e Patundshmërive
+                    </span>
+
+                </span>
+
             </a>
 
-            <span class="se-add-eyebrow">
-                SMART ESTATE / MENAXHIMI I PRONAVE
-            </span>
+            <div class="sd-user">
 
-            <h1>
-                Ndrysho <span>pronën</span>
-            </h1>
+                <div class="sd-user-info">
 
-            <p>
-                Përditëso informacionet e pronës dhe
-                ruaj ndryshimet në sistem.
-            </p>
+                    <strong>
+                        {{ user.first_name|default:user.username }}
+                    </strong>
 
-        </div>
-
-        <div class="se-add-layout">
-
-            <div class="se-add-form-card">
-
-                <div class="se-add-form-heading">
-
-                    <div class="se-add-heading-icon">
-                        ✎
-                    </div>
-
-                    <div>
-                        <h2>Informacionet e pronës</h2>
-                        <p>
-                            Ndrysho vetëm fushat që
-                            dëshiron të përditësosh.
-                        </p>
-                    </div>
+                    <span>
+                        {% if user.is_superuser or user.roli == "administrator" %}
+                            Administrator
+                        {% else %}
+                            Agjent
+                        {% endif %}
+                    </span>
 
                 </div>
 
-                <form
-                    method="POST"
-                    enctype="multipart/form-data"
-                    class="se-add-form"
-                >
-
+                <form method="POST" action="{% url 'dalja' %}">
                     {% csrf_token %}
 
-                    {% if form.non_field_errors %}
-                        <div class="se-add-error-box">
-                            {% for error in form.non_field_errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    <div class="se-add-section-title">
-                        <span>01</span>
-                        Të dhënat kryesore
-                    </div>
-
-                    <div class="se-add-fields">
-
-                        <div class="se-add-field">
-
-                            <label for="{{ form.lloji.id_for_label }}">
-                                Lloji i pronës
-                            </label>
-
-                            {{ form.lloji }}
-
-                            {% for error in form.lloji.errors %}
-                                <p class="se-add-field-error">
-                                    {{ error }}
-                                </p>
-                            {% endfor %}
-
-                        </div>
-
-                        <div class="se-add-field">
-
-                            <label for="{{ form.qyteti.id_for_label }}">
-                                Qyteti
-                            </label>
-
-                            {{ form.qyteti }}
-
-                            {% for error in form.qyteti.errors %}
-                                <p class="se-add-field-error">
-                                    {{ error }}
-                                </p>
-                            {% endfor %}
-
-                        </div>
-
-                        <div class="se-add-field">
-
-                            <label for="{{ form.cmimi.id_for_label }}">
-                                Çmimi (€)
-                            </label>
-
-                            {{ form.cmimi }}
-
-                            {% for error in form.cmimi.errors %}
-                                <p class="se-add-field-error">
-                                    {{ error }}
-                                </p>
-                            {% endfor %}
-
-                        </div>
-
-                        <div class="se-add-field">
-
-                            <label for="{{ form.siperfaqja.id_for_label }}">
-                                Sipërfaqja (m²)
-                            </label>
-
-                            {{ form.siperfaqja }}
-
-                            {% for error in form.siperfaqja.errors %}
-                                <p class="se-add-field-error">
-                                    {{ error }}
-                                </p>
-                            {% endfor %}
-
-                        </div>
-
-                    </div>
-
-                    <div class="se-add-divider"></div>
-
-                    <div class="se-add-section-title">
-                        <span>02</span>
-                        Fotografia e pronës
-                    </div>
-
-                    <div class="se-add-upload">
-
-                        <div class="se-add-upload-icon">
-                            ↑
-                        </div>
-
-                        <h3>Ndrysho fotografinë</h3>
-
-                        <p>
-                            Nëse dëshiron një fotografi të re,
-                            zgjidhe nga kompjuteri.
-                            Përndryshe, lëre fotografinë aktuale.
-                        </p>
-
-                        <div class="se-add-file-input">
-                            {{ form.foto }}
-                        </div>
-
-                        {% for error in form.foto.errors %}
-                            <p class="se-add-field-error">
-                                {{ error }}
-                            </p>
-                        {% endfor %}
-
-                        <span class="se-add-file-help">
-                            Madhësia maksimale: 5 MB
-                        </span>
-
-                    </div>
-
-                    <div class="se-add-actions">
-
-                        <a
-                            href="{% url 'detajet_prones' prona.id %}"
-                            class="se-add-cancel"
-                        >
-                            Anulo
-                        </a>
-
-                        <button type="submit" class="se-add-submit">
-                            <span>✓</span>
-                            Ruaj ndryshimet
-                        </button>
-
-                    </div>
+                    <button type="submit" class="sd-logout">
+                        Shkyçu
+                    </button>
 
                 </form>
 
             </div>
 
-            <aside class="se-add-sidebar">
+        </div>
 
-                <div class="se-add-info-card">
+        <div class="sd-hero">
 
-                    <span class="se-add-info-eyebrow">
-                        PRONA AKTUALE
-                    </span>
+            <div>
 
-                    {% if prona.foto %}
-                        <img
-                            src="{{ prona.foto.url }}"
-                            alt="Fotografia aktuale e pronës"
-                            class="se-edit-preview-image"
-                        >
-                    {% endif %}
+                <span class="sd-eyebrow">
+                    SMART ESTATE / MENAXHIMI I PRONAVE
+                </span>
 
-                    <h2>
-                        {{ prona.get_lloji_display }}
-                        në {{ prona.qyteti }}
-                    </h2>
+                <h1 class="sd-title">
+                    Ndrysho pronën
+                </h1>
 
-                    <p>
-                        Kjo është prona që po përditëson.
-                        Ndryshimet ruhen vetëm pasi të
-                        klikosh butonin "Ruaj ndryshimet".
-                    </p>
+                <p class="sd-description">
+                    Përditëso informacionet dhe fotografinë
+                    e pronës së regjistruar.
+                </p>
 
-                    <div class="se-add-info-line"></div>
+            </div>
 
-                    <div class="se-add-info-item">
+            <nav class="sd-nav" aria-label="Navigimi i panelit">
 
-                        <div class="se-add-info-icon">✓</div>
+                <a href="{% url 'paneli' %}">
+                    Paneli
+                </a>
 
-                        <div>
-                            <strong>Çmimi aktual</strong>
-                            <p>{{ prona.cmimi }} €</p>
-                        </div>
+                <a href="{% url 'pronat' %}" class="current">
+                    Pronat
+                </a>
 
-                    </div>
+                <a href="{% url 'klientet' %}">
+                    Klientët
+                </a>
 
-                    <div class="se-add-info-item">
+                <a href="{% url 'kerkesat' %}">
+                    Kërkesat
+                </a>
 
-                        <div class="se-add-info-icon">✓</div>
+                <a href="{% url 'vizitat' %}">
+                    Vizitat
+                </a>
 
-                        <div>
-                            <strong>Sipërfaqja aktuale</strong>
-                            <p>{{ prona.siperfaqja }} m²</p>
-                        </div>
-
-                    </div>
-
-                    <div class="se-add-info-item">
-
-                        <div class="se-add-info-icon">✓</div>
-
-                        <div>
-                            <strong>Shiko pronën</strong>
-
-                            <a
-                                href="{% url 'detajet_prones' prona.id %}"
-                                class="se-edit-view-link"
-                            >
-                                Hap detajet →
-                            </a>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </aside>
+            </nav>
 
         </div>
 
     </div>
 
-</section>
+</header>
 
-{% endblock %}
+<main class="sd-container sd-main">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="sd-alert" role="status">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="sd-list-panel">
+
+        <div class="sd-list-toolbar">
+
+            <div>
+
+                <h2>Përditësimi i pronës</h2>
+
+                <p>
+                    Ndrysho të dhënat e nevojshme
+                    dhe ruaji përditësimet.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'paneli' %}"
+                class="sd-button sd-button-outline"
+            >
+                Kthehu te paneli
+            </a>
+
+        </div>
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="sd-property-form"
+        >
+
+            {% csrf_token %}
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+
+                <div class="se-client-form-error">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+            <div class="sd-property-form-heading">
+
+                <h3>Informacionet e pronës</h3>
+
+                <p>
+                    Përditëso fushat që dëshiron të ndryshosh.
+                </p>
+
+            </div>
+
+            <div class="sd-property-form-grid">
+
+                {% for field in form.visible_fields %}
+
+                    <div class="sd-property-field
+                        {% if field.name == 'foto' %}
+                            sd-property-field-full
+                        {% endif %}
+                    ">
+
+                        <label for="{{ field.id_for_label }}">
+
+                            {{ field.label }}
+
+                            {% if field.field.required %}
+                                <span class="sd-required">*</span>
+                            {% endif %}
+
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+
+                            <small class="sd-field-help">
+                                {{ field.help_text }}
+                            </small>
+
+                        {% endif %}
+
+                        {% for error in field.errors %}
+
+                            <p class="se-client-field-error">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% if form.instance.foto or form.instance.fotot.all %}
+
+                <div class="sd-property-form-heading">
+
+                    <h3>Fotografitë aktuale</h3>
+
+                    <p>
+                        Fotografitë e lidhura me këtë pronë.
+                    </p>
+
+                </div>
+
+                <div class="sd-property-row">
+
+                    {% if form.instance.foto %}
+
+                        <a
+                            href="{{ form.instance.foto.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="sd-property-photo"
+                            aria-label="Hap fotografinë kryesore"
+                        >
+
+                            <img
+                                src="{{ form.instance.foto.url }}"
+                                alt="Fotografia kryesore e pronës"
+                                loading="lazy"
+                            >
+
+                        </a>
+
+                    {% endif %}
+
+                    {% for fotografia in form.instance.fotot.all %}
+
+                        {% if fotografia.foto %}
+
+                            <a
+                                href="{{ fotografia.foto.url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="sd-property-photo"
+                                aria-label="Hap fotografinë e galerisë"
+                            >
+
+                                <img
+                                    src="{{ fotografia.foto.url }}"
+                                    alt="Fotografi e pronës"
+                                    loading="lazy"
+                                >
+
+                            </a>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+            <div class="sd-property-form-actions">
+
+                <a
+                    href="{% url 'paneli' %}"
+                    class="sd-button sd-button-outline"
+                >
+                    Anulo
+                </a>
+
+                <button
+                    type="submit"
+                    class="sd-button"
+                >
+                    Ruaj ndryshimet
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+</html>

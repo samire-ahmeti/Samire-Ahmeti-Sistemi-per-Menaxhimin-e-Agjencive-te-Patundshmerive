@@ -1,153 +1,351 @@
 
-{% extends 'agjencia/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="sq">
 
-{% block title %}Fshi kërkesën | Smart Estate{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
+    <title>Fshi Kërkesë | Smart Estate</title>
 
-<section class="se-delete-page">
+    <link
+        rel="stylesheet"
+        href="{% static 'agjencia/css/dashboard.css' %}"
+    >
+</head>
 
-    <div class="se-delete-container">
+<body class="sd-body">
 
-        <a href="{% url 'kerkesat' %}" class="se-delete-back">
-            ← Kthehu te kërkesat
-        </a>
+<header class="sd-header">
 
-        <div class="se-delete-heading">
+    <div class="sd-container">
 
-            <span>SMART ESTATE / MENAXHIMI I KËRKESAVE</span>
+        <div class="sd-topbar">
 
-            <h1>Fshirja e kërkesës</h1>
+            <a href="{% url 'paneli' %}" class="sd-brand">
 
-            <p>
-                Kontrollo informacionet e kërkesës
-                përpara se të konfirmosh fshirjen.
-            </p>
-
-        </div>
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="se-delete-message" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        <div class="se-delete-layout">
-
-            <div class="se-delete-property">
-
-                <div class="se-delete-no-photo">
-                    Smart Estate
-                </div>
-
-                <div class="se-delete-property-info">
-
-                    <span>KËRKESA E ZGJEDHUR</span>
-
-                    <h2>
-                        {{ kerkesa.klienti.emri }}
-                    </h2>
-
-                    <div class="se-delete-details">
-
-                        <p>
-                            <span>Klienti</span>
-
-                            <strong>
-                                {{ kerkesa.klienti.emri }}
-                            </strong>
-                        </p>
-
-                        <p>
-                            <span>Kontakti</span>
-
-                            <strong>
-                                {{ kerkesa.klienti.kontakti }}
-                            </strong>
-                        </p>
-
-                        <p>
-                            <span>Prona</span>
-
-                            <strong>
-                                {{ kerkesa.prona.get_lloji_display }}
-                                në {{ kerkesa.prona.qyteti }}
-                            </strong>
-                        </p>
-
-                        <p>
-                            <span>Referenca</span>
-
-                            <strong>
-                                #{{ kerkesa.id }}
-                            </strong>
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="se-delete-confirm">
-
-                <span class="se-delete-symbol">!</span>
-
-                <h2>
-                    A jeni të sigurt që dëshironi
-                    ta fshini këtë kërkesë?
-                </h2>
-
-                <p>
-                    Kërkesa e klientit për pronën
-                    e zgjedhur do të largohet
-                    nga sistemi.
-                </p>
-
-                <p class="se-delete-warning">
-                    Ky veprim nuk mund të
-                    kthehet automatikisht.
-                </p>
-
-                <form
-                    method="POST"
-                    action="{% url 'fshi_kerkese' kerkesa.id %}"
-                    class="se-delete-form"
+                <svg
+                    class="sd-brand-icon"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    aria-hidden="true"
                 >
+                    <path
+                        d="M6 30L32 8L58 30"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
 
+                    <path
+                        d="M14 28V56H50V28"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M27 56V39H38V56"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M45 11V20"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                    />
+                </svg>
+
+                <span>
+
+                    <span class="sd-brand-name">
+                        Smart <strong>Estate</strong>
+                    </span>
+
+                    <span class="sd-brand-subtitle">
+                        Agjenci për Menaxhimin e Patundshmërive
+                    </span>
+
+                </span>
+
+            </a>
+
+            <div class="sd-user">
+
+                <div class="sd-user-info">
+
+                    <strong>
+                        {{ user.first_name|default:user.username }}
+                    </strong>
+
+                    <span>
+                        {% if user.is_superuser or user.roli == "administrator" %}
+                            Administrator
+                        {% else %}
+                            Agjent
+                        {% endif %}
+                    </span>
+
+                </div>
+
+                <form method="POST" action="{% url 'dalja' %}">
                     {% csrf_token %}
 
-                    <button
-                        type="submit"
-                        class="se-delete-submit"
-                    >
-                        Po, fshije kërkesën
+                    <button type="submit" class="sd-logout">
+                        Shkyçu
                     </button>
-
-                    <a
-                        href="{% url 'kerkesat' %}"
-                        class="se-delete-cancel"
-                    >
-                        Jo, anulo
-                    </a>
 
                 </form>
 
-                <p class="se-delete-note">
-                    Fshirja e kërkesës nuk e fshin
-                    klientin ose pronën nga databaza.
-                    Largohet vetëm lidhja e regjistruar
-                    ndërmjet tyre.
+            </div>
+
+        </div>
+
+        <div class="sd-hero">
+
+            <div>
+
+                <span class="sd-eyebrow">
+                    SMART ESTATE / MENAXHIMI I KËRKESAVE
+                </span>
+
+                <h1 class="sd-title">
+                    Fshi kërkesën
+                </h1>
+
+                <p class="sd-description">
+                    Kontrollo informacionet e kërkesës
+                    përpara se ta fshish nga sistemi.
                 </p>
 
             </div>
+
+            <nav
+                class="sd-nav"
+                aria-label="Navigimi i panelit"
+            >
+
+                <a href="{% url 'paneli' %}">
+                    Paneli
+                </a>
+
+                <a href="{% url 'pronat' %}">
+                    Pronat
+                </a>
+
+                <a href="{% url 'klientet' %}">
+                    Klientët
+                </a>
+
+                <a
+                    href="{% url 'kerkesat' %}"
+                    class="current"
+                    aria-current="page"
+                >
+                    Kërkesat
+                </a>
+
+                <a href="{% url 'vizitat' %}">
+                    Vizitat
+                </a>
+
+            </nav>
 
         </div>
 
     </div>
 
-</section>
+</header>
 
-{% endblock %}
+<main class="sd-container sd-main">
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="sd-alert" role="status">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <section class="sd-list-panel">
+
+        <div class="sd-list-toolbar">
+
+            <div>
+
+                <h2>Konfirmimi i fshirjes</h2>
+
+                <p>
+                    Kontrollo të dhënat përpara
+                    se të vazhdosh.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'kerkesat' %}"
+                class="sd-button sd-button-outline"
+            >
+                Kthehu te kërkesat
+            </a>
+
+        </div>
+
+        <div class="sd-property-form">
+
+            <div class="sd-property-form-heading">
+
+                <h3>
+                    A dëshiron ta fshish këtë kërkesë?
+                </h3>
+
+                <p>
+                    Pas konfirmimit, kjo kërkesë do të
+                    largohet nga sistemi. Ky veprim
+                    nuk mund të anulohet pas fshirjes.
+                </p>
+
+            </div>
+
+            <div class="sd-property-form-grid">
+
+                <div class="sd-property-field">
+
+                    <label>Klienti</label>
+
+                    <strong class="sd-cell-title">
+
+                        {% if kerkesa %}
+
+                            {{ kerkesa.klienti.emri }}
+
+                        {% elif object %}
+
+                            {{ object.klienti.emri }}
+
+                        {% else %}
+
+                            Klienti i përzgjedhur
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+                <div class="sd-property-field">
+
+                    <label>Prona</label>
+
+                    <strong class="sd-cell-title">
+
+                        {% if kerkesa %}
+
+                            {{ kerkesa.prona.get_lloji_display }}
+
+                        {% elif object %}
+
+                            {{ object.prona.get_lloji_display }}
+
+                        {% else %}
+
+                            Prona e përzgjedhur
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+                <div class="sd-property-field">
+
+                    <label>Qyteti i pronës</label>
+
+                    <span class="sd-cell-title">
+
+                        {% if kerkesa %}
+
+                            {{ kerkesa.prona.qyteti }}
+
+                        {% elif object %}
+
+                            {{ object.prona.qyteti }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+                <div class="sd-property-field">
+
+                    <label>Referenca e kërkesës</label>
+
+                    <span class="sd-cell-title">
+
+                        {% if kerkesa %}
+
+                            #{{ kerkesa.id }}
+
+                        {% elif object %}
+
+                            #{{ object.id }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="sd-property-form-actions">
+
+                    <a
+                        href="{% url 'kerkesat' %}"
+                        class="sd-button sd-button-outline"
+                    >
+                        Anulo
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="sd-button"
+                    >
+                        Po, fshi kërkesën
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

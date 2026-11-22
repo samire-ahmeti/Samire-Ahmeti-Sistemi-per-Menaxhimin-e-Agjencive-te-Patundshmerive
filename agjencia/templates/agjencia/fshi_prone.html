@@ -1,137 +1,379 @@
 
-{% extends 'agjencia/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="sq">
 
-{% block title %}Fshi pronën | Smart Estate{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
+    <title>Fshi Pronë | Smart Estate</title>
 
-<section class="se-delete-page">
+    <link rel="stylesheet"
+          href="{% static 'agjencia/css/dashboard.css' %}">
+</head>
 
-    <div class="se-delete-container">
+<body class="sd-body">
 
-        <a href="{% url 'paneli' %}" class="se-delete-back">
-            ← Kthehu te paneli
-        </a>
+<header class="sd-header">
 
-        <div class="se-delete-heading">
-            <span>SMART ESTATE / MENAXHIMI I PRONAVE</span>
+    <div class="sd-container">
 
-            <h1>Fshirja e pronës</h1>
+        <div class="sd-topbar">
 
-            <p>
-                Ju lutemi kontrolloni informacionet
-                përpara se të vazhdoni.
-            </p>
-        </div>
+            <a href="{% url 'paneli' %}" class="sd-brand">
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="se-delete-message" role="alert">
-                    {{ message }}
+                <svg class="sd-brand-icon"
+                     viewBox="0 0 64 64"
+                     fill="none"
+                     aria-hidden="true">
+
+                    <path d="M6 30L32 8L58 30"
+                          stroke="currentColor"
+                          stroke-width="5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+
+                    <path d="M14 28V56H50V28"
+                          stroke="currentColor"
+                          stroke-width="5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+
+                    <path d="M27 56V39H38V56"
+                          stroke="currentColor"
+                          stroke-width="4"
+                          stroke-linejoin="round"/>
+
+                    <path d="M45 11V20"
+                          stroke="currentColor"
+                          stroke-width="4"
+                          stroke-linecap="round"/>
+
+                </svg>
+
+                <span>
+
+                    <span class="sd-brand-name">
+                        Smart <strong>Estate</strong>
+                    </span>
+
+                    <span class="sd-brand-subtitle">
+                        Agjenci për Menaxhimin e Patundshmërive
+                    </span>
+
+                </span>
+
+            </a>
+
+            <div class="sd-user">
+
+                <div class="sd-user-info">
+
+                    <strong>
+                        {{ user.first_name|default:user.username }}
+                    </strong>
+
+                    <span>
+                        {% if user.is_superuser or user.roli == "administrator" %}
+                            Administrator
+                        {% else %}
+                            Agjent
+                        {% endif %}
+                    </span>
+
                 </div>
-            {% endfor %}
-        {% endif %}
 
-        <div class="se-delete-layout">
+                <form method="POST" action="{% url 'dalja' %}">
 
-            <div class="se-delete-property">
-
-                {% if prona.foto %}
-                    <img
-                        src="{{ prona.foto.url }}"
-                        alt="{{ prona.get_lloji_display }} në {{ prona.qyteti }}"
-                    >
-                {% else %}
-                    <div class="se-delete-no-photo">
-                        Smart Estate
-                    </div>
-                {% endif %}
-
-                <div class="se-delete-property-info">
-
-                    <span>PRONA E ZGJEDHUR</span>
-
-                    <h2>
-                        {{ prona.get_lloji_display }}
-                        në {{ prona.qyteti }}
-                    </h2>
-
-                    <div class="se-delete-details">
-                        <p>
-                            <span>Çmimi</span>
-                            <strong>{{ prona.cmimi }} €</strong>
-                        </p>
-
-                        <p>
-                            <span>Sipërfaqja</span>
-                            <strong>{{ prona.siperfaqja }} m²</strong>
-                        </p>
-
-                        <p>
-                            <span>ID e pronës</span>
-                            <strong>#{{ prona.id }}</strong>
-                        </p>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="se-delete-confirm">
-
-                <span class="se-delete-symbol">!</span>
-
-                <h2>
-                    A jeni të sigurt që
-                    dëshironi ta fshini?
-                </h2>
-
-                <p>
-                    Kjo pronë do të largohet nga sistemi
-                    dhe nuk do të shfaqet më në listën
-                    e pronave.
-                </p>
-
-                <p class="se-delete-warning">
-                    Ky veprim nuk mund të kthehet
-                    automatikisht.
-                </p>
-
-                <form
-                    method="POST"
-                    action="{% url 'fshi_prone' prona.id %}"
-                    class="se-delete-form"
-                >
                     {% csrf_token %}
 
-                    <button
-                        type="submit"
-                        class="se-delete-submit"
-                    >
-                        Po, fshije pronën
+                    <button type="submit" class="sd-logout">
+                        Shkyçu
                     </button>
-
-                    <a
-                        href="{% url 'detajet_prones' prona.id %}"
-                        class="se-delete-cancel"
-                    >
-                        Jo, anulo
-                    </a>
 
                 </form>
 
-                <p class="se-delete-note">
-                    Nëse prona ka kërkesa ose vizita
-                    të lidhura me të, fshirja mund
-                    të mos lejohet.
+            </div>
+
+        </div>
+
+        <div class="sd-hero">
+
+            <div>
+
+                <span class="sd-eyebrow">
+                    SMART ESTATE / MENAXHIMI I PRONAVE
+                </span>
+
+                <h1 class="sd-title">
+                    Fshi pronën
+                </h1>
+
+                <p class="sd-description">
+                    Kontrollo informacionet e pronës
+                    përpara se ta largosh nga sistemi.
                 </p>
 
             </div>
+
+            <nav class="sd-nav"
+                 aria-label="Navigimi i panelit">
+
+                <a href="{% url 'paneli' %}">
+                    Paneli
+                </a>
+
+                <a href="{% url 'pronat' %}"
+                   class="current"
+                   aria-current="page">
+                    Pronat
+                </a>
+
+                <a href="{% url 'klientet' %}">
+                    Klientët
+                </a>
+
+                <a href="{% url 'kerkesat' %}">
+                    Kërkesat
+                </a>
+
+                <a href="{% url 'vizitat' %}">
+                    Vizitat
+                </a>
+
+            </nav>
 
         </div>
 
     </div>
 
-</section>
+</header>
 
-{% endblock %}
+<main class="sd-container sd-main">
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="sd-alert" role="status">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <section class="sd-list-panel">
+
+        <div class="sd-list-toolbar">
+
+            <div>
+
+                <h2>Konfirmimi i fshirjes</h2>
+
+                <p>
+                    Verifiko të dhënat e pronës
+                    përpara se të vazhdosh.
+                </p>
+
+            </div>
+
+            <a href="{% url 'paneli' %}"
+               class="sd-button sd-button-outline">
+                Kthehu te paneli
+            </a>
+
+        </div>
+
+        <div class="sd-property-form">
+
+            <div class="sd-property-form-heading">
+
+                <h3>
+                    A dëshiron ta fshish këtë pronë?
+                </h3>
+
+                <p>
+                    Ky veprim e largon pronën nga sistemi
+                    dhe mund të ndikojë në kërkesat dhe
+                    vizitat që lidhen me të.
+                    Fshirja nuk mund të anulohet.
+                </p>
+
+            </div>
+
+            {% if prona %}
+
+                {% if prona.foto %}
+
+                    <div class="sd-property-form-heading">
+
+                        <h3>Fotografia e pronës</h3>
+
+                        <a href="{{ prona.foto.url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="sd-property-photo">
+
+                            <img
+                                src="{{ prona.foto.url }}"
+                                alt="Fotografia e pronës"
+                                loading="lazy"
+                            >
+
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            {% elif object %}
+
+                {% if object.foto %}
+
+                    <div class="sd-property-form-heading">
+
+                        <h3>Fotografia e pronës</h3>
+
+                        <a href="{{ object.foto.url }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="sd-property-photo">
+
+                            <img
+                                src="{{ object.foto.url }}"
+                                alt="Fotografia e pronës"
+                                loading="lazy"
+                            >
+
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            {% endif %}
+
+            <div class="sd-property-form-grid">
+
+                <div class="sd-property-field">
+
+                    <label>Lloji i pronës</label>
+
+                    <strong class="sd-cell-title">
+
+                        {% if prona %}
+                            {{ prona.get_lloji_display }}
+                        {% elif object %}
+                            {{ object.get_lloji_display }}
+                        {% else %}
+                            Prona e përzgjedhur
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+                <div class="sd-property-field">
+
+                    <label>Qyteti</label>
+
+                    <span class="sd-cell-title">
+
+                        {% if prona %}
+                            {{ prona.qyteti }}
+                        {% elif object %}
+                            {{ object.qyteti }}
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+                <div class="sd-property-field">
+
+                    <label>Sipërfaqja</label>
+
+                    <span class="sd-cell-title">
+
+                        {% if prona %}
+                            {{ prona.siperfaqja }} m²
+                        {% elif object %}
+                            {{ object.siperfaqja }} m²
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+                <div class="sd-property-field">
+
+                    <label>Çmimi</label>
+
+                    <strong class="sd-price">
+
+                        {% if prona %}
+                            {{ prona.cmimi }} €
+                        {% elif object %}
+                            {{ object.cmimi }} €
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+                <div class="sd-property-field">
+
+                    <label>Referenca</label>
+
+                    <span class="sd-cell-title">
+
+                        {% if prona %}
+                            #{{ prona.id }}
+                        {% elif object %}
+                            #{{ object.id }}
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="sd-property-form-actions">
+
+                    <a href="{% url 'paneli' %}"
+                       class="sd-button sd-button-outline">
+                        Anulo
+                    </a>
+
+                    <button type="submit"
+                            class="sd-button">
+                        Po, fshi pronën
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

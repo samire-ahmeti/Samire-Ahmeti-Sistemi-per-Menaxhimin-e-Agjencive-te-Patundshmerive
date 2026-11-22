@@ -1,148 +1,292 @@
 
-{% extends 'agjencia/base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="sq">
 
-{% block title %}Ndrysho klient | Smart Estate{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'agjencia/css/dashboard.css' %}">
-{% endblock %}
+    <title>Ndrysho Klient | Smart Estate</title>
 
-{% block content %}
+    <link
+        rel="stylesheet"
+        href="{% static 'agjencia/css/dashboard.css' %}"
+    >
 
-<section class="se-client-form-page">
+    {{ form.media }}
+</head>
 
-    <div class="se-client-form-container">
+<body class="sd-body">
 
-        <a href="{% url 'klientet' %}" class="se-client-form-back">
-            ← Kthehu te klientët
-        </a>
+<header class="sd-header">
 
-        <div class="se-client-form-heading">
+    <div class="sd-container">
 
-            <span>SMART ESTATE / MENAXHIMI I KLIENTËVE</span>
+        <div class="sd-topbar">
 
-            <h1>Ndrysho klientin</h1>
+            <a href="{% url 'paneli' %}" class="sd-brand">
 
-            <p>
-                Përditëso informacionet e klientit
-                dhe ruaji ndryshimet në sistem.
-            </p>
+                <svg
+                    class="sd-brand-icon"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 30L32 8L58 30"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
 
-        </div>
+                    <path
+                        d="M14 28V56H50V28"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
 
-        <div class="se-client-form-layout">
+                    <path
+                        d="M27 56V39H38V56"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linejoin="round"
+                    />
 
-            <div class="se-client-form-main">
+                    <path
+                        d="M45 11V20"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                    />
+                </svg>
 
-                <div class="se-client-form-title">
+                <span>
 
-                    <span>INFORMACIONET E KLIENTIT</span>
+                    <span class="sd-brand-name">
+                        Smart <strong>Estate</strong>
+                    </span>
 
-                    <h2>Të dhënat personale</h2>
+                    <span class="sd-brand-subtitle">
+                        Agjenci për Menaxhimin e Patundshmërive
+                    </span>
+
+                </span>
+
+            </a>
+
+            <div class="sd-user">
+
+                <div class="sd-user-info">
+
+                    <strong>
+                        {{ user.first_name|default:user.username }}
+                    </strong>
+
+                    <span>
+                        {% if user.is_superuser or user.roli == "administrator" %}
+                            Administrator
+                        {% else %}
+                            Agjent
+                        {% endif %}
+                    </span>
 
                 </div>
 
-                <form
-                    method="POST"
-                    action="{% url 'ndrysho_klient' klienti.id %}"
-                >
-
+                <form method="POST" action="{% url 'dalja' %}">
                     {% csrf_token %}
 
-                    {% if form.non_field_errors %}
-                        <div class="se-client-form-error">
-                            {{ form.non_field_errors }}
-                        </div>
-                    {% endif %}
-
-                    <div class="se-client-form-field">
-
-                        <label for="{{ form.emri.id_for_label }}">
-                            Emri dhe mbiemri
-                        </label>
-
-                        {{ form.emri }}
-
-                        {% for error in form.emri.errors %}
-                            <p class="se-client-field-error">
-                                {{ error }}
-                            </p>
-                        {% endfor %}
-
-                    </div>
-
-                    <div class="se-client-form-field">
-
-                        <label for="{{ form.kontakti.id_for_label }}">
-                            Numri i telefonit ose email
-                        </label>
-
-                        {{ form.kontakti }}
-
-                        {% for error in form.kontakti.errors %}
-                            <p class="se-client-field-error">
-                                {{ error }}
-                            </p>
-                        {% endfor %}
-
-                    </div>
-
-                    <div class="se-client-form-actions">
-
-                        <a
-                            href="{% url 'klientet' %}"
-                            class="se-client-form-cancel"
-                        >
-                            Anulo
-                        </a>
-
-                        <button
-                            type="submit"
-                            class="se-client-form-submit"
-                        >
-                            Ruaj ndryshimet
-                            <span>↗</span>
-                        </button>
-
-                    </div>
-
+                    <button type="submit" class="sd-logout">
+                        Shkyçu
+                    </button>
                 </form>
 
             </div>
 
-            <aside class="se-client-form-aside">
+        </div>
 
-                <span class="se-client-form-aside-label">
-                    KLIENTI AKTUAL
+        <div class="sd-hero">
+
+            <div>
+
+                <span class="sd-eyebrow">
+                    SMART ESTATE / MENAXHIMI I KLIENTËVE
                 </span>
 
-                <h2>{{ klienti.emri }}</h2>
+                <h1 class="sd-title">
+                    Ndrysho klientin
+                </h1>
 
-                <p>
-                    Kontakti aktual:
-                    <strong>{{ klienti.kontakti }}</strong>
+                <p class="sd-description">
+                    Përditëso informacionet dhe kontaktin
+                    e klientit të regjistruar në sistem.
                 </p>
 
-                <div class="se-client-form-aside-line"></div>
+            </div>
 
-                <p class="se-client-form-aside-small">
-                    Referenca e klientit: #{{ klienti.id }}
-                </p>
+            <nav
+                class="sd-nav"
+                aria-label="Navigimi i panelit"
+            >
 
-                <div class="se-client-form-aside-line"></div>
+                <a href="{% url 'paneli' %}">
+                    Paneli
+                </a>
 
-                <p class="se-client-form-aside-small">
-                    Ndryshimet do të ruhen pasi të klikosh
-                    butonin "Ruaj ndryshimet".
-                </p>
+                <a href="{% url 'pronat' %}">
+                    Pronat
+                </a>
 
-            </aside>
+                <a
+                    href="{% url 'klientet' %}"
+                    class="current"
+                    aria-current="page"
+                >
+                    Klientët
+                </a>
+
+                <a href="{% url 'kerkesat' %}">
+                    Kërkesat
+                </a>
+
+                <a href="{% url 'vizitat' %}">
+                    Vizitat
+                </a>
+
+            </nav>
 
         </div>
 
     </div>
 
-</section>
+</header>
 
-{% endblock %}
+<main class="sd-container sd-main">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="sd-alert" role="status">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="sd-list-panel">
+
+        <div class="sd-list-toolbar">
+
+            <div>
+
+                <h2>Përditësimi i klientit</h2>
+
+                <p>
+                    Ndrysho të dhënat e klientit
+                    dhe ruaj përditësimet.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'klientet' %}"
+                class="sd-button sd-button-outline"
+            >
+                Kthehu te klientët
+            </a>
+
+        </div>
+
+        <form
+            method="POST"
+            class="sd-property-form"
+        >
+
+            {% csrf_token %}
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+
+                <div class="se-client-form-error">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+            <div class="sd-property-form-heading">
+
+                <h3>Informacionet e klientit</h3>
+
+                <p>
+                    Përditëso emrin ose kontaktin.
+                    Fushat me * janë të detyrueshme.
+                </p>
+
+            </div>
+
+            <div class="sd-property-form-grid">
+
+                {% for field in form.visible_fields %}
+
+                    <div class="sd-property-field">
+
+                        <label for="{{ field.id_for_label }}">
+
+                            {{ field.label }}
+
+                            {% if field.field.required %}
+                                <span class="sd-required">*</span>
+                            {% endif %}
+
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="sd-field-help">
+                                {{ field.help_text }}
+                            </small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <p class="se-client-field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="sd-property-form-actions">
+
+                <a
+                    href="{% url 'klientet' %}"
+                    class="sd-button sd-button-outline"
+                >
+                    Anulo
+                </a>
+
+                <button
+                    type="submit"
+                    class="sd-button"
+                >
+                    Ruaj ndryshimet
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+</html>
