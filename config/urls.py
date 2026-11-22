@@ -86,6 +86,11 @@ urlpatterns = [
     path("dalja/", dalja_page, name="dalja"),
 
     path(
+        "",
+        include("agjencia.perdorues_urls"),
+    ),
+
+    path(
         "shto-prone/",
         shto_prone_page,
         name="shto_prone",

@@ -1,9 +1,13 @@
 
 {% extends 'agjencia/base.html' %}
+{% load static %}
 
 {% block title %}Hyr në sistem | Smart Estate{% endblock %}
 
 {% block content %}
+
+<link rel="stylesheet"
+      href="{% static 'agjencia/css/regjistrimi_modal.css' %}">
 
 <section class="se-login-page">
 
@@ -48,15 +52,23 @@
 
                 {% endif %}
 
-                <form method="POST" action="{% url 'hyrja' %}" class="se-login-form">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="se-login-error" role="status">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST"
+                      action="{% url 'hyrja' %}"
+                      class="se-login-form">
 
                     {% csrf_token %}
 
-                    <input
-                        type="hidden"
-                        name="next"
-                        value="{{ next|default:'' }}"
-                    >
+                    <input type="hidden"
+                           name="next"
+                           value="{{ next|default:'' }}">
 
                     <div class="se-login-field">
 
@@ -100,6 +112,19 @@
                     </button>
 
                 </form>
+
+                <div class="se-login-notice">
+                    <span class="se-login-notice-icon">+</span>
+
+                    <p>
+                        Nuk ke ende llogari?
+                        <a href="{% url 'regjistro_agjent' %}"
+                           id="se-open-register"
+                           aria-haspopup="dialog">
+                            <strong>Regjistrohu si agjent →</strong>
+                        </a>
+                    </p>
+                </div>
 
                 <div class="se-login-notice">
                     <span class="se-login-notice-icon">✓</span>
@@ -183,5 +208,212 @@
     </div>
 
 </section>
+
+<dialog id="se-register-dialog"
+        class="se-register-dialog"
+        aria-labelledby="se-register-title">
+
+    <div class="se-register-layout">
+
+        <div class="se-register-main">
+
+            <button type="button"
+                    id="se-register-close"
+                    class="se-register-close"
+                    aria-label="Mbyll dritaren">
+                &times;
+            </button>
+
+            <div class="se-register-brand">
+
+                <div class="se-register-brand-icon">
+                    SE
+                </div>
+
+                <div>
+                    <strong>Smart Estate</strong>
+                    <span>Menaxhimi i patundshmërive</span>
+                </div>
+
+            </div>
+
+            <span class="se-register-eyebrow">
+                BASHKOHU ME SMART ESTATE
+            </span>
+
+            <h2 id="se-register-title" class="se-register-title">
+                Krijo <span>llogarinë tënde.</span>
+            </h2>
+
+            <p class="se-register-description">
+                Regjistrohu si agjent dhe dërgo kërkesën
+                për miratim nga administratori.
+            </p>
+
+            <div id="se-register-feedback"
+                 class="se-register-feedback"
+                 role="status"
+                 aria-live="polite"
+                 hidden>
+            </div>
+
+            <form id="se-register-form"
+                  class="se-register-form"
+                  method="POST"
+                  action="{% url 'regjistro_agjent' %}">
+
+                {% csrf_token %}
+
+                <div class="se-register-grid">
+
+                    <div class="se-register-field">
+
+                        <label for="register-username">
+                            Emri i përdoruesit
+                        </label>
+
+                        <input
+                            type="text"
+                            id="register-username"
+                            name="username"
+                            autocomplete="username"
+                            maxlength="150"
+                            required
+                        >
+
+                        <span class="se-register-error"
+                              data-error-for="username"></span>
+
+                    </div>
+
+                    <div class="se-register-field">
+
+                        <label for="register-name">
+                            Emri dhe mbiemri
+                        </label>
+
+                        <input
+                            type="text"
+                            id="register-name"
+                            name="emri"
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        >
+
+                        <span class="se-register-error"
+                              data-error-for="emri"></span>
+
+                    </div>
+
+                </div>
+
+                <div class="se-register-field">
+
+                    <label for="register-email">
+                        Email-i
+                    </label>
+
+                    <input
+                        type="email"
+                        id="register-email"
+                        name="email"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <span class="se-register-error"
+                          data-error-for="email"></span>
+
+                </div>
+
+                <div class="se-register-grid">
+
+                    <div class="se-register-field">
+
+                        <label for="register-password1">
+                            Fjalëkalimi
+                        </label>
+
+                        <input
+                            type="password"
+                            id="register-password1"
+                            name="password1"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <span class="se-register-error"
+                              data-error-for="password1"></span>
+
+                    </div>
+
+                    <div class="se-register-field">
+
+                        <label for="register-password2">
+                            Konfirmo fjalëkalimin
+                        </label>
+
+                        <input
+                            type="password"
+                            id="register-password2"
+                            name="password2"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <span class="se-register-error"
+                              data-error-for="password2"></span>
+
+                    </div>
+
+                </div>
+
+                <span class="se-register-error"
+                      data-error-for="__all__"></span>
+
+                <button type="submit"
+                        id="se-register-submit"
+                        class="se-register-submit">
+                    Krijo llogarinë
+                </button>
+
+                <p class="se-register-notice">
+                    Llogaria jote do të aktivizohet vetëm
+                    pas miratimit nga administratori.
+                </p>
+
+            </form>
+
+        </div>
+
+        <aside class="se-register-side">
+
+            <span class="se-register-side-label">
+                SMART ESTATE
+            </span>
+
+            <h3>
+                Fillo rrugëtimin
+                <span>si agjent.</span>
+            </h3>
+
+            <div class="se-register-gold-line"></div>
+
+            <p>
+                Menaxho pronat, klientët, kërkesat dhe
+                vizitat përmes një platforme të organizuar
+                dhe profesionale.
+            </p>
+
+        </aside>
+
+    </div>
+
+</dialog>
+
+<script defer
+        src="{% static 'agjencia/js/regjistrimi_modal.js' %}">
+</script>
 
 {% endblock %}

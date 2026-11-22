@@ -1,0 +1,326 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="sq">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Krijo Administrator | Smart Estate</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'agjencia/css/dashboard.css' %}"
+    >
+
+    {{ form.media }}
+</head>
+
+<body class="sd-body">
+
+<header class="sd-header">
+
+    <div class="sd-container">
+
+        <div class="sd-topbar">
+
+            <a href="{% url 'paneli' %}" class="sd-brand">
+
+                <svg
+                    class="sd-brand-icon"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 30L32 8L58 30"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M14 28V56H50V28"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M27 56V39H38V56"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M45 11V20"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                    />
+                </svg>
+
+                <span>
+
+                    <span class="sd-brand-name">
+                        Smart <strong>Estate</strong>
+                    </span>
+
+                    <span class="sd-brand-subtitle">
+                        Agjenci për Menaxhimin e Patundshmërive
+                    </span>
+
+                </span>
+
+            </a>
+
+            <div class="sd-user">
+
+                <div class="sd-user-info">
+
+                    <strong>
+                        {{ user.first_name|default:user.username }}
+                    </strong>
+
+                    <span>Administrator</span>
+
+                </div>
+
+                <form method="POST" action="{% url 'dalja' %}">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="sd-logout">
+                        Shkyçu
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="sd-hero">
+
+            <div>
+
+                <span class="sd-eyebrow">
+                    SMART ESTATE / MENAXHIMI I PËRDORUESVE
+                </span>
+
+                <h1 class="sd-title">
+                    Krijo administrator
+                </h1>
+
+                <p class="sd-description">
+                    Regjistro një administrator të ri
+                    për menaxhimin e Smart Estate.
+                </p>
+
+            </div>
+
+            <nav
+                class="sd-nav"
+                aria-label="Navigimi i panelit"
+            >
+
+                <a href="{% url 'paneli' %}">
+                    Paneli
+                </a>
+
+                <a href="{% url 'pronat' %}">
+                    Pronat
+                </a>
+
+                <a href="{% url 'klientet' %}">
+                    Klientët
+                </a>
+
+                <a href="{% url 'kerkesat' %}">
+                    Kërkesat
+                </a>
+
+                <a href="{% url 'vizitat' %}">
+                    Vizitat
+                </a>
+
+                <a
+                    href="{% url 'menaxho_perdoruesit' %}"
+                    class="current"
+                    aria-current="page"
+                >
+                    Përdoruesit
+                </a>
+
+            </nav>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main class="sd-container sd-main">
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="sd-alert" role="status">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <section class="sd-list-panel">
+
+        <div class="sd-list-toolbar">
+
+            <div>
+
+                <h2>Regjistrimi i administratorit</h2>
+
+                <p>
+                    Plotëso të dhënat për të krijuar
+                    një llogari të re administratori.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'menaxho_perdoruesit' %}"
+                class="sd-button sd-button-outline"
+            >
+                Kthehu te përdoruesit
+            </a>
+
+        </div>
+
+        <form
+            method="POST"
+            action="{% url 'krijo_administrator' %}"
+            class="sd-property-form"
+        >
+
+            {% csrf_token %}
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+
+                <div class="se-client-form-error">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+            <div class="sd-property-form-heading">
+
+                <h3>Të dhënat e administratorit</h3>
+
+                <p>
+                    Plotëso të dhënat personale dhe
+                    fjalëkalimin e administratorit të ri.
+                    Fushat me * janë të detyrueshme.
+                </p>
+
+            </div>
+
+            <div class="sd-property-form-grid">
+
+                {% for field in form.visible_fields %}
+
+                    <div class="sd-property-field">
+
+                        <label for="{{ field.id_for_label }}">
+
+                            {{ field.label }}
+
+                            {% if field.field.required %}
+                                <span class="sd-required">*</span>
+                            {% endif %}
+
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+
+                            <div class="sd-field-help">
+                                {{ field.help_text }}
+                            </div>
+
+                        {% endif %}
+
+                        {% for error in field.errors %}
+
+                            <p class="se-client-field-error">
+                                {{ error }}
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="sd-property-form-heading">
+
+                <h3>Informacion për llogarinë</h3>
+
+                <p>
+                    Administratori i ri do të ketë
+                    qasje në funksionet e administrimit
+                    të Smart Estate. Llogaria e tij
+                    aktivizohet menjëherë pas krijimit.
+                </p>
+
+            </div>
+
+            <div class="sd-property-form-actions">
+
+                <a
+                    href="{% url 'menaxho_perdoruesit' %}"
+                    class="sd-button sd-button-outline"
+                >
+                    Anulo
+                </a>
+
+                <button
+                    type="submit"
+                    class="sd-button"
+                >
+                    Krijo administratorin
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+    <div class="sd-page-end">
+
+        <h3>Smart Estate Dashboard</h3>
+
+        <p>
+            Menaxhimi i përdoruesve dhe administratorëve
+            të platformës Smart Estate.
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+</html>

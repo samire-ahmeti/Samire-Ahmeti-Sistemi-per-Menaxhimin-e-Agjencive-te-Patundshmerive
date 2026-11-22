@@ -153,7 +153,11 @@
                 <a href="{% url 'vizitat' %}">
                     Vizitat
                 </a>
-
+                {% if user.is_superuser or user.roli == "administrator" %}
+                <a href="{% url 'menaxho_perdoruesit' %}">
+                    Përdoruesit
+                </a>
+                {% endif %}
             </nav>
 
         </div>

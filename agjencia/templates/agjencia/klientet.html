@@ -154,6 +154,12 @@
                     Vizitat
                 </a>
 
+                {% if user.is_superuser or user.roli == "administrator" %}
+                    <a href="{% url 'menaxho_perdoruesit' %}">
+                        Përdoruesit
+                    </a>
+                {% endif %}
+
             </nav>
 
         </div>
@@ -386,15 +392,17 @@
         </div>
 
     </section>
-<div class="sd-page-end">
-    <h3>Smart Estate Dashboard</h3>
-    <p>
-        Kjo hapësirë përdoret për menaxhimin e
-        <strong>pronave</strong>, <strong>klientëve</strong>,
-        <strong>kërkesave</strong> dhe <strong>vizitave</strong>
-        në mënyrë të organizuar dhe profesionale.
-    </p>
-</div>
+
+    <div class="sd-page-end">
+        <h3>Smart Estate Dashboard</h3>
+        <p>
+            Kjo hapësirë përdoret për menaxhimin e
+            <strong>pronave</strong>, <strong>klientëve</strong>,
+            <strong>kërkesave</strong> dhe <strong>vizitave</strong>
+            në mënyrë të organizuar dhe profesionale.
+        </p>
+    </div>
+
 </main>
 
 </body>
