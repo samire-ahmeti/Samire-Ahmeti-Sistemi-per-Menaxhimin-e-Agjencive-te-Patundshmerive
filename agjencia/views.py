@@ -2,6 +2,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
@@ -9,8 +10,8 @@ from django.views.decorators.http import require_POST
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
-from .models import Prona, Klienti, Kerkesa, Vizita
-from .forms import PronaForm
+from .models import Prona, FotoProne, Klienti, Kerkesa, Vizita
+from .forms import PronaForm, PronaAdministratoriForm
 from .serializers import (
     PronaSerializer,
     KlientiSerializer,
@@ -56,6 +57,21 @@ class PronaViewSet(viewsets.ModelViewSet):
             raise PermissionDenied
 
         serializer.save(agjent=perdoruesi)
+
+    def perform_update(self, serializer):
+        perdoruesi = self.request.user
+
+        if (
+            perdoruesi.is_superuser
+            or perdoruesi.roli == "administrator"
+        ):
+            serializer.save()
+
+        elif perdoruesi.roli == "agjent":
+            serializer.save(agjent=perdoruesi)
+
+        else:
+            raise PermissionDenied
 
 
 class KlientiViewSet(viewsets.ModelViewSet):
@@ -234,32 +250,65 @@ def dalja_page(request):
 def shto_prone_page(request):
     perdoruesi = request.user
 
-    if not (
+    administratori = (
         perdoruesi.is_superuser
-        or perdoruesi.roli in ["administrator", "agjent"]
-    ):
+        or perdoruesi.roli == "administrator"
+    )
+
+    agjenti = perdoruesi.roli == "agjent"
+
+    if not administratori and not agjenti:
         raise PermissionDenied
 
+    if administratori:
+        formulari = PronaAdministratoriForm
+    else:
+        formulari = PronaForm
+
     if request.method == "POST":
-        form = PronaForm(
+        form = formulari(
             request.POST,
             request.FILES
         )
 
         if form.is_valid():
-            prona = form.save(commit=False)
-            prona.agjent = perdoruesi
-            prona.save()
+            with transaction.atomic():
+                prona = form.save(commit=False)
+
+                if not administratori:
+                    prona.agjent = perdoruesi
+
+                prona.save()
+                form.save_m2m()
+
+                fotot_shtese = form.cleaned_data.get(
+                    "fotot_shtese",
+                    []
+                )
+
+                for renditja, foto in enumerate(
+                    fotot_shtese,
+                    start=1
+                ):
+                    FotoProne.objects.create(
+                        prona=prona,
+                        foto=foto,
+                        renditja=renditja
+                    )
 
             return redirect(
                 "detajet_prones",
                 prona_id=prona.id
             )
+
     else:
-        form = PronaForm()
+        form = formulari()
 
     return render(
         request,
         "agjencia/shto_prone.html",
-        {"form": form}
+        {
+            "form": form,
+            "administratori": administratori,
+        }
     )

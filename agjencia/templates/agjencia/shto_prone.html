@@ -13,6 +13,7 @@
         rel="stylesheet"
         href="{% static 'agjencia/css/dashboard.css' %}"
     >
+
     {{ form.media }}
 </head>
 
@@ -115,8 +116,8 @@
                 </h1>
 
                 <p class="sd-description">
-                    Plotëso të dhënat e pronës dhe regjistroje
-                    në sistemin Smart Estate.
+                    Plotëso të dhënat e pronës, zgjidh fotografinë
+                    kryesore dhe shto fotografitë e galerisë.
                 </p>
 
             </div>
@@ -127,8 +128,7 @@
                     Paneli
                 </a>
 
-                <a href="{% url 'pronat' %}"
-                   class="current">
+                <a href="{% url 'pronat' %}" class="current">
                     Pronat
                 </a>
 
@@ -170,8 +170,8 @@
                 <h2>Regjistrimi i pronës</h2>
 
                 <p>
-                    Plotëso informacionet e kërkuara
-                    për pronën e re.
+                    Plotëso informacionet dhe fotografitë
+                    e pronës së re.
                 </p>
             </div>
 
@@ -218,7 +218,7 @@
                 {% for field in form.visible_fields %}
 
                     <div class="sd-property-field
-                        {% if field.name == 'foto' %}
+                        {% if field.name == 'foto' or field.name == 'fotot_shtese' %}
                             sd-property-field-full
                         {% endif %}
                     ">
@@ -234,6 +234,13 @@
                         </label>
 
                         {{ field }}
+
+                        {% if field.name == 'fotot_shtese' %}
+                            <small class="sd-field-help">
+                                Mund të përzgjedhësh disa fotografi
+                                njëkohësisht nga kompjuteri.
+                            </small>
+                        {% endif %}
 
                         {% if field.help_text %}
                             <small class="sd-field-help">

@@ -14,6 +14,11 @@
         href="{% static 'agjencia/css/dashboard.css' %}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{% static 'agjencia/css/galeria_prones.css' %}"
+    >
+
     {{ form.media }}
 </head>
 
@@ -40,7 +45,6 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     />
-
                     <path
                         d="M14 28V56H50V28"
                         stroke="currentColor"
@@ -48,14 +52,12 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     />
-
                     <path
                         d="M27 56V39H38V56"
                         stroke="currentColor"
                         stroke-width="4"
                         stroke-linejoin="round"
                     />
-
                     <path
                         d="M45 11V20"
                         stroke="currentColor"
@@ -122,8 +124,8 @@
                 </h1>
 
                 <p class="sd-description">
-                    Përditëso informacionet dhe fotografinë
-                    e pronës së regjistruar.
+                    Përditëso informacionet, fotografinë kryesore
+                    dhe galerinë e pronës.
                 </p>
 
             </div>
@@ -177,8 +179,8 @@
                 <h2>Përditësimi i pronës</h2>
 
                 <p>
-                    Ndrysho të dhënat e nevojshme
-                    dhe ruaji përditësimet.
+                    Ndrysho të dhënat dhe menaxho fotografitë
+                    e pronës.
                 </p>
 
             </div>
@@ -205,11 +207,9 @@
             {% endfor %}
 
             {% if form.non_field_errors %}
-
                 <div class="se-client-form-error">
                     {{ form.non_field_errors }}
                 </div>
-
             {% endif %}
 
             <div class="sd-property-form-heading">
@@ -227,7 +227,7 @@
                 {% for field in form.visible_fields %}
 
                     <div class="sd-property-field
-                        {% if field.name == 'foto' %}
+                        {% if field.name == 'foto' or field.name == 'fotot_shtese' %}
                             sd-property-field-full
                         {% endif %}
                     ">
@@ -244,20 +244,23 @@
 
                         {{ field }}
 
-                        {% if field.help_text %}
+                        {% if field.name == 'fotot_shtese' %}
+                            <small class="sd-field-help">
+                                Mund të zgjedhësh disa fotografi
+                                njëkohësisht.
+                            </small>
+                        {% endif %}
 
+                        {% if field.help_text %}
                             <small class="sd-field-help">
                                 {{ field.help_text }}
                             </small>
-
                         {% endif %}
 
                         {% for error in field.errors %}
-
                             <p class="se-client-field-error">
                                 {{ error }}
                             </p>
-
                         {% endfor %}
 
                     </div>
@@ -266,65 +269,103 @@
 
             </div>
 
-            {% if form.instance.foto or form.instance.fotot.all %}
+            {% if prona.foto or prona.fotot.all %}
 
                 <div class="sd-property-form-heading">
 
                     <h3>Fotografitë aktuale</h3>
 
                     <p>
-                        Fotografitë e lidhura me këtë pronë.
+                        Kliko një fotografi për ta zmadhuar.
+                        Përdor shigjetat për t'i shikuar të tjerat.
                     </p>
 
                 </div>
 
-                <div class="sd-property-row">
+                <div class="se-photo-gallery">
 
-                    {% if form.instance.foto %}
+                    {% if prona.foto %}
 
-                        <a
-                            href="{{ form.instance.foto.url }}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="sd-property-photo"
-                            aria-label="Hap fotografinë kryesore"
-                        >
+                        <div class="se-photo-card">
 
-                            <img
-                                src="{{ form.instance.foto.url }}"
-                                alt="Fotografia kryesore e pronës"
-                                loading="lazy"
+                            <button
+                                type="button"
+                                class="se-photo-open"
+                                data-photo-src="{{ prona.foto.url }}"
+                                data-photo-alt="Fotografia kryesore e pronës"
+                                aria-label="Shiko fotografinë kryesore"
                             >
+                                <img
+                                    src="{{ prona.foto.url }}"
+                                    alt="Fotografia kryesore e pronës"
+                                    loading="lazy"
+                                >
+                            </button>
 
-                        </a>
+                            <div class="se-photo-card-footer">
+                                <span class="se-photo-label">
+                                    Fotografia kryesore
+                                </span>
+                            </div>
+
+                        </div>
 
                     {% endif %}
 
-                    {% for fotografia in form.instance.fotot.all %}
+                    {% for fotografia in prona.fotot.all %}
 
                         {% if fotografia.foto %}
 
-                            <a
-                                href="{{ fotografia.foto.url }}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="sd-property-photo"
-                                aria-label="Hap fotografinë e galerisë"
-                            >
+                            <div class="se-photo-card">
 
-                                <img
-                                    src="{{ fotografia.foto.url }}"
-                                    alt="Fotografi e pronës"
-                                    loading="lazy"
+                                <button
+                                    type="button"
+                                    class="se-photo-open"
+                                    data-photo-src="{{ fotografia.foto.url }}"
+                                    data-photo-alt="Fotografia {{ forloop.counter }} e galerisë"
+                                    aria-label="Shiko fotografinë {{ forloop.counter }}"
                                 >
+                                    <img
+                                        src="{{ fotografia.foto.url }}"
+                                        alt="Fotografi shtesë e pronës"
+                                        loading="lazy"
+                                    >
+                                </button>
 
-                            </a>
+                                <div class="se-photo-card-footer">
+
+                                    <span class="se-photo-label">
+                                        Foto {{ forloop.counter }}
+                                    </span>
+
+                                    <label class="se-photo-delete">
+
+                                        <input
+                                            type="checkbox"
+                                            name="hiq_fotot"
+                                            value="{{ fotografia.id }}"
+                                        >
+
+                                        <span>
+                                            Largo
+                                        </span>
+
+                                    </label>
+
+                                </div>
+
+                            </div>
 
                         {% endif %}
 
                     {% endfor %}
 
                 </div>
+
+                <p class="se-photo-help">
+                    Fotografitë e shënuara për largim do të
+                    përpunohen kur të ruash ndryshimet.
+                </p>
 
             {% endif %}
 
@@ -351,6 +392,76 @@
     </section>
 
 </main>
+
+<dialog
+    id="se-photo-modal"
+    class="se-photo-modal"
+    aria-label="Galeria e fotografive të pronës"
+>
+    <div class="se-photo-modal-content">
+
+        <div class="se-photo-modal-header">
+
+            <span class="se-photo-modal-title">
+                Smart Estate · Galeria
+            </span>
+
+            <button
+                type="button"
+                class="se-photo-modal-close"
+                id="se-photo-close"
+                aria-label="Mbyll fotografinë"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="se-photo-modal-viewer">
+
+            <button
+                type="button"
+                class="se-photo-modal-arrow"
+                id="se-photo-prev"
+                aria-label="Fotografia e mëparshme"
+            >
+                &#10094;
+            </button>
+
+            <img
+                id="se-photo-modal-image"
+                class="se-photo-modal-image"
+                alt="Fotografi e pronës"
+            >
+
+            <button
+                type="button"
+                class="se-photo-modal-arrow"
+                id="se-photo-next"
+                aria-label="Fotografia tjetër"
+            >
+                &#10095;
+            </button>
+
+        </div>
+
+        <div class="se-photo-modal-footer">
+
+            <span id="se-photo-counter"></span>
+
+            <span>
+                Përdor shigjetat për të ndërruar fotografitë
+            </span>
+
+        </div>
+
+    </div>
+</dialog>
+
+<script
+    src="{% static 'agjencia/js/galeria_prones.js' %}"
+    defer
+></script>
 
 </body>
 </html>
