@@ -1,0 +1,229 @@
+
+.se-interest-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    padding: 14px 22px;
+    border: 1px solid #d7ad59;
+    border-radius: 9px;
+    background: #102c4d;
+    color: #f3cc78;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.se-interest-trigger:hover {
+    background: #1b426c;
+    transform: translateY(-1px);
+}
+
+.se-interest-trigger:focus-visible,
+.se-interest-dialog button:focus-visible,
+.se-interest-field input:focus-visible,
+.se-interest-field textarea:focus-visible {
+    outline: 3px solid #d7ad59;
+    outline-offset: 3px;
+}
+
+.se-interest-notice {
+    margin-bottom: 24px;
+    padding: 17px 20px;
+    border: 1px solid #b6d8c5;
+    border-radius: 10px;
+    background: #f1faf5;
+    color: #22643d;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.se-interest-dialog {
+    width: min(520px, 94vw);
+    max-width: 94vw;
+    max-height: 90vh;
+    margin: auto;
+    padding: 0;
+    overflow-y: auto;
+    border: 1px solid #d7ad59;
+    border-radius: 16px;
+    background: #ffffff;
+    color: #142b47;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+}
+
+.se-interest-dialog::backdrop {
+    background: rgba(7, 19, 37, 0.8);
+}
+
+.se-interest-dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 26px;
+    background: #102c4d;
+    color: #ffffff;
+}
+
+.se-interest-eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    color: #e5bc63;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.se-interest-dialog-header h2 {
+    margin: 0 0 8px;
+    color: #ffffff;
+    font-size: 23px;
+    line-height: 1.3;
+}
+
+.se-interest-dialog-header p {
+    margin: 0;
+    color: #cdd9e7;
+    font-size: 13px;
+}
+
+.se-interest-close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: transparent;
+    color: #ffffff;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.se-interest-close:hover {
+    background: #b53d49;
+}
+
+.se-interest-dialog-body {
+    padding: 26px;
+}
+
+.se-interest-intro {
+    margin: 0 0 23px;
+    color: #5d6d83;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.se-interest-form {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.se-interest-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.se-interest-field label {
+    color: #193553;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.se-interest-field input,
+.se-interest-field textarea {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d6e0ec;
+    border-radius: 8px;
+    background: #f9fbfe;
+    color: #142b47;
+    font: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.se-interest-field input:focus,
+.se-interest-field textarea:focus {
+    border-color: #b99a53;
+    background: #ffffff;
+}
+
+.se-interest-field textarea {
+    min-height: 105px;
+    resize: vertical;
+}
+
+.se-interest-error {
+    color: #b32f3c;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.se-interest-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 9px;
+}
+
+.se-interest-cancel,
+.se-interest-submit {
+    min-height: 44px;
+    padding: 11px 17px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.se-interest-cancel {
+    border: 1px solid #d8e0ea;
+    background: #ffffff;
+    color: #334b69;
+}
+
+.se-interest-cancel:hover {
+    background: #f2f5f9;
+}
+
+.se-interest-submit {
+    border: 1px solid #d7ad59;
+    background: #102c4d;
+    color: #f3cc78;
+}
+
+.se-interest-submit:hover {
+    background: #1b426c;
+}
+
+@media (max-width: 600px) {
+    .se-interest-dialog-header,
+    .se-interest-dialog-body {
+        padding: 20px;
+    }
+
+    .se-interest-dialog-header h2 {
+        font-size: 20px;
+    }
+
+    .se-interest-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .se-interest-cancel,
+    .se-interest-submit {
+        width: 100%;
+    }
+}

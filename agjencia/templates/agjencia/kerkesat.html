@@ -100,6 +100,7 @@
                     <button type="submit" class="sd-logout">
                         Shkyçu
                     </button>
+
                 </form>
 
             </div>
@@ -119,8 +120,8 @@
                 </h1>
 
                 <p class="sd-description">
-                    Menaxho kërkesat e klientëve për prona,
-                    në mënyrë të thjeshtë dhe të organizuar.
+                    Menaxho kërkesat e klientëve dhe interesimet
+                    e dërguara nga faqja publike e Smart Estate.
                 </p>
 
             </div>
@@ -153,11 +154,13 @@
                 <a href="{% url 'vizitat' %}">
                     Vizitat
                 </a>
+
                 {% if user.is_superuser or user.roli == "administrator" %}
-                <a href="{% url 'menaxho_perdoruesit' %}">
-                    Përdoruesit
-                </a>
+                    <a href="{% url 'menaxho_perdoruesit' %}">
+                        Përdoruesit
+                    </a>
                 {% endif %}
+
             </nav>
 
         </div>
@@ -192,7 +195,7 @@
                     {% if kerkimi %}
                         Rezultatet e kërkimit
                     {% else %}
-                        Kërkesat e regjistruara në sistem
+                        Kërkesat dhe interesimet e regjistruara në sistem
                     {% endif %}
                 </p>
 
@@ -222,7 +225,7 @@
                     type="search"
                     name="q"
                     value="{{ kerkimi }}"
-                    placeholder="Klienti, kontakti ose qyteti..."
+                    placeholder="Klienti, telefoni ose qyteti..."
                     aria-label="Kërko kërkesë"
                 >
 
@@ -244,6 +247,7 @@
                         <th>Klienti</th>
                         <th>Prona e kërkuar</th>
                         <th>Kontakti</th>
+                        <th>Mesazhi</th>
                         <th>Referenca</th>
                         <th>Veprimet</th>
                     </tr>
@@ -278,14 +282,76 @@
                                     {{ kerkesa.prona.qyteti }}
                                 </span>
 
+                                <a
+                                    href="{% url 'detajet_prones' kerkesa.prona.id %}"
+                                    class="sd-text-link"
+                                >
+                                    Shiko pronën
+                                </a>
+
                             </td>
 
                             <td>
-                                {{ kerkesa.klienti.kontakti }}
+
+                                <strong class="sd-cell-title">
+                                    {{ kerkesa.klienti.kontakti }}
+                                </strong>
+
+                                {% if kerkesa.email %}
+
+                                    <span class="sd-cell-subtitle">
+                                        Email:
+                                    </span>
+
+                                    <a
+                                        href="mailto:{{ kerkesa.email }}"
+                                        class="sd-text-link"
+                                    >
+                                        {{ kerkesa.email }}
+                                    </a>
+
+                                {% else %}
+
+                                    <span class="sd-cell-subtitle">
+                                        Email i papërcaktuar
+                                    </span>
+
+                                {% endif %}
+
                             </td>
 
                             <td>
-                                #{{ kerkesa.id }}
+
+                                {% if kerkesa.mesazhi %}
+
+                                    <details>
+
+                                        <summary class="sd-text-link">
+                                            Lexo mesazhin
+                                        </summary>
+
+                                        <p class="sd-cell-subtitle">
+                                            {{ kerkesa.mesazhi|linebreaksbr }}
+                                        </p>
+
+                                    </details>
+
+                                {% else %}
+
+                                    <span class="sd-cell-subtitle">
+                                        Pa mesazh shtesë
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                <strong class="sd-cell-title">
+                                    #{{ kerkesa.id }}
+                                </strong>
+
                             </td>
 
                             <td>
@@ -325,7 +391,7 @@
 
                         <tr>
 
-                            <td colspan="5" class="sd-empty">
+                            <td colspan="6" class="sd-empty">
 
                                 {% if kerkimi %}
 
@@ -334,8 +400,8 @@
                                     </h3>
 
                                     <p>
-                                        Provo të kërkosh sipas emrit
-                                        të klientit, kontaktit ose qytetit.
+                                        Provo të kërkosh sipas emrit,
+                                        telefonit ose qytetit.
                                     </p>
 
                                     <a href="{% url 'kerkesat' %}">
@@ -349,8 +415,8 @@
                                     </h3>
 
                                     <p>
-                                        Kërkesat e klientëve për prona
-                                        do të shfaqen këtu.
+                                        Kërkesat dhe interesimet e klientëve
+                                        për prona do të shfaqen këtu.
                                     </p>
 
                                     {% if user.is_superuser or user.roli == "administrator" or user.roli == "agjent" %}
@@ -400,15 +466,20 @@
         </div>
 
     </section>
-<div class="sd-page-end">
-    <h3>Smart Estate Dashboard</h3>
-    <p>
-        Kjo hapësirë përdoret për menaxhimin e
-        <strong>pronave</strong>, <strong>klientëve</strong>,
-        <strong>kërkesave</strong> dhe <strong>vizitave</strong>
-        në mënyrë të organizuar dhe profesionale.
-    </p>
-</div>
+
+    <div class="sd-page-end">
+
+        <h3>Smart Estate Dashboard</h3>
+
+        <p>
+            Kjo hapësirë përdoret për menaxhimin e
+            <strong>pronave</strong>, <strong>klientëve</strong>,
+            <strong>kërkesave</strong> dhe <strong>vizitave</strong>
+            në mënyrë të organizuar dhe profesionale.
+        </p>
+
+    </div>
+
 </main>
 
 </body>

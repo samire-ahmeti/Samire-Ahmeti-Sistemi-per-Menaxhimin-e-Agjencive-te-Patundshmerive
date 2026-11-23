@@ -66,6 +66,12 @@ class Kerkesa(models.Model):
         on_delete=models.PROTECT,
         related_name="kerkesat"
     )
+    email = models.EmailField(
+        blank=True
+    )
+    mesazhi = models.TextField(
+        blank=True
+    )
 
     def __str__(self):
         return f"Kerkesa e {self.klienti.emri} per {self.prona}"

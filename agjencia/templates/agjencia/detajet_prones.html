@@ -4,8 +4,12 @@
 
 {% block title %}Detajet e Pronës | Smart Estate{% endblock %}
 
-
 {% block content %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'agjencia/css/interesimi.css' %}"
+>
 
 <section class="se-detail-page">
 
@@ -28,14 +32,21 @@
             </h1>
 
             <p>
-                Zbulo fotografitë dhe informacionet e
-                kësaj prone.
+                Zbulo fotografitë dhe informacionet e kësaj prone.
             </p>
 
         </div>
     </div>
 
     <div class="se-detail-container se-detail-content">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="se-interest-notice" role="status">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
 
         <div class="se-detail-layout">
 
@@ -153,7 +164,7 @@
                     </h2>
 
                     <p class="se-detail-location">
-                        📍 {{ prona.qyteti }}, Kosovë
+                         {{ prona.qyteti }}, Kosovë
                     </p>
 
                 </div>
@@ -194,6 +205,14 @@
 
                 <div class="se-detail-actions">
 
+                    <button
+                        type="button"
+                        id="se-interest-open"
+                        class="se-interest-trigger"
+                    >
+                        Jam i interesuar
+                    </button>
+
                     <a href="{% url 'pronat' %}" class="se-detail-back">
                         ← Kthehu te pronat
                     </a>
@@ -222,5 +241,181 @@
     </div>
 
 </section>
+
+<dialog
+    id="se-interest-dialog"
+    class="se-interest-dialog"
+    aria-labelledby="se-interest-title"
+    data-reopen="{% if hap_interesimin %}true{% else %}false{% endif %}"
+>
+
+    <div class="se-interest-dialog-header">
+
+        <div>
+            <span class="se-interest-eyebrow">
+                SMART ESTATE
+            </span>
+
+            <h2 id="se-interest-title">
+                Jam i interesuar
+            </h2>
+
+            <p>
+                {{ prona.get_lloji_display }}
+                në {{ prona.qyteti }}
+            </p>
+        </div>
+
+        <button
+            type="button"
+            class="se-interest-close"
+            id="se-interest-close"
+            aria-label="Mbyll formularin"
+        >
+            ×
+        </button>
+
+    </div>
+
+    <div class="se-interest-dialog-body">
+
+        <p class="se-interest-intro">
+            Plotëso formularin dhe agjencia do të mund
+            të të kontaktojë për këtë pronë.
+        </p>
+
+        <form
+            method="POST"
+            action="{% url 'dergo_interesimin' prona.id %}"
+            class="se-interest-form"
+        >
+
+            {% csrf_token %}
+
+            {% if interesimi_form.non_field_errors %}
+                <div class="se-interest-error">
+                    {{ interesimi_form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="se-interest-field">
+
+                <label for="interest-name">
+                    Emri dhe mbiemri *
+                </label>
+
+                <input
+                    type="text"
+                    id="interest-name"
+                    name="emri"
+                    maxlength="100"
+                    placeholder="Shkruaj emrin dhe mbiemrin"
+                    autocomplete="name"
+                    value="{{ interesimi_form.emri.value|default_if_none:'' }}"
+                    required
+                >
+
+                {% for error in interesimi_form.emri.errors %}
+                    <span class="se-interest-error">{{ error }}</span>
+                {% endfor %}
+
+            </div>
+
+            <div class="se-interest-field">
+
+                <label for="interest-phone">
+                    Numri i telefonit *
+                </label>
+
+                <input
+                    type="tel"
+                    id="interest-phone"
+                    name="telefoni"
+                    maxlength="30"
+                    placeholder="+383 49 123 456"
+                    autocomplete="tel"
+                    value="{{ interesimi_form.telefoni.value|default_if_none:'' }}"
+                    required
+                >
+
+                {% for error in interesimi_form.telefoni.errors %}
+                    <span class="se-interest-error">{{ error }}</span>
+                {% endfor %}
+
+            </div>
+
+            <div class="se-interest-field">
+
+                <label for="interest-email">
+                    Emaili *
+                </label>
+
+                <input
+                    type="email"
+                    id="interest-email"
+                    name="email"
+                    maxlength="254"
+                    placeholder="shembull@gmail.com"
+                    autocomplete="email"
+                    value="{{ interesimi_form.email.value|default_if_none:'' }}"
+                    required
+                >
+
+                {% for error in interesimi_form.email.errors %}
+                    <span class="se-interest-error">{{ error }}</span>
+                {% endfor %}
+
+            </div>
+
+            <div class="se-interest-field">
+
+                <label for="interest-message">
+                    Mesazhi *
+                </label>
+
+                <textarea
+                    id="interest-message"
+                    name="mesazhi"
+                    maxlength="1000"
+                    rows="4"
+                    placeholder="Përshëndetje, jam i interesuar për këtë pronë..."
+                    required
+                >{{ interesimi_form.mesazhi.value|default_if_none:'' }}</textarea>
+
+                {% for error in interesimi_form.mesazhi.errors %}
+                    <span class="se-interest-error">{{ error }}</span>
+                {% endfor %}
+
+            </div>
+
+            <div class="se-interest-form-actions">
+
+                <button
+                    type="button"
+                    class="se-interest-cancel"
+                    id="se-interest-cancel"
+                >
+                    Anulo
+                </button>
+
+                <button
+                    type="submit"
+                    class="se-interest-submit"
+                >
+                    Dërgo kërkesën
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</dialog>
+
+<script
+    src="{% static 'agjencia/js/interesimi.js' %}"
+    defer
+></script>
 
 {% endblock %}

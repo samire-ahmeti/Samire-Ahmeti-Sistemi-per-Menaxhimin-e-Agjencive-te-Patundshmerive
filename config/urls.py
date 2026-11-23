@@ -16,6 +16,8 @@ from agjencia.views import (
 
 from agjencia.contact_views import kontakt_page
 
+from agjencia.interesimi_views import dergo_interesimin
+
 from agjencia.prona_actions import (
     ndrysho_prone_page,
     fshi_prone_page,
@@ -61,6 +63,12 @@ urlpatterns = [
         "pronat/<int:prona_id>/",
         detajet_prones,
         name="detajet_prones",
+    ),
+
+    path(
+        "pronat/<int:prona_id>/interesim/",
+        dergo_interesimin,
+        name="dergo_interesimin",
     ),
 
     path(
