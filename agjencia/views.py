@@ -1,8 +1,11 @@
 
+from decimal import Decimal, InvalidOperation
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
@@ -95,8 +98,11 @@ class VizitaViewSet(viewsets.ModelViewSet):
 def pronat_page(request):
     qyteti = request.GET.get("qyteti", "").strip()
     lloji = request.GET.get("lloji", "").strip()
+    cmimi_min = request.GET.get("cmimi_min", "").strip()
+    cmimi_max = request.GET.get("cmimi_max", "").strip()
 
     pronat = Prona.objects.all()
+    gabim_cmimi = ""
 
     if qyteti:
         pronat = pronat.filter(qyteti__icontains=qyteti)
@@ -104,12 +110,59 @@ def pronat_page(request):
     if lloji:
         pronat = pronat.filter(lloji__iexact=lloji)
 
+    minimumi = None
+    maksimumi = None
+
+    try:
+        if cmimi_min:
+            minimumi = Decimal(cmimi_min.replace(",", "."))
+
+        if cmimi_max:
+            maksimumi = Decimal(cmimi_max.replace(",", "."))
+
+        kufiri = Decimal("9999999999.99")
+
+        for cmimi in (minimumi, maksimumi):
+            if cmimi is not None:
+                if (
+                    not cmimi.is_finite()
+                    or cmimi < 0
+                    or cmimi > kufiri
+                ):
+                    raise ValueError
+
+        if (
+            minimumi is not None
+            and maksimumi is not None
+            and minimumi > maksimumi
+        ):
+            gabim_cmimi = (
+                "Çmimi minimal nuk mund të jetë më i madh "
+                "se çmimi maksimal."
+            )
+
+        else:
+            if minimumi is not None:
+                pronat = pronat.filter(cmimi__gte=minimumi)
+
+            if maksimumi is not None:
+                pronat = pronat.filter(cmimi__lte=maksimumi)
+
+    except (InvalidOperation, ValueError):
+        gabim_cmimi = (
+            "Shkruaj çmime të vlefshme, më të mëdha "
+            "ose të barabarta me zero."
+        )
+
     pronat = pronat.order_by("-id")
 
     context = {
         "pronat": pronat,
         "qyteti": qyteti,
         "lloji": lloji,
+        "cmimi_min": cmimi_min,
+        "cmimi_max": cmimi_max,
+        "gabim_cmimi": gabim_cmimi,
     }
 
     return render(
@@ -151,6 +204,9 @@ def paneli_page(request):
     if eshte_administrator:
         numri_klienteve = Klienti.objects.count()
         numri_vizitave = Vizita.objects.count()
+
+        kerkesat = Kerkesa.objects.all()
+
     else:
         vizitat = Vizita.objects.filter(
             prona__agjent=perdoruesi
@@ -158,18 +214,27 @@ def paneli_page(request):
 
         numri_vizitave = vizitat.count()
 
+        kerkesat = Kerkesa.objects.filter(
+            prona__agjent=perdoruesi
+        )
+
         numri_klienteve = Klienti.objects.filter(
-            id__in=vizitat.values_list(
-                "klienti_id",
-                flat=True
-            )
-        ).count()
+            Q(kerkesat__prona__agjent=perdoruesi)
+            | Q(vizitat__prona__agjent=perdoruesi)
+        ).distinct().count()
 
     context = {
         "numri_pronave": pronat.count(),
         "numri_klienteve": numri_klienteve,
         "numri_vizitave": numri_vizitave,
-        "pronat_e_fundit": pronat.order_by("-id")[:4],
+        "numri_kerkesave": kerkesat.count(),
+        "pronat_e_fundit": pronat.select_related(
+            "agjent"
+        ).order_by("-id")[:4],
+        "kerkesat_e_fundit": kerkesat.select_related(
+            "klienti",
+            "prona"
+        ).order_by("-id")[:5],
     }
 
     return render(

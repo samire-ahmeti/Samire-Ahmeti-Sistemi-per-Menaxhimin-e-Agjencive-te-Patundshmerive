@@ -28,15 +28,30 @@ class Prona(models.Model):
         ("toke", "Tokë"),
     ]
 
+    STATUSET = [
+        ("e_lire", "E lirë"),
+        ("e_rezervuar", "E rezervuar"),
+        ("e_shitur", "E shitur"),
+        ("me_qira", "E dhënë me qira"),
+    ]
+
     agjent = models.ForeignKey(
         Perdorues,
         on_delete=models.PROTECT,
         related_name="pronat"
     )
+
     lloji = models.CharField(max_length=20, choices=LLOJET)
     qyteti = models.CharField(max_length=100)
     cmimi = models.DecimalField(max_digits=12, decimal_places=2)
     siperfaqja = models.DecimalField(max_digits=10, decimal_places=2)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUSET,
+        default="e_lire"
+    )
+
     foto = models.ImageField(
         upload_to="pronat/",
         blank=True,
@@ -61,17 +76,15 @@ class Kerkesa(models.Model):
         on_delete=models.PROTECT,
         related_name="kerkesat"
     )
+
     klienti = models.ForeignKey(
         Klienti,
         on_delete=models.PROTECT,
         related_name="kerkesat"
     )
-    email = models.EmailField(
-        blank=True
-    )
-    mesazhi = models.TextField(
-        blank=True
-    )
+
+    email = models.EmailField(blank=True)
+    mesazhi = models.TextField(blank=True)
 
     def __str__(self):
         return f"Kerkesa e {self.klienti.emri} per {self.prona}"
@@ -83,11 +96,13 @@ class Vizita(models.Model):
         on_delete=models.PROTECT,
         related_name="vizitat"
     )
+
     klienti = models.ForeignKey(
         Klienti,
         on_delete=models.PROTECT,
         related_name="vizitat"
     )
+
     data_vizites = models.DateTimeField()
 
     def __str__(self):
@@ -100,6 +115,7 @@ class FotoProne(models.Model):
         on_delete=models.CASCADE,
         related_name="fotot"
     )
+
     foto = models.ImageField(upload_to="pronat/galeria/")
     renditja = models.PositiveIntegerField(default=0)
 

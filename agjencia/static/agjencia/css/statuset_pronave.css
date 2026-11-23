@@ -1,0 +1,119 @@
+
+.se-property-status-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.se-property-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    border: 1px solid transparent;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.se-property-status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.se-property-status-e_lire {
+    color: #197445;
+    background: #e8f7ee;
+    border-color: #c0e8cf;
+}
+
+.se-property-status-e_rezervuar {
+    color: #89621c;
+    background: #fff5df;
+    border-color: #efd69f;
+}
+
+.se-property-status-e_shitur {
+    color: #a43340;
+    background: #fff0f1;
+    border-color: #f2c4ca;
+}
+
+.se-property-status-me_qira {
+    color: #274e85;
+    background: #edf3fc;
+    border-color: #cbdbf0;
+}
+
+.properties-search-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.properties-search-form .search-field {
+    flex: 1 1 180px;
+    min-width: 0;
+}
+
+.properties-search-form .search-field input,
+.properties-search-form .search-field select {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.properties-search-form .search-actions {
+    flex: 0 1 auto;
+}
+
+.se-price-filter-error {
+    margin-top: 15px;
+    padding: 13px 16px;
+    border: 1px solid #e9b5bc;
+    border-radius: 8px;
+    background: #fff1f2;
+    color: #a43340;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.se-filter-clear {
+    margin-top: 14px;
+}
+
+.se-filter-clear a {
+    color: #234c7c;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.se-filter-clear a:hover {
+    color: #b38b3b;
+}
+
+@media (max-width: 600px) {
+    .properties-search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .properties-search-form .search-field {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .properties-search-form .search-actions {
+        width: 100%;
+    }
+
+    .properties-search-form .search-actions button {
+        width: 100%;
+    }
+}

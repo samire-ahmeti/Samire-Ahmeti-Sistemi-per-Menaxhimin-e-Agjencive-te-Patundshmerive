@@ -1,9 +1,15 @@
 
 {% extends 'agjencia/base.html' %}
+{% load static %}
 
 {% block title %}Pronat | Smart Estate{% endblock %}
 
 {% block content %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'agjencia/css/statuset_pronave.css' %}"
+>
 
 <section class="properties-hero">
     <div class="container">
@@ -32,7 +38,10 @@
         >
 
             <div class="search-field">
-                <label for="qyteti">Qyteti</label>
+
+                <label for="qyteti">
+                    Qyteti
+                </label>
 
                 <input
                     type="text"
@@ -41,39 +50,120 @@
                     value="{{ qyteti }}"
                     placeholder="P.sh. Prizren"
                 >
+
             </div>
 
             <div class="search-field">
-                <label for="lloji">Lloji i pronës</label>
+
+                <label for="lloji">
+                    Lloji i pronës
+                </label>
 
                 <select id="lloji" name="lloji">
-                    <option value="">Të gjitha pronat</option>
 
-                    <option value="banese" {% if lloji == 'banese' %}selected{% endif %}>
+                    <option value="">
+                        Të gjitha pronat
+                    </option>
+
+                    <option
+                        value="banese"
+                        {% if lloji == 'banese' %}selected{% endif %}
+                    >
                         Banesë
                     </option>
 
-                    <option value="shtepi" {% if lloji == 'shtepi' %}selected{% endif %}>
+                    <option
+                        value="shtepi"
+                        {% if lloji == 'shtepi' %}selected{% endif %}
+                    >
                         Shtëpi
                     </option>
 
-                    <option value="lokal" {% if lloji == 'lokal' %}selected{% endif %}>
+                    <option
+                        value="lokal"
+                        {% if lloji == 'lokal' %}selected{% endif %}
+                    >
                         Lokal
                     </option>
 
-                    <option value="toke" {% if lloji == 'toke' %}selected{% endif %}>
+                    <option
+                        value="toke"
+                        {% if lloji == 'toke' %}selected{% endif %}
+                    >
                         Tokë
                     </option>
+
                 </select>
+
+            </div>
+
+            <div class="search-field">
+
+                <label for="cmimi_min">
+                    Çmimi minimal (€)
+                </label>
+
+                <input
+                    type="number"
+                    id="cmimi_min"
+                    name="cmimi_min"
+                    min="0"
+                    max="9999999999.99"
+                    step="0.01"
+                    value="{{ cmimi_min }}"
+                    placeholder="P.sh. 40000"
+                >
+
+            </div>
+
+            <div class="search-field">
+
+                <label for="cmimi_max">
+                    Çmimi maksimal (€)
+                </label>
+
+                <input
+                    type="number"
+                    id="cmimi_max"
+                    name="cmimi_max"
+                    min="0"
+                    max="9999999999.99"
+                    step="0.01"
+                    value="{{ cmimi_max }}"
+                    placeholder="P.sh. 100000"
+                >
+
             </div>
 
             <div class="search-actions">
+
                 <button type="submit" class="btn-primary">
                     Kërko pronën →
                 </button>
+
             </div>
 
         </form>
+
+        {% if gabim_cmimi %}
+
+            <div class="se-price-filter-error" role="alert">
+                {{ gabim_cmimi }}
+            </div>
+
+        {% endif %}
+
+        {% if qyteti or lloji or cmimi_min or cmimi_max %}
+
+            <div class="se-filter-clear">
+
+                <a href="{% url 'pronat' %}">
+                    Pastro filtrat
+                </a>
+
+            </div>
+
+        {% endif %}
 
     </div>
 </section>
@@ -82,13 +172,18 @@
     <div class="container">
 
         <div class="properties-heading">
+
             <div>
-                <h2>Pronat e disponueshme</h2>
+
+                <h2>Pronat në Smart Estate</h2>
 
                 <p>
-                    Eksploro pronat e regjistruara në Smart Estate.
+                    Eksploro pronat e regjistruara dhe
+                    kontrollo statusin e secilës pronë.
                 </p>
+
             </div>
+
         </div>
 
         <div class="properties-grid">
@@ -104,11 +199,25 @@
                         </span>
 
                         {% if prona.foto %}
+
                             <img
                                 src="{{ prona.foto.url }}"
                                 alt="{{ prona.get_lloji_display }} në {{ prona.qyteti }}"
                                 loading="lazy"
                             >
+
+                        {% elif prona.fotot.first %}
+
+                            {% with foto_pare=prona.fotot.first %}
+
+                                <img
+                                    src="{{ foto_pare.foto.url }}"
+                                    alt="{{ prona.get_lloji_display }} në {{ prona.qyteti }}"
+                                    loading="lazy"
+                                >
+
+                            {% endwith %}
+
                         {% else %}
 
                             <div class="property-photo-placeholder">
@@ -120,6 +229,23 @@
                     </div>
 
                     <div class="property-card-content">
+
+                        <div class="se-property-status-row">
+
+                            <span
+                                class="se-property-status se-property-status-{{ prona.status }}"
+                            >
+
+                                <span
+                                    class="se-property-status-dot"
+                                    aria-hidden="true"
+                                ></span>
+
+                                {{ prona.get_status_display }}
+
+                            </span>
+
+                        </div>
 
                         <h3>
                             {{ prona.get_lloji_display }}
@@ -142,8 +268,13 @@
                             href="{% url 'detajet_prones' prona.id %}"
                             class="property-details-button"
                         >
+
                             <span>Shiko detajet</span>
-                            <span aria-hidden="true">→</span>
+
+                            <span aria-hidden="true">
+                                →
+                            </span>
+
                         </a>
 
                     </div>

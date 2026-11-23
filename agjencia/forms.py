@@ -47,10 +47,12 @@ class PronaForm(forms.ModelForm):
             "qyteti",
             "cmimi",
             "siperfaqja",
+            "status",
             "foto",
         ]
 
         labels = {
+            "status": "Statusi i pronës",
             "foto": "Fotografia kryesore",
         }
 
@@ -80,6 +82,11 @@ class PronaForm(forms.ModelForm):
                     "placeholder": "P.sh. 120",
                     "min": "0.01",
                     "step": "0.01",
+                }
+            ),
+            "status": forms.Select(
+                attrs={
+                    "class": "add-property-input",
                 }
             ),
             "foto": forms.ClearableFileInput(
@@ -194,6 +201,7 @@ class PronaAdministratoriForm(PronaForm):
             "qyteti",
             "cmimi",
             "siperfaqja",
+            "status",
             "foto",
             "agjent",
         ]

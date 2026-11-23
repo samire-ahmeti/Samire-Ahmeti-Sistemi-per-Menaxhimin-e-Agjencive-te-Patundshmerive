@@ -32,7 +32,8 @@
             </h1>
 
             <p>
-                Zbulo fotografitë dhe informacionet e kësaj prone.
+                Zbulo fotografitë, statusin dhe informacionet
+                e kësaj prone.
             </p>
 
         </div>
@@ -164,7 +165,7 @@
                     </h2>
 
                     <p class="se-detail-location">
-                         {{ prona.qyteti }}, Kosovë
+                        📍 {{ prona.qyteti }}, Kosovë
                     </p>
 
                 </div>
@@ -184,6 +185,11 @@
                     <div class="se-detail-feature">
                         <span>Lloji i pronës</span>
                         <strong>{{ prona.get_lloji_display }}</strong>
+                    </div>
+
+                    <div class="se-detail-feature">
+                        <span>Statusi i pronës</span>
+                        <strong>{{ prona.get_status_display }}</strong>
                     </div>
 
                     <div class="se-detail-feature">

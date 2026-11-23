@@ -2,6 +2,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="sq">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,16 +25,18 @@
                           stroke-width="5"
                           stroke-linecap="round"
                           stroke-linejoin="round"/>
+
                     <path d="M14 28V56H50V28"
                           stroke="currentColor"
                           stroke-width="5"
                           stroke-linecap="round"
                           stroke-linejoin="round"/>
+
                     <path d="M27 56V39H38V56"
                           stroke="currentColor"
                           stroke-width="4"
-                          stroke-linecap="round"
                           stroke-linejoin="round"/>
+
                     <path d="M45 11V20"
                           stroke="currentColor"
                           stroke-width="4"
@@ -44,13 +47,16 @@
                     <span class="sd-brand-name">
                         Smart <strong>Estate</strong>
                     </span>
+
                     <span class="sd-brand-subtitle">
                         Agjenci për Menaxhimin e Patundshmërive
                     </span>
                 </span>
+
             </a>
 
             <div class="sd-user">
+
                 <div class="sd-user-info">
                     <strong>{{ user.first_name|default:user.username }}</strong>
 
@@ -65,10 +71,12 @@
 
                 <form method="POST" action="{% url 'dalja' %}">
                     {% csrf_token %}
+
                     <button type="submit" class="sd-logout">
                         Shkyçu
                     </button>
                 </form>
+
             </div>
 
         </div>
@@ -76,6 +84,7 @@
         <div class="sd-hero">
 
             <div>
+
                 <span class="sd-eyebrow">
                     SMART ESTATE / HAPËSIRA E MENAXHIMIT
                 </span>
@@ -89,12 +98,16 @@
                     Menaxho pronat, klientët, kërkesat dhe vizitat
                     nga një hapësirë e vetme.
                 </p>
+
             </div>
 
             <nav class="sd-nav" aria-label="Navigimi i panelit">
-                <a href="{% url 'paneli' %}"
-                   class="current"
-                   aria-current="page">
+
+                <a
+                    href="{% url 'paneli' %}"
+                    class="current"
+                    aria-current="page"
+                >
                     Paneli
                 </a>
 
@@ -108,9 +121,11 @@
                         Përdoruesit
                     </a>
                 {% endif %}
+
             </nav>
 
         </div>
+
     </div>
 </header>
 
@@ -129,6 +144,7 @@
         <section class="sd-surface sd-chart">
 
             <div class="sd-section-head">
+
                 <div>
                     <h2>Përmbledhja e agjencisë</h2>
                     <p>
@@ -138,6 +154,7 @@
                 </div>
 
                 <span class="sd-tag">Statistikat</span>
+
             </div>
 
             {% with total=numri_pronave|add:numri_klienteve|add:numri_vizitave %}
@@ -145,42 +162,57 @@
                 <div class="sd-chart-lines">
 
                     <div>
+
                         <div class="sd-chart-label">
                             <strong>Pronat</strong>
-                            <span>{{ numri_pronave|default:0 }} regjistrime</span>
+                            <span>
+                                {{ numri_pronave|default:0 }} regjistrime
+                            </span>
                         </div>
 
                         <progress
                             class="sd-progress"
                             value="{{ numri_pronave|default:0 }}"
-                            max="{% if total %}{{ total }}{% else %}1{% endif %}">
+                            max="{% if total %}{{ total }}{% else %}1{% endif %}"
+                        >
                         </progress>
+
                     </div>
 
                     <div>
+
                         <div class="sd-chart-label">
                             <strong>Klientët</strong>
-                            <span>{{ numri_klienteve|default:0 }} regjistrime</span>
+                            <span>
+                                {{ numri_klienteve|default:0 }} regjistrime
+                            </span>
                         </div>
 
                         <progress
                             class="sd-progress sd-progress-navy"
                             value="{{ numri_klienteve|default:0 }}"
-                            max="{% if total %}{{ total }}{% else %}1{% endif %}">
+                            max="{% if total %}{{ total }}{% else %}1{% endif %}"
+                        >
                         </progress>
+
                     </div>
 
                     <div>
+
                         <div class="sd-chart-label">
                             <strong>Vizitat</strong>
-                            <span>{{ numri_vizitave|default:0 }} regjistrime</span>
+                            <span>
+                                {{ numri_vizitave|default:0 }} regjistrime
+                            </span>
                         </div>
 
                         <progress
                             class="sd-progress sd-progress-gold"
                             value="{{ numri_vizitave|default:0 }}"
-                            max="{% if total %}{{ total }}{% else %}1{% endif %}">
+                            max="{% if total %}{{ total }}{% else %}1{% endif %}"
+                        >
                         </progress>
+
                     </div>
 
                 </div>
@@ -197,44 +229,71 @@
         <div class="sd-metrics">
 
             <section class="sd-metric">
-                <span class="sd-metric-label">Pronat e regjistruara</span>
+
+                <span class="sd-metric-label">
+                    Pronat e regjistruara
+                </span>
+
                 <strong class="sd-metric-value">
                     {{ numri_pronave|default:0 }}
                 </strong>
+
                 <a href="{% url 'pronat' %}" class="sd-metric-link">
                     Shiko pronat ↗
                 </a>
+
             </section>
 
             <section class="sd-metric">
-                <span class="sd-metric-label">Klientët</span>
+
+                <span class="sd-metric-label">
+                    Klientët
+                </span>
+
                 <strong class="sd-metric-value">
                     {{ numri_klienteve|default:0 }}
                 </strong>
+
                 <a href="{% url 'klientet' %}" class="sd-metric-link">
                     Menaxho klientët ↗
                 </a>
+
             </section>
 
             <section class="sd-metric">
-                <span class="sd-metric-label">Vizitat e regjistruara</span>
+
+                <span class="sd-metric-label">
+                    Vizitat e regjistruara
+                </span>
+
                 <strong class="sd-metric-value">
                     {{ numri_vizitave|default:0 }}
                 </strong>
+
                 <a href="{% url 'vizitat' %}" class="sd-metric-link">
                     Shiko vizitat ↗
                 </a>
+
             </section>
 
             <section class="sd-metric">
-                <span class="sd-metric-label">Kërkesat e klientëve</span>
-                <strong class="sd-metric-value">Kërkesat</strong>
+
+                <span class="sd-metric-label">
+                    Kërkesat e klientëve
+                </span>
+
+                <strong class="sd-metric-value">
+                    {{ numri_kerkesave|default:0 }}
+                </strong>
+
                 <a href="{% url 'kerkesat' %}" class="sd-metric-link">
                     Menaxho kërkesat ↗
                 </a>
+
             </section>
 
         </div>
+
     </div>
 
     <div class="sd-lower">
@@ -245,7 +304,9 @@
 
                 <div>
                     <h2>Pronat e fundit</h2>
-                    <p>Pronat e regjistruara së fundmi në sistem.</p>
+                    <p>
+                        Pronat e regjistruara së fundmi në sistem.
+                    </p>
                 </div>
 
                 <a href="{% url 'pronat' %}" class="sd-text-link">
@@ -255,12 +316,14 @@
             </div>
 
             <div class="sd-table-scroll">
+
                 <table class="sd-table">
 
                     <thead>
                         <tr>
                             <th>Prona</th>
                             <th>Qyteti</th>
+                            <th>Përgjegjësi</th>
                             <th>Sipërfaqja</th>
                             <th>Çmimi</th>
                             <th>Veprimet</th>
@@ -274,10 +337,13 @@
                             <tr>
 
                                 <td>
+
                                     <div class="sd-property-row">
 
-                                        <a href="{% url 'detajet_prones' prona.id %}"
-                                           class="sd-property-photo">
+                                        <a
+                                            href="{% url 'detajet_prones' prona.id %}"
+                                            class="sd-property-photo"
+                                        >
 
                                             {% if prona.foto %}
 
@@ -315,8 +381,10 @@
 
                                         <div class="sd-property-info">
 
-                                            <a href="{% url 'detajet_prones' prona.id %}"
-                                               class="sd-cell-title">
+                                            <a
+                                                href="{% url 'detajet_prones' prona.id %}"
+                                                class="sd-cell-title"
+                                            >
                                                 {{ prona.get_lloji_display }}
                                                 në {{ prona.qyteti }}
                                             </a>
@@ -328,11 +396,34 @@
                                         </div>
 
                                     </div>
+
                                 </td>
 
-                                <td>{{ prona.qyteti }}</td>
+                                <td>
+                                    {{ prona.qyteti }}
+                                </td>
 
-                                <td>{{ prona.siperfaqja }} m²</td>
+                                <td>
+
+                                    <strong class="sd-cell-title">
+                                        {{ prona.agjent.emri|default:prona.agjent.username }}
+                                    </strong>
+
+                                    <span class="sd-cell-subtitle">
+
+                                        {% if prona.agjent.is_superuser or prona.agjent.roli == "administrator" %}
+                                            Administrator
+                                        {% else %}
+                                            Agjent
+                                        {% endif %}
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    {{ prona.siperfaqja }} m²
+                                </td>
 
                                 <td>
                                     <span class="sd-price">
@@ -341,6 +432,7 @@
                                 </td>
 
                                 <td>
+
                                     <div class="sd-actions">
 
                                         <a href="{% url 'detajet_prones' prona.id %}">
@@ -351,12 +443,15 @@
                                             Ndrysho
                                         </a>
 
-                                        <a href="{% url 'fshi_prone' prona.id %}"
-                                           class="sd-delete">
+                                        <a
+                                            href="{% url 'fshi_prone' prona.id %}"
+                                            class="sd-delete"
+                                        >
                                             Fshi
                                         </a>
 
                                     </div>
+
                                 </td>
 
                             </tr>
@@ -364,7 +459,8 @@
                         {% empty %}
 
                             <tr>
-                                <td colspan="5" class="sd-empty">
+
+                                <td colspan="6" class="sd-empty">
 
                                     <h3>Nuk ka prona të regjistruara.</h3>
 
@@ -378,12 +474,15 @@
                                     </a>
 
                                 </td>
+
                             </tr>
 
                         {% endfor %}
 
                     </tbody>
+
                 </table>
+
             </div>
 
         </section>
@@ -391,10 +490,14 @@
         <section class="sd-side-section">
 
             <div class="sd-section-head">
+
                 <div>
                     <h2>Veprime të shpejta</h2>
-                    <p>Zgjidh veprimin që dëshiron të kryesh.</p>
+                    <p>
+                        Zgjidh veprimin që dëshiron të kryesh.
+                    </p>
                 </div>
+
             </div>
 
             <div class="sd-quick-links">
@@ -405,10 +508,12 @@
                 </a>
 
                 {% if user.is_superuser or user.roli == "administrator" %}
+
                     <a href="{% url 'shto_klient' %}">
                         Regjistro klient
                         <span>↗</span>
                     </a>
+
                 {% endif %}
 
                 <a href="{% url 'shto_kerkese' %}">
@@ -422,10 +527,12 @@
                 </a>
 
                 {% if user.is_staff %}
+
                     <a href="{% url 'admin:index' %}">
                         Administrimi
                         <span>↗</span>
                     </a>
+
                 {% endif %}
 
             </div>
@@ -439,14 +546,168 @@
 
     </div>
 
+    <section class="sd-table-section" id="kerkesat-e-fundit">
+
+        <div class="sd-section-head sd-table-heading">
+
+            <div>
+
+                <h2>Kërkesat e fundit</h2>
+
+                <p>
+                    Interesimet dhe kërkesat më të reja
+                    të klientëve për prona.
+                </p>
+
+            </div>
+
+            <a href="{% url 'kerkesat' %}" class="sd-text-link">
+                Shiko të gjitha ↗
+            </a>
+
+        </div>
+
+        <div class="sd-table-scroll">
+
+            <table class="sd-table">
+
+                <thead>
+                    <tr>
+                        <th>Klienti</th>
+                        <th>Prona</th>
+                        <th>Kontakti</th>
+                        <th>Mesazhi</th>
+                        <th>Referenca</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for kerkesa in kerkesat_e_fundit %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong class="sd-cell-title">
+                                    {{ kerkesa.klienti.emri }}
+                                </strong>
+
+                                <span class="sd-cell-subtitle">
+                                    {% if kerkesa.email %}
+                                        Interesim nga klienti
+                                    {% else %}
+                                        Kërkesë e regjistruar
+                                    {% endif %}
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <strong class="sd-cell-title">
+                                    {{ kerkesa.prona.get_lloji_display }}
+                                </strong>
+
+                                <span class="sd-cell-subtitle">
+                                    {{ kerkesa.prona.qyteti }}
+                                </span>
+
+                                <a
+                                    href="{% url 'detajet_prones' kerkesa.prona.id %}"
+                                    class="sd-text-link"
+                                >
+                                    Shiko pronën
+                                </a>
+
+                            </td>
+
+                            <td>
+
+                                <strong class="sd-cell-title">
+                                    {{ kerkesa.klienti.kontakti }}
+                                </strong>
+
+                                {% if kerkesa.email %}
+
+                                    <span class="sd-cell-subtitle">
+                                        {{ kerkesa.email }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {% if kerkesa.mesazhi %}
+
+                                    <span class="sd-cell-subtitle">
+                                        {{ kerkesa.mesazhi|truncatechars:85 }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="sd-cell-subtitle">
+                                        Pa mesazh shtesë
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                <strong class="sd-cell-title">
+                                    #{{ kerkesa.id }}
+                                </strong>
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td colspan="5" class="sd-empty">
+
+                                <h3>Ende nuk ka kërkesa.</h3>
+
+                                <p>
+                                    Interesimet e klientëve do të
+                                    shfaqen këtu pasi të regjistrohen.
+                                </p>
+
+                                <a href="{% url 'kerkesat' %}">
+                                    Shiko kërkesat
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
     <div class="sd-page-end">
+
         <h3>Smart Estate Dashboard</h3>
+
         <p>
             Kjo hapësirë përdoret për menaxhimin e
             <strong>pronave</strong>, <strong>klientëve</strong>,
             <strong>kërkesave</strong> dhe <strong>vizitave</strong>
             në mënyrë të organizuar dhe profesionale.
         </p>
+
     </div>
 
 </main>
