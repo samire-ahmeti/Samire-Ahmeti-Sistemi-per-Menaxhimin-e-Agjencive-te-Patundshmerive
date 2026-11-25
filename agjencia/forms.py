@@ -1,5 +1,6 @@
 
 from django import forms
+from django.core.files.uploadedfile import UploadedFile
 
 from .models import Prona, Perdorues
 
@@ -18,12 +19,30 @@ class MultipleImageField(forms.ImageField):
         if not isinstance(data, (list, tuple)):
             data = [data]
 
-        pastro_foton = super().clean
+        if len(data) > 8:
+            raise forms.ValidationError(
+                "Mund të ngarkoni maksimumi 8 fotografi shtesë."
+            )
 
-        return [
-            pastro_foton(foto, initial)
-            for foto in data
-        ]
+        pastro_foton = super().clean
+        fotot = []
+
+        for foto in data:
+            if foto.size > 5 * 1024 * 1024:
+                raise forms.ValidationError(
+                    "Secila fotografi duhet të jetë maksimumi 5 MB."
+                )
+
+            foto = pastro_foton(foto, initial)
+
+            if foto.image.format not in ("JPEG", "PNG", "WEBP"):
+                raise forms.ValidationError(
+                    "Lejohen vetëm fotografitë JPG, PNG dhe WEBP."
+                )
+
+            fotot.append(foto)
+
+        return fotot
 
 
 class PronaForm(forms.ModelForm):
@@ -98,11 +117,23 @@ class PronaForm(forms.ModelForm):
         }
 
     def clean_qyteti(self):
-        qyteti = self.cleaned_data["qyteti"].strip()
+        qyteti = " ".join(
+            self.cleaned_data["qyteti"].split()
+        )
 
         if len(qyteti) < 2:
             raise forms.ValidationError(
                 "Shkruaj emrin e saktë të qytetit."
+            )
+
+        if not all(
+            karakteri.isalpha() or karakteri in " -'’"
+            for karakteri in qyteti
+        ) or not any(
+            karakteri.isalpha() for karakteri in qyteti
+        ):
+            raise forms.ValidationError(
+                "Emri i qytetit duhet të përmbajë shkronja."
             )
 
         return qyteti
@@ -130,10 +161,16 @@ class PronaForm(forms.ModelForm):
     def clean_foto(self):
         foto = self.cleaned_data.get("foto")
 
-        if foto and foto.size > 5 * 1024 * 1024:
-            raise forms.ValidationError(
-                "Fotografia nuk duhet të jetë më e madhe se 5 MB."
-            )
+        if isinstance(foto, UploadedFile):
+            if foto.size > 5 * 1024 * 1024:
+                raise forms.ValidationError(
+                    "Fotografia nuk duhet të jetë më e madhe se 5 MB."
+                )
+
+            if foto.image.format not in ("JPEG", "PNG", "WEBP"):
+                raise forms.ValidationError(
+                    "Lejohen vetëm fotografitë JPG, PNG dhe WEBP."
+                )
 
         return foto
 
@@ -146,11 +183,16 @@ class PronaForm(forms.ModelForm):
                     "Secila fotografi duhet të jetë maksimumi 5 MB."
                 )
 
-        ids_per_largim = (
-            self.data.getlist("hiq_fotot")
-            if self.is_bound
-            else []
-        )
+        ids_per_largim = []
+
+        if self.is_bound:
+            if hasattr(self.data, "getlist"):
+                ids_per_largim = self.data.getlist("hiq_fotot")
+            else:
+                ids_per_largim = self.data.get("hiq_fotot", [])
+
+                if not isinstance(ids_per_largim, (list, tuple)):
+                    ids_per_largim = [ids_per_largim]
 
         try:
             ids = {int(vlera) for vlera in ids_per_largim}
