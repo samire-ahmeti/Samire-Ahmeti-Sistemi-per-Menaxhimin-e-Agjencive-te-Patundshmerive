@@ -139,19 +139,67 @@
 
 <script src="{% static 'agjencia/js/main.js' %}"></script>
 
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const toggle = document.getElementById("seMenuToggle");
     const navigation = document.getElementById("seNavigation");
 
-    if (toggle && navigation) {
-        toggle.addEventListener("click", function () {
-            const opened = navigation.classList.toggle("se-menu-open");
-            toggle.setAttribute("aria-expanded", String(opened));
-        });
+    if (!toggle || !navigation) {
+        return;
     }
+
+    function setMenu(opened) {
+        navigation.classList.toggle("se-menu-open", opened);
+        toggle.setAttribute("aria-expanded", String(opened));
+        toggle.setAttribute(
+            "aria-label",
+            opened ? "Mbyll menynë" : "Hap menynë"
+        );
+        toggle.textContent = opened ? "✕" : "☰";
+    }
+
+    toggle.addEventListener("click", function () {
+        setMenu(!navigation.classList.contains("se-menu-open"));
+    });
+
+    navigation.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+            setMenu(false);
+        });
+
+        if (link.classList.contains("se-active")) {
+            link.setAttribute("aria-current", "page");
+        }
+    });
+
+    document.addEventListener("click", function (event) {
+        if (
+            !navigation.contains(event.target) &&
+            !toggle.contains(event.target)
+        ) {
+            setMenu(false);
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (
+            event.key === "Escape" &&
+            navigation.classList.contains("se-menu-open")
+        ) {
+            setMenu(false);
+            toggle.focus();
+        }
+    });
+
+    window.addEventListener("resize", function () {
+        if (window.innerWidth > 760) {
+            setMenu(false);
+        }
+    });
 });
 </script>
+
 
 {% block extra_js %}{% endblock %}
 
